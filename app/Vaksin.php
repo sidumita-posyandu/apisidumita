@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Vaksin extends Model
 {
-    protected $table = 'tb_vaksin';
+    protected $table = 'm_vaksin';
 
     protected $fillable = [
         'nama_vaksin','dosis','catatan','status'

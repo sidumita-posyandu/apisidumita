@@ -18,6 +18,15 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::group(['middleware' => 'api','prefix' => 'auth'], function ($router) {
+    Route::post('register', 'AuthController@register');
+    Route::post('login', 'AuthController@login');
+    Route::post('logout', 'AuthController@logout');
+    Route::post('refresh', 'AuthController@refresh');
+    Route::post('me', 'AuthController@me');
+
+});
+
 Route::apiResource('provinsi', API\V1\MasterData\ProvinsiController::class);
 Route::apiResource('kabupaten', API\V1\MasterData\KabupatenController::class);
 Route::apiResource('kecamatan', API\V1\MasterData\KecamatanController::class);
@@ -41,3 +50,5 @@ Route::get('pemeriksaan-balita/latest-balita/{id}','API\V1\PemeriksaanBalitaCont
 Route::apiResource('pemeriksaan-ibuhamil', API\V1\PemeriksaanIbuHamilController::class);
 
 Route::apiResource('jadwal-pemeriksaan', API\V1\JadwalPemeriksaanController::class);
+
+Route::apiResource('detail-pemeriksaan-balita', API\V1\DetailPemeriksaanBalitaController::class);

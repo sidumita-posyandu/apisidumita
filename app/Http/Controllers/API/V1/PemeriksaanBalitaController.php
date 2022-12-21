@@ -57,7 +57,7 @@ class PemeriksaanBalitaController extends Controller
 
     public function show($id) 
     {
-        $pemeriksaan_balitas = PemeriksaanBalita::findOrFail($id);
+        $pemeriksaan_balitas = PemeriksaanBalita::findOrFail($id)->with(['balita'])->first();;
 
         return response()->json([
             'status' => true,

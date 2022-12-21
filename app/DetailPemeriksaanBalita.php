@@ -4,12 +4,12 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ImunisasiBalita extends Model
+class DetailPemeriksaanBalita extends Model
 {
-    protected $table = 'tb_imunisasi_balita';
+    protected $table = 'tb_detail_pemeriksaan_balita';
 
     protected $fillable = [
-        'pemeriksaan_balita_id', 'vaksin_id', 'vitamin_id'
+        'pemeriksaan_balita_id', 'balita_id','vaksin_id'
     ];
 
     public function pemeriksaan_balita()
@@ -22,8 +22,8 @@ class ImunisasiBalita extends Model
         return $this->belongsTo(Vaksin::class, 'vaksin_id');
     }
 
-    public function vitamin()
+    public function balita()
     {
-        return $this->belongsTo(Vitamin::class, 'vitamin_id');
+        return $this->belongsTo(PemeriksaanBalita::class, 'pemeriksaan_balita_id');
     }
 }

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Vitamin extends Model
 {
-    protected $table = 'tb_vitamin';
+    protected $table = 'm_vitamin';
 
     protected $fillable = [
         'nama_vitamin','dosis','catatan'

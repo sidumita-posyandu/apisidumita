@@ -11,7 +11,7 @@ class JadwalPemeriksaanController extends Controller
 {
     public function index() 
     {
-        $jadwal_pemeriksaan = JadwalPemeriksaan::all();
+        $jadwal_pemeriksaan = JadwalPemeriksaan::with(['keluarga', 'operator_posyandu', 'dusun'])->get();
 
         return response()->json([
             'status' => true,
@@ -52,7 +52,7 @@ class JadwalPemeriksaanController extends Controller
 
     public function show($id) 
     {
-        $jadwal_pemeriksaan = JadwalPemeriksaan::findOrFail($id);
+        $jadwal_pemeriksaan = JadwalPemeriksaan::findOrFail($id)->with(['keluarga', 'operator_posyandu', 'dusun'])->first();
 
         return response()->json([
             'status' => true,

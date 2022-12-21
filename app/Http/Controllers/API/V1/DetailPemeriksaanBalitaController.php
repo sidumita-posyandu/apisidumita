@@ -4,19 +4,21 @@ namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\ImunisasiBalita;
+use App\DetailPemeriksaanBalita;
 use Validator;
 
-class ImunsasiBalitaController extends Controller
+class DetailPemeriksaanBalitaController extends Controller
 {
     public function index() 
     {
-        $imunisasi_balita = ImunisasiBalita::with('pemeriksaan_balita')->get();
+        $detail_pemeriksaan_balita = DetailPemeriksaanBalita::with('pemeriksaan_balita', 'balita','vaksin')->get();
+
+        dd($detail_pemeriksaan_balita);
 
         return response()->json([
             'status' => true,
             'code' => 200,
-            'data' => $imunisasi_balita
+            'data' => $detail_pemeriksaan_balita
         ]);
 
     }
@@ -24,9 +26,9 @@ class ImunsasiBalitaController extends Controller
     public function store(Request $request)
     {
         $validasi = Validator::make($request->all(), [
-            'pemeriksaan_balita_id' => 'required|exists:tb_imunisasi_balita,id',
+            'pemeriksaan_balita_id' => 'required|exists:tb_pemeriksaan_balita,id',
             'vaksin_id' => 'required|exists:tb_vaksin,id',
-            'vitamin_id' => 'required|exists:tb_vitamin,id',
+            'balita_id' => 'required|exists:tb_balita,id',
         ]);
 
         if ($validasi->fails()) {
@@ -37,34 +39,34 @@ class ImunsasiBalitaController extends Controller
             ]);
         }
         
-        $imunisasi_balita = ImunisasiBalita::create($request->all());
+        $detail_pemeriksaan_balita = DetailPemeriksaanBalita::create($request->all());
 
         return response()->json([
             'status' => true,
             'code' => 200,
             'message' => "Data bulan imunisasi berhasil ditambahkan",
-            'data' => $imunisasi_balita
+            'data' => $detail_pemeriksaan_balita
         ], 200);
     }
 
     public function show($id) 
     {
-        $imunisasi_balita = ImunisasiBalita::findOrFail($id);
+        $detail_pemeriksaan_balita = DetailPemeriksaanBalita::findOrFail($id)->with('pemeriksaan_balita', 'balita','vaksin')->first();
 
         return response()->json([
             'status' => true,
             'code' => 200,
-            'data' => $imunisasi_balita
+            'data' => $detail_pemeriksaan_balita
         ]);
 
     }
 
-    public function update(Request $request, ImunisasiBalita $imunisasi_balita)
+    public function update(Request $request, DetailPemeriksaanBalita $detail_pemeriksaan_balita)
     {
         $validasi = Validator::make($request->all(), [
-            'pemeriksaan_balita_id' => 'required|exists:tb_imunisasi_balita,id',
+            'pemeriksaan_balita_id' => 'required|exists:tb_pemeriksaan_balita,id',
             'vaksin_id' => 'required|exists:tb_vaksin,id',
-            'vitamin_id' => 'required|exists:tb_vitamin,id',
+            'balita_id' => 'required|exists:tb_balita,id',
         ]);
 
         if ($validasi->fails()) {
@@ -75,19 +77,19 @@ class ImunsasiBalitaController extends Controller
             ]);
         }
         
-        $imunisasi_balita->update($request->all());
+        $detail_pemeriksaan_balita->update($request->all());
 
         return response()->json([
             'status' => true,
             'code' => 200,
             'message' => "Data bulan imunisasi berhasil diubah",
-            'data' => $imunisasi_balita
+            'data' => $detail_pemeriksaan_balita
         ], 200);
     }
 
-    public function destroy(ImunisasiBalita $imunisasi_balita)
+    public function destroy(DetailPemeriksaanBalita $detail_pemeriksaan_balita)
     {
-        $imunisasi_balita->delete();
+        $detail_pemeriksaan_balita->delete();
 
         return response()->json([
             'status' => true,
