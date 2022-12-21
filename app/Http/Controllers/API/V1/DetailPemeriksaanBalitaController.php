@@ -13,7 +13,6 @@ class DetailPemeriksaanBalitaController extends Controller
     {
         $detail_pemeriksaan_balita = DetailPemeriksaanBalita::with('pemeriksaan_balita', 'balita','vaksin')->get();
 
-        dd($detail_pemeriksaan_balita);
 
         return response()->json([
             'status' => true,
