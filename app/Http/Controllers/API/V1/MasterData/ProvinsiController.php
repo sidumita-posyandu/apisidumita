@@ -11,19 +11,18 @@ class ProvinsiController extends Controller
     public function index() 
     {
         $provinsis = Provinsi::all();
-
+        
         return response()->json([
             'status' => true,
             'code' => 200,
             'data' => $provinsis
         ]);
-
     }
 
     public function store(Request $request)
     {
         $provinsi = Provinsi::create($request->all());
-
+        
         return response()->json([
             'status' => true,
             'code' => 200,
@@ -35,13 +34,12 @@ class ProvinsiController extends Controller
     public function show($id) 
     {
         $provinsis = Provinsi::findOrFail($id);
-
+        
         return response()->json([
             'status' => true,
             'code' => 200,
             'data' => $provinsis
         ]);
-
     }
 
     public function update(Request $request, Provinsi $provinsi)

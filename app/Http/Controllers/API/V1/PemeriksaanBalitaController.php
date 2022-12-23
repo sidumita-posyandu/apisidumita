@@ -12,7 +12,8 @@ class PemeriksaanBalitaController extends Controller
 {
     public function index() 
     {
-        $pemeriksaan_balitas = PemeriksaanBalita::with(['balita', 'petugas_kesehatan', 'dokter'])->get();
+        $pemeriksaan_balitas = PemeriksaanBalita::with(['balita', 'petugas_kesehatan', 'dokter', 'detail_keluargas'])->get();
+        
         return response()->json([
             'status' => true,
             'code' => 200,
@@ -35,6 +36,7 @@ class PemeriksaanBalitaController extends Controller
             'catatan' => 'required',
             'keluhan' => 'required',
             'dokter_id' => 'required',
+            'vitamin_id' => 'required',
         ]);
     
         if($validasi->fails()) {
@@ -57,7 +59,7 @@ class PemeriksaanBalitaController extends Controller
 
     public function show($id) 
     {
-        $pemeriksaan_balitas = PemeriksaanBalita::findOrFail($id)->with(['balita'])->first();;
+        $pemeriksaan_balitas = PemeriksaanBalita::findOrFail($id)->with(['balita', 'petugas_kesehatan', 'dokter', 'detail_keluargas'])->first();;
 
         return response()->json([
             'status' => true,
@@ -109,9 +111,13 @@ class PemeriksaanBalitaController extends Controller
             'lingkar_lengan' => 'required',
             'tinggi_badan' => 'required',
             'berat_badan' => 'required',
-            'balita_id' => 'required|exists:tb_balita,id',
-            'petugas_kesehatan_id' => 'required|tb_petugas_kesehatan,id',
-            'bulan_imunisasi_id' => 'required|exists:tb_bulan_imunisasi.id',
+            'balita_id' => 'required',
+            'petugas_kesehatan_id' => 'required',
+            'penanganan' => 'required',
+            'catatan' => 'required',
+            'keluhan' => 'required',
+            'dokter_id' => 'required',
+            'vitamin_id' => 'required',
         ]);
     
         if($validasi->fails()) {

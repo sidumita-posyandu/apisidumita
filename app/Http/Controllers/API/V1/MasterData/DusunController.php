@@ -21,6 +21,17 @@ class DusunController extends Controller
 
     }
 
+    public function show($id) 
+    {
+        $dusun = Dusun::findOrFail($id);
+        
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'data' => $dusun
+        ]);
+    }
+
     public function store(Request $request)
     {
         $dusun = Dusun::create($request->all());

@@ -24,6 +24,11 @@ class DetailPemeriksaanBalita extends Model
 
     public function balita()
     {
-        return $this->belongsTo(PemeriksaanBalita::class, 'pemeriksaan_balita_id');
+        return $this->belongsTo(Balita::class, 'balita_id');
+    }
+
+    public function detail_keluargas()
+    {
+        return $this->hasManyThrough(DetailKeluarga::class, Balita::class, 'detail_keluarga_id', 'id','balita_id','id');
     }
 }

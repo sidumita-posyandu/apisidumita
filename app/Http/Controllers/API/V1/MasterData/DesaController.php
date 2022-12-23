@@ -20,6 +20,17 @@ class DesaController extends Controller
         ]);
     }
 
+    public function show($id) 
+    {
+        $desa = Desa::findOrFail($id);
+        
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'data' => $desa
+        ]);
+    }
+
     public function store(Request $request)
     {
         $desa = Desa::create($request->all());

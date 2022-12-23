@@ -11,8 +11,7 @@ class DetailPemeriksaanBalitaController extends Controller
 {
     public function index() 
     {
-        $detail_pemeriksaan_balita = DetailPemeriksaanBalita::with('pemeriksaan_balita', 'balita','vaksin')->get();
-
+        $detail_pemeriksaan_balita = DetailPemeriksaanBalita::with('pemeriksaan_balita', 'balita','vaksin','detail_keluargas')->get();
 
         return response()->json([
             'status' => true,
@@ -26,7 +25,7 @@ class DetailPemeriksaanBalitaController extends Controller
     {
         $validasi = Validator::make($request->all(), [
             'pemeriksaan_balita_id' => 'required|exists:tb_pemeriksaan_balita,id',
-            'vaksin_id' => 'required|exists:tb_vaksin,id',
+            'vaksin_id' => 'required|exists:m_vaksin,id',
             'balita_id' => 'required|exists:tb_balita,id',
         ]);
 
@@ -50,7 +49,7 @@ class DetailPemeriksaanBalitaController extends Controller
 
     public function show($id) 
     {
-        $detail_pemeriksaan_balita = DetailPemeriksaanBalita::findOrFail($id)->with('pemeriksaan_balita', 'balita','vaksin')->first();
+        $detail_pemeriksaan_balita = DetailPemeriksaanBalita::findOrFail($id)->with('pemeriksaan_balita', 'balita','vaksin','detail_keluargas')->first();
 
         return response()->json([
             'status' => true,
@@ -64,7 +63,7 @@ class DetailPemeriksaanBalitaController extends Controller
     {
         $validasi = Validator::make($request->all(), [
             'pemeriksaan_balita_id' => 'required|exists:tb_pemeriksaan_balita,id',
-            'vaksin_id' => 'required|exists:tb_vaksin,id',
+            'vaksin_id' => 'required|exists:m_vaksin,id',
             'balita_id' => 'required|exists:tb_balita,id',
         ]);
 

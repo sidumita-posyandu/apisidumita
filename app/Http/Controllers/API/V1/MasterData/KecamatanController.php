@@ -32,6 +32,18 @@ class KecamatanController extends Controller
         ], 200);
     }
 
+    public function show($id) 
+    {
+        $kecamatan = Kecamatan::findOrFail($id);
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'data' => $kecamatan
+        ]);
+
+    }
+
     public function update(Request $request, Kecamatan $kecamatan)
     {
         $kecamatan->update($request->all());

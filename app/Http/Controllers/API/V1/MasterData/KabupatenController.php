@@ -43,6 +43,18 @@ class KabupatenController extends Controller
         ], 200);
     }
 
+    public function show($id) 
+    {
+        $kabupaten = Kabupaten::findOrFail($id);
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'data' => $kabupaten
+        ]);
+
+    }
+
     public function destroy(Kabupaten $kabupaten)
     {
         $kabupaten->delete();

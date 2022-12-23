@@ -10,7 +10,7 @@ class PemeriksaanBalita extends Model
 
     protected $fillable = [
         'tanggal_pemeriksaan','lingkar_kepala', 'lingkar_lengan', 'tinggi_badan','berat_badan',
-        'penanganan', 'keluhan', 'catatan', 'balita_id', 'petugas_kesehatan_id','dokter_id'
+        'penanganan', 'keluhan', 'catatan', 'balita_id', 'petugas_kesehatan_id','dokter_id','vitamin_id'
     ];
 
     public function balita()
@@ -31,5 +31,10 @@ class PemeriksaanBalita extends Model
     public function imunisasi_balita()
     {
         return $this->hasOne(ImunisasiBalita::class);
+    }
+
+    public function detail_keluargas()
+    {
+        return $this->hasManyThrough(DetailKeluarga::class, Balita::class, 'detail_keluarga_id', 'id','balita_id','id');
     }
 }
