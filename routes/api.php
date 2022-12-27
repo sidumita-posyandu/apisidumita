@@ -49,6 +49,10 @@ Route::get('pemeriksaan-balita/latest-balita/{id}','API\V1\PemeriksaanBalitaCont
 
 Route::apiResource('pemeriksaan-ibuhamil', API\V1\PemeriksaanIbuHamilController::class);
 
+Route::get('pemeriksaan-balita/balita/{id}', 'API\V1\PemeriksaanBalitaController@getPemeriksaanByBalita');
+Route::get('detailpemeriksaan-balita/{id}','API\V1\PemeriksaanBalitaController@getDetailPemeriksaanByBalita');
+Route::get('pemeriksaan-balita/latest-balita/{id}','API\V1\PemeriksaanBalitaController@getTwoLastPemeriksaanByBalita');
+
 Route::apiResource('jadwal-pemeriksaan', API\V1\JadwalPemeriksaanController::class);
 
 Route::apiResource('detail-pemeriksaan-balita', API\V1\DetailPemeriksaanBalitaController::class);

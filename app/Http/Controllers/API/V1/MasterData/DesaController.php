@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Desa;
 use App\Kecamatan;
+use Validator;
 
 class DesaController extends Controller
 {

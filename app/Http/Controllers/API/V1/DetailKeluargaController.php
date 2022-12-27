@@ -37,7 +37,7 @@ class DetailKeluargaController extends Controller
             'status_perkawinan' => 'required',
             'status_dalam_keluarga' => 'required',
             'kewarganegaraan' => 'required',
-            'keluarga_id' => 'required|exists:m_keluarga,id'
+            'keluarga_id' => 'required|exists:tb_keluarga,id'
         ]);
     
         if($validasi->fails()) {

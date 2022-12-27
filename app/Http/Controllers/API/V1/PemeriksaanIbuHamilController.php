@@ -64,4 +64,28 @@ class PemeriksaanIbuHamilController extends Controller
             'data' => $pemeriksaan_ibu_hamils
         ]);
     }
+
+    public function getPemeriksaanByIbuHamil($id)
+    {
+        $pemeriksaan_ibu_hamils = PemeriksaanIbuHamil::where('ibu_hamil_id', $id)->orderBy('tanggal_pemeriksaan','desc')->get();
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'data' => $pemeriksaan_ibu_hamils
+        ]);
+
+    }
+
+    public function getTwoLastPemeriksaanByIbuHamil($id)
+    {
+        $pemeriksaan_ibu_hamils = PemeriksaanIbuHamil::where('ibu_hamil_id', $id)->orderBy('tanggal_pemeriksaan','desc')->limit(2)->get();
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'data' => $pemeriksaan_ibu_hamils
+        ]);
+
+    }
 }

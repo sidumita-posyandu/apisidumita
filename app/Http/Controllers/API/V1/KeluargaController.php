@@ -36,7 +36,7 @@ class KeluargaController extends Controller
     public function store(Request $request)
     {
         $validasi = Validator::make($request->all(), [
-            'no_kartu_keluarga' => 'required|unique:m_keluarga',
+            'no_kartu_keluarga' => 'required|unique:tb_keluarga',
             'kepala_keluarga' => 'required',
             'alamat' => 'required',
             'jumlah' => 'required',
