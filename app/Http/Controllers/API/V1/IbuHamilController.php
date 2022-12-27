@@ -24,15 +24,7 @@ class IbuHamilController extends Controller
     public function store(Request $request)
     {
         $validasi = Validator::make($request->all(), [
-            'nama' => 'required',
-            'nik' => 'required',
-            'alamat_domisili' => 'required',
-            'alamat_rumah' => 'required',
-            'usia_kandungan' => 'required',
-            'no_telp' => 'required',
-            'agama' => 'required',
-            'golongan_darah' => 'required',
-            'tanggal_lahir' => 'required',
+            'detail_keluarga_id'
         ]);
 
         if ($validasi->fails()) {
@@ -48,7 +40,7 @@ class IbuHamilController extends Controller
         return response()->json([
             'status' => true,
             'code' => 200,
-            'message' => "Data ibu_hamil berhasil ditambahkan",
+            'message' => "Data ibu hamil berhasil ditambahkan",
             'data' => $ibu_hamil
         ], 200);
     }
@@ -68,15 +60,7 @@ class IbuHamilController extends Controller
     public function update(Request $request, IbuHamil $ibu_hamil)
     {
         $validasi = Validator::make($request->all(), [
-            'nama' => 'required',
-            'nik' => 'required',
-            'alamat_domisili' => 'required',
-            'alamat_rumah' => 'required',
-            'usia_kandungan' => 'required',
-            'no_telp' => 'required',
-            'agama' => 'required',
-            'golongan_darah' => 'required',
-            'tanggal_lahir' => 'required',
+            'detail_keluarga_id'
         ]);
 
         if ($validasi->fails()) {
@@ -92,7 +76,7 @@ class IbuHamilController extends Controller
         return response()->json([
             'status' => true,
             'code' => 200,
-            'message' => "Data bulan imunisasi berhasil diubah",
+            'message' => "Data ibu hamil berhasil diubah",
             'data' => $ibu_hamil
         ], 200);
     }
@@ -104,7 +88,7 @@ class IbuHamilController extends Controller
         return response()->json([
             'status' => true,
             'code' => 200,
-            'message' => "Data bulan imunisasi berhasil dihapus!",
+            'message' => "Data ibu hamil berhasil dihapus!",
         ], 200);
     }
 }

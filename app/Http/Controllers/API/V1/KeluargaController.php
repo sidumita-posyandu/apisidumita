@@ -24,7 +24,7 @@ class KeluargaController extends Controller
 
     public function show($id)
     {
-        $keluarga = Keluarga::findOrFail($id)->with('detail_keluargas')->first();
+        $keluarga = Keluarga::with(['dusun', 'user', 'detail_keluargas'])->findOrFail($id);
 
         return response()->json([
             'status' => true,
