@@ -6,12 +6,17 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\PemeriksaanIbuHamil;
 use Validator;
+use DB;
 
 class PemeriksaanIbuHamilController extends Controller
 {
-    public function index() 
+    public function index()
     {
-        $pemeriksaan_ibu_hamils = PemeriksaanIbuHamil::with(['ibu_hamil','petugas_kesehatan'])->get();
+        $pemeriksaan_ibu_hamils = DB::table('tb_detail_keluarga')
+        ->select('*')
+        ->join('tb_ibu_hamil', 'tb_ibu_hamil.detail_keluarga_id', '=', 'tb_detail_keluarga.id')
+        ->join('tb_pemeriksaan_ibu_hamil', 'tb_pemeriksaan_ibu_hamil.ibu_hamil_id', '=', 'tb_ibu_hamil.id')
+        ->get();
 
         return response()->json([
             'status' => true,
@@ -56,12 +61,14 @@ class PemeriksaanIbuHamilController extends Controller
 
     public function show($id) 
     {
-        $pemeriksaan_ibu_hamils = PemeriksaanIbuHamil::findOrFail($id);
+        $pemeriksaan_ibu_hamil = PemeriksaanIbuHamil::with(['ibu_hamil', 'petugas_kesehatan'])->findOrFail($id);
+
+        $detail_keluarga = $pemeriksaan_ibu_hamil->ibu_hamil()->first();
 
         return response()->json([
             'status' => true,
             'code' => 200,
-            'data' => $pemeriksaan_ibu_hamils
+            'data' => array_merge(json_decode($pemeriksaan_ibu_hamil, true),json_decode($detail_keluarga['detail_keluarga'], true))
         ]);
     }
 

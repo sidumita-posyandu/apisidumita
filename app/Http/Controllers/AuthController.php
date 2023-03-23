@@ -22,16 +22,16 @@ class AuthController extends Controller
 
     public function register()
     {
-        $validator = Validator::make(request()->all(),[
-            'name'=>'required',
-            'email'=>'required|email|unique:users',
-            'password'=> 'required',
-            'role_id'=> 'required'
-        ]);
+        // $validator = Validator::make(request()->all(),[
+        //     'name'=>'required',
+        //     'email'=>'required|email|unique:users',
+        //     'password'=> 'required',
+        //     'role_id'=> 'required'
+        // ]);
 
-        if($validator->fails()){
-            return response()->json($validator->messages());
-        }
+        // if($validator->fails()){
+        //     return response()->json($validator->messages());
+        // }
 
         $user = User::create([
             'name'=> request('name'),
@@ -54,7 +54,7 @@ class AuthController extends Controller
      */
     public function login()
     {
-        $credentials = request(['email', 'password', 'role_id']);
+        $credentials = request(['email', 'password']);
 
         if (! $token = auth()->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
@@ -107,7 +107,8 @@ class AuthController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60
+            'expires_in' => auth()->factory()->getTTL() * 60,
+            'user' => auth()->user()
         ]);
     }
 }

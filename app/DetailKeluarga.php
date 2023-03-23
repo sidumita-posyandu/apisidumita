@@ -18,4 +18,9 @@ class DetailKeluarga extends Model
     {
         return $this->belongsTo(Keluarga::class, 'keluarga_id');
     }
+
+    public function balitas()
+    {
+        return $this->hasMany(Balita::class, 'balita_id');
+    }
 }

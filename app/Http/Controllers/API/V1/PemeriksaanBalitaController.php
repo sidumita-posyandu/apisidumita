@@ -7,19 +7,23 @@ use Illuminate\Http\Request;
 use App\PemeriksaanBalita;
 use App\DetailKeluarga;
 use Validator;
+use DB;
 
 class PemeriksaanBalitaController extends Controller
 {
     public function index() 
     {
-        $pemeriksaan_balitas = PemeriksaanBalita::with(['balita', 'petugas_kesehatan', 'dokter', 'detail_keluargas'])->get();
+        $pemeriksaan_balitas = DB::table('tb_detail_keluarga')
+        ->select('*')
+        ->join('tb_balita', 'tb_balita.detail_keluarga_id', '=', 'tb_detail_keluarga.id')
+        ->join('tb_pemeriksaan_balita', 'tb_pemeriksaan_balita.balita_id', '=', 'tb_balita.id')
+        ->get();
         
         return response()->json([
             'status' => true,
             'code' => 200,
             'data' => $pemeriksaan_balitas
         ]);
-
     }
 
     public function store(Request $request)
@@ -59,12 +63,14 @@ class PemeriksaanBalitaController extends Controller
 
     public function show($id) 
     {
-        $pemeriksaan_balitas = PemeriksaanBalita::findOrFail($id)->with(['balita', 'petugas_kesehatan', 'dokter', 'detail_keluargas'])->first();;
+        $pemeriksaan_balitas = PemeriksaanBalita::with(['balita', 'petugas_kesehatan', 'dokter', 'detail_pemeriksaan_balita','vaksin'])->findOrFail($id);
+
+        $detail_keluarga = $pemeriksaan_balitas->balita()->first();
 
         return response()->json([
             'status' => true,
             'code' => 200,
-            'data' => $pemeriksaan_balitas
+            'data' => array_merge(json_decode($pemeriksaan_balitas, true),json_decode($detail_keluarga['detail_keluarga'], true))
         ]);
 
     }

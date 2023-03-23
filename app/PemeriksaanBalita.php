@@ -28,13 +28,18 @@ class PemeriksaanBalita extends Model
         return $this->belongsTo(Dokter::class, 'dokter_id');
     }
 
-    public function imunisasi_balita()
-    {
-        return $this->hasOne(ImunisasiBalita::class);
-    }
-
     public function detail_keluargas()
     {
-        return $this->hasManyThrough(DetailKeluarga::class, Balita::class, 'detail_keluarga_id', 'id','balita_id','id');
+        return $this->hasManyThrough(DetailKeluarga::class, Balita::class, 'detail_keluarga_id', 'id','balita_id');
+    }
+
+    public function detail_pemeriksaan_balita()
+    {
+        return $this->hasMany(DetailPemeriksaanBalita::class, 'pemeriksaan_balita_id');
+    }
+
+    public function vaksin()
+    {
+        return $this->belongsToMany(Vaksin::class, 'tb_detail_pemeriksaan_balita');
     }
 }

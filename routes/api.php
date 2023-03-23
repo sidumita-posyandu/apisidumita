@@ -23,11 +23,14 @@ Route::group(['middleware' => 'api','prefix' => 'auth'], function ($router) {
     Route::post('login', 'AuthController@login');
     Route::post('logout', 'AuthController@logout');
     Route::post('refresh', 'AuthController@refresh');
-    Route::post('me', 'AuthController@me');
-
+    Route::get('me', 'AuthController@me');
 });
 
-Route::apiResource('provinsi', API\V1\MasterData\ProvinsiController::class);
+Route::apiResource('user', API\V1\UserController::class);
+Route::apiResource('role', API\V1\RoleController::class);
+
+
+Route::apiResource('provinsi', API\V1\MasterData\ProvinsiController::class)->middleware('jwt.verify');
 Route::apiResource('kabupaten', API\V1\MasterData\KabupatenController::class);
 Route::apiResource('kecamatan', API\V1\MasterData\KecamatanController::class);
 Route::apiResource('desa', API\V1\MasterData\DesaController::class);
@@ -43,6 +46,8 @@ Route::apiResource('vaksin', API\V1\VaksinController::class);
 
 
 Route::apiResource('pemeriksaan-balita', API\V1\PemeriksaanBalitaController::class);
+Route::apiResource('detailpemeriksaan-balita', API\V1\DetailPemeriksaanBalitaController::class);
+
 Route::get('pemeriksaan-balita/balita/{id}', 'API\V1\PemeriksaanBalitaController@getPemeriksaanByBalita');
 Route::get('detailpemeriksaan-balita/{id}','API\V1\PemeriksaanBalitaController@getDetailPemeriksaanByBalita');
 Route::get('pemeriksaan-balita/latest-balita/{id}','API\V1\PemeriksaanBalitaController@getTwoLastPemeriksaanByBalita');

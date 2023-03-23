@@ -47,7 +47,7 @@ class BalitaController extends Controller
 
     public function show($id) 
     {
-        $balitas = Balita::findOrFail($id)->with(['detail_keluarga'])->first();
+        $balitas = Balita::with(['detail_keluarga'])->findOrFail($id);
 
         return response()->json([
             'status' => true,
@@ -82,19 +82,20 @@ class BalitaController extends Controller
         return response()->json([
             'status' => true,
             'code' => 200,
-            'message' => "Data bulan imunisasi berhasil diubah",
+            'message' => "Data balita berhasil diubah",
             'data' => $balita
         ], 200);
     }
 
-    public function destroy(Balita $balita)
+    public function destroy($id)
     {
+        $balita = Balita::findOrFail($id);
         $balita->delete();
 
         return response()->json([
             'status' => true,
             'code' => 200,
-            'message' => "Data bulan imunisasi berhasil dihapus!",
+            'message' => "Data balita berhasil dihapus!",
         ], 200);
     }
 }
