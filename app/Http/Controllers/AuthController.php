@@ -17,7 +17,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login','register']]);
+        $this->middleware('auth:api', ['except' => ['login','register','logout']]);
     }
 
     public function register()
@@ -41,7 +41,10 @@ class AuthController extends Controller
         ]);
 
         if($user){
-            return response()->json(['message' => 'Pendaftaran Berhasil']);
+            return response()->json([
+                'success' => true,
+                'message' => 'Pendaftaran Berhasil']);
+                
         }else{
             return response()->json(['message' => 'Pendaftaran Gagal']);
         }
@@ -82,7 +85,9 @@ class AuthController extends Controller
     {
         auth()->logout();
 
-        return response()->json(['message' => 'Successfully logged out']);
+        return response()->json([
+            'success' => true,
+            'message' => 'Successfully logged out']);
     }
 
     /**
@@ -105,6 +110,7 @@ class AuthController extends Controller
     protected function respondWithToken($token)
     {
         return response()->json([
+            'success' => true,
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60,
