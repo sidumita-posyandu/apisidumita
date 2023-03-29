@@ -11,7 +11,7 @@ class JadwalPemeriksaanController extends Controller
 {
     public function index() 
     {
-        $jadwal_pemeriksaan = JadwalPemeriksaan::with(['keluarga', 'operator_posyandu', 'dusun'])->get();
+        $jadwal_pemeriksaan = JadwalPemeriksaan::with(['operator_posyandu', 'dusun'])->get();
 
         return response()->json([
             'status' => true,
@@ -27,11 +27,10 @@ class JadwalPemeriksaanController extends Controller
             'jenis_pemeriksaan' => 'required',
             'waktu_mulai' => 'required',
             'waktu_berakhir' => 'required',
-            'keluarga_id' => 'required|exists:m_keluarga,id',
             'operator_posyandu_id' => 'required|exists:tb_operator_posyandu,id',
             'dusun_id' => 'required|exists:m_dusun,id',
         ]);
-    
+            
         if($validasi->fails()) {
             return response()->json([
                 'status' => false,
@@ -45,14 +44,14 @@ class JadwalPemeriksaanController extends Controller
         return response()->json([
             'status' => true,
             'code' => 200,
-            'message' => "Data bulan imunisasi berhasil ditambahkan",
+            'message' => "Data jadwal pemeriksaan berhasil ditambahkan",
             'data' => $jadwal_pemeriksaan
         ], 200);
     }
 
     public function show($id) 
     {
-        $jadwal_pemeriksaan = JadwalPemeriksaan::findOrFail($id)->with(['keluarga', 'operator_posyandu', 'dusun'])->first();
+        $jadwal_pemeriksaan = JadwalPemeriksaan::findOrFail($id)->with(['operator_posyandu', 'dusun'])->first();
 
         return response()->json([
             'status' => true,
@@ -68,7 +67,6 @@ class JadwalPemeriksaanController extends Controller
             'jenis_pemeriksaan' => 'required',
             'waktu_mulai' => 'required',
             'waktu_berakhir' => 'required',
-            'keluarga_id' => 'required|exists:m_keluarga,id',
             'operator_posyandu_id' => 'required|exists:tb_operator_posyandu,id',
             'dusun_id' => 'required|exists:m_dusun,id',
         ]);

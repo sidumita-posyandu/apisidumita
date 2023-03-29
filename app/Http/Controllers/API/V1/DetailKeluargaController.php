@@ -7,12 +7,24 @@ use Illuminate\Http\Request;
 use App\DetailKeluarga;
 use App\Keluarga;
 use Validator;
+use Carbon\Carbon;
 
 class DetailKeluargaController extends Controller
 {
     public function index() 
     {
         $detail_keluargas = DetailKeluarga::with(['keluarga'])->get();
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'data' => $detail_keluargas
+        ]);
+    }
+
+    public function show($id) 
+    {
+        $detail_keluargas = DetailKeluarga::with(['keluarga'])->where('id', $id)->get();
 
         return response()->json([
             'status' => true,
@@ -113,5 +125,48 @@ class DetailKeluargaController extends Controller
         return response()->json([
             'data' => $keluarga
         ], 200);
+    }
+
+    //umur
+    public function getUmur($id)
+    {
+        $orang = DetailKeluarga::where('id', $id)->first();
+        $now = Carbon::now();
+        $birthday = Carbon::parse($orang->tanggal_lahir);
+        $umur = $birthday->diffInYears($now);
+
+        if($umur == 0){
+            $umur = $birthday->diffInMonths($now);
+            
+            if($umur == 0){
+                $umur = $birthday->diffInWeeks($now);
+                return response()->json([
+                    'status' => true,
+                    'code' => 200,
+                    'data' => [
+                        'umur' => $umur,
+                        'format' => 'minggu'
+                    ]
+                ]);
+            }
+
+            return response()->json([
+                'status' => true,
+                'code' => 200,
+                'data' => [
+                    'umur' => $umur,
+                    'format' => 'bulan'
+                ]
+            ]);
+        }
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'data' => [
+                'umur' => $umur,
+                'format' => 'tahun'
+            ]
+        ]);
     }
 }

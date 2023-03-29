@@ -77,7 +77,7 @@ class PemeriksaanBalitaController extends Controller
 
     public function getPemeriksaanByBalita($id)
     {
-        $pemeriksaan_balitas = PemeriksaanBalita::where('balita_id', $id)->orderBy('tanggal_pemeriksaan','desc')->get();
+        $pemeriksaan_balitas = PemeriksaanBalita::with('balita')->where('balita_id', $id)->orderBy('tanggal_pemeriksaan','desc')->get();
 
         return response()->json([
             'status' => true,
