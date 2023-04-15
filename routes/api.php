@@ -26,6 +26,8 @@ Route::group(['middleware' => 'api','prefix' => 'auth'], function ($router) {
     Route::get('me', 'AuthController@me');
 });
 
+
+
 Route::middleware(['jwt.verify'])->group(function () {
     Route::apiResource('user', API\V1\UserController::class);
     Route::apiResource('role', API\V1\RoleController::class);
@@ -39,6 +41,8 @@ Route::middleware(['jwt.verify'])->group(function () {
     Route::apiResource('keluarga', API\V1\KeluargaController::class);
     Route::apiResource('detail-keluarga', API\V1\DetailKeluargaController::class);
     Route::get('umur/{id}', 'API\V1\DetailKeluargaController@getUmur');
+    Route::get('me/keluarga', 'API\V1\KeluargaController@showMyKeluarga');
+    Route::post('me/detail-keluarga', 'API\V1\DetailKeluargaController@storeMyDetKeluarga');
 
 
     Route::apiResource('balita', API\V1\BalitaController::class);

@@ -28,4 +28,13 @@ class Keluarga extends Model
     {
         return $this->hasMany(DetailKeluarga::class, 'keluarga_id');
     }
+
+    protected $appends = [
+        'jumlah_keluarga'
+    ];
+
+    public function getJumlahKeluargaAttribute()
+    {
+        return $this->detail_keluargas()->count();
+    }
 }

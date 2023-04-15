@@ -59,6 +59,7 @@ class DetailPemeriksaanBalitaController extends Controller
 
     }
 
+
     public function update(Request $request, DetailPemeriksaanBalita $detail_pemeriksaan_balita)
     {
         $validasi = Validator::make($request->all(), [

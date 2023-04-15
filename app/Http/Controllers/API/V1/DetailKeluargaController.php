@@ -70,6 +70,43 @@ class DetailKeluargaController extends Controller
         ], 200);
     }
 
+    public function storeMyDetKeluarga(Request $request)
+    {
+        $validasi = Validator::make($request->all(), [
+            'nama_lengkap' => 'required',
+            'nik' => 'required|unique:tb_detail_keluarga',
+            'jenis_kelamin' => 'required',
+            'tempat_lahir' => 'required',
+            'tanggal_lahir' => 'required',
+            'agama' => 'required',
+            'pendidikan' => 'required',
+            'no_telp' => 'required',
+            'golongan_darah' => 'required',
+            'jenis_pekerjaan' => 'required',
+            'status_perkawinan' => 'required',
+            'status_dalam_keluarga' => 'required',
+            'kewarganegaraan' => 'required',
+        ]);
+    
+        if($validasi->fails()) {
+            return response()->json([
+                'status' => false,
+                'code' => 400,
+                'message' => "Data tidak dapat ditambahkan"
+            ], 400);
+        }
+        $data = $request->all();
+        $data['keluarga_id'] = Keluarga::where("user_id", auth()->user()->id)->first()->id;
+        $detail_keluarga = DetailKeluarga::create($data);
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'message' => "Data detail keluarga berhasil ditambahkan",
+            'data' => $detail_keluarga
+        ], 200);
+    }
+
     public function update(Request $request, DetailKeluarga $detail_keluarga)
     {
         $validasi = Validator::make($request->all(), [

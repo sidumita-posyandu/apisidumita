@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\User;
+use App\Keluarga;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -32,21 +33,26 @@ class AuthController extends Controller
         // if($validator->fails()){
         //     return response()->json($validator->messages());
         // }
-
-        $user = User::create([
-            'name'=> request('name'),
-            'email'=> request('email'),
-            'password'=> Hash::make(request('password')),
-            'role_id'=> request('role_id'),
-        ]);
-
-        if($user){
-            return response()->json([
-                'success' => true,
-                'message' => 'Pendaftaran Berhasil']);
-                
+        if(Keluarga::where('no_kartu_keluarga', request('no_kk'))->get()->isEmpty())
+        {
+            $user = User::create([
+                'name'=> request('name'),
+                'email'=> request('email'),
+                'password'=> Hash::make(request('password')),
+                'role_id'=> request('role_id'),
+            ]);
+    
+            if($user){
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Pendaftaran Berhasil']);
+                    
+            }
         }else{
-            return response()->json(['message' => 'Pendaftaran Gagal']);
+            return response()->json([
+                'message' => 'Pendaftaran Gagal',
+                'success' => false
+        ]);
         }
     }
 
@@ -60,7 +66,8 @@ class AuthController extends Controller
         $credentials = request(['email', 'password']);
 
         if (! $token = auth()->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            return response()->json(['error' => 'Unauthorized',
+        'success' => false], 401);
         }
 
         return $this->respondWithToken($token);

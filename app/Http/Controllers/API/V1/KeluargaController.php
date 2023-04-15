@@ -33,6 +33,17 @@ class KeluargaController extends Controller
         ]);
     }
 
+    public function showMyKeluarga()
+    {
+        $keluarga = Keluarga::with(['dusun', 'user', 'detail_keluargas'])->where("user_id", auth()->user()->id)->first();
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'data' => $keluarga
+        ]);
+    }
+
     public function store(Request $request)
     {
         $validasi = Validator::make($request->all(), [
