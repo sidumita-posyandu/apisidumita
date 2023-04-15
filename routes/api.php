@@ -43,6 +43,8 @@ Route::middleware(['jwt.verify'])->group(function () {
     Route::apiResource('detail-keluarga', API\V1\DetailKeluargaController::class);
     Route::get('umur/{id}', 'API\V1\DetailKeluargaController@getUmur');
     Route::get('me/keluarga', 'API\V1\KeluargaController@showMyKeluarga');
+    Route::get('me/balitas-from-keluarga', 'API\V1\DetailKeluargaController@showMyBalitas');
+    Route::get('me/ibuhamils-from-keluarga', 'API\V1\DetailKeluargaController@showMyIbuHamils');
     Route::post('me/detail-keluarga', 'API\V1\DetailKeluargaController@storeMyDetKeluarga');
 
 

@@ -33,6 +33,30 @@ class DetailKeluargaController extends Controller
         ]);
     }
 
+    public function showMyBalitas()
+    {
+        $data['keluarga_id'] = Keluarga::where("user_id", auth()->user()->id)->first()->id;
+        $detail_keluargas = DetailKeluarga::with(['keluarga'])->where("status_dalam_keluarga","Anak")->where("keluarga_id", $data)->get();
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'data' => $detail_keluargas
+        ]);
+    }
+
+    public function showMyIbuHamils()
+    {
+        $data['keluarga_id'] = Keluarga::where("user_id", auth()->user()->id)->first()->id;
+        $detail_keluargas = DetailKeluarga::with(['keluarga'])->where("status_dalam_keluarga","Ibu")->where("keluarga_id", $data)->get();
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'data' => $detail_keluargas
+        ]);
+    }
+
     public function store(Request $request)
     {
         $validasi = Validator::make($request->all(), [

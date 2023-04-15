@@ -44,6 +44,8 @@ class KeluargaController extends Controller
         ]);
     }
 
+   
+
     public function store(Request $request)
     {
         $validasi = Validator::make($request->all(), [
