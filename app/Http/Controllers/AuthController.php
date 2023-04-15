@@ -21,6 +21,39 @@ class AuthController extends Controller
         $this->middleware('auth:api', ['except' => ['login','register','logout']]);
     }
 
+    public function registerAdmin()
+    {
+        $validator = Validator::make(request()->all(),[
+            'name'=>'required',
+            'email'=>'required|email|unique:users',
+            'password'=> 'required',
+            'role_id'=> 'required'
+        ]);
+
+        if($validator->fails()){
+            return response()->json($validator->messages());
+        }
+
+        $user = User::create([
+            'name'=> request('name'),
+            'email'=> request('email'),
+            'password'=> Hash::make(request('password')),
+            'role_id'=> request('role_id'),
+        ]);
+
+        if($user){
+            return response()->json([
+                'success' => true,
+                'message' => 'Pendaftaran Berhasil'
+            ]);    
+        }else{
+            return response()->json([
+                'message' => 'Pendaftaran Gagal',
+                'success' => false
+            ]);
+        }
+    }
+
     public function register()
     {
         // $validator = Validator::make(request()->all(),[
