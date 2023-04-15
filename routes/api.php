@@ -45,8 +45,9 @@ Route::middleware(['jwt.verify'])->group(function () {
     Route::get('me/keluarga', 'API\V1\KeluargaController@showMyKeluarga');
     Route::get('me/balitas-from-keluarga', 'API\V1\DetailKeluargaController@showMyBalitas');
     Route::get('me/ibuhamils-from-keluarga', 'API\V1\DetailKeluargaController@showMyIbuHamils');
-    Route::post('me/detail-keluarga', 'API\V1\DetailKeluargaController@storeMyDetKeluarga');
-
+    Route::post('me/create-detail-keluarga', 'API\V1\DetailKeluargaController@storeMyDetKeluarga');
+    Route::post('me/create-keluarga', 'API\V1\KeluargaController@storeMyKeluarga');
+    // Route::patch('me/update-keluarga', 'API\V1\KeluargaController@updateMyKeluarga');
 
     Route::apiResource('balita', API\V1\BalitaController::class);
     Route::apiResource('ibu-hamil', API\V1\IbuHamilController::class);
