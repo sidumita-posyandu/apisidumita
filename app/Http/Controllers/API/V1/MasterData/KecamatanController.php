@@ -66,4 +66,14 @@ class KecamatanController extends Controller
             'message' => "Data kecamatan berhasil dihapus!",
         ], 200);
     }
+
+    public function fetchKabupaten($id)
+    {
+        $kecamatans = Kecamatan::with(['kabupaten'])->where('kabupaten_id', $id)->get();
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'data' => $kecamatans
+        ]);
+    }
 }

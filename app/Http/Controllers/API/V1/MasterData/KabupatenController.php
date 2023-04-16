@@ -65,4 +65,14 @@ class KabupatenController extends Controller
             'message' => "Data kabupaten berhasil dihapus!",
         ], 200);
     }
+
+    public function fetchProvinsi($id)
+    {
+        $kabupatens = Kabupaten::with(['provinsi'])->where('provinsi_id', $id)->get();
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'data' => $kabupatens
+        ]);
+    }
 }

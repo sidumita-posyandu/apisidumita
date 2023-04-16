@@ -66,4 +66,14 @@ class DesaController extends Controller
             'message' => "Data desa berhasil dihapus!",
         ], 200);
     }
+
+    public function fetchKecamatan($id)
+    {
+        $desas = Desa::with(['kecamatan'])->where('kecamatan_id', $id)->get();
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'data' => $desas
+        ]);
+    }
 }

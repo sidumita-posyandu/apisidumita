@@ -66,4 +66,14 @@ class DusunController extends Controller
             'message' => "Data dusun berhasil dihapus!",
         ], 200);
     }
+
+    public function fetchDesa($id)
+    {
+        $dusuns = Dusun::with(['desa'])->where('desa_id', $id)->get();
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'data' => $dusuns
+        ]);
+    }
 }
