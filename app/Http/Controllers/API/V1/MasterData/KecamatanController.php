@@ -67,9 +67,9 @@ class KecamatanController extends Controller
         ], 200);
     }
 
-    public function fetchKabupaten($id)
+    public function fetchKabupaten(Request $request)
     {
-        $kecamatans = Kecamatan::with(['kabupaten'])->where('kabupaten_id', $id)->get();
+        $kecamatans = Kecamatan::where('kabupaten_id', $request->kabupaten_id)->get();
         return response()->json([
             'status' => true,
             'code' => 200,

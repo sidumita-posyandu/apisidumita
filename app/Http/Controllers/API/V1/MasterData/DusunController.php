@@ -67,9 +67,9 @@ class DusunController extends Controller
         ], 200);
     }
 
-    public function fetchDesa($id)
+    public function fetchDesa(Request $request)
     {
-        $dusuns = Dusun::with(['desa'])->where('desa_id', $id)->get();
+        $dusuns = Dusun::where('desa_id', $request->desa_id)->get();
         return response()->json([
             'status' => true,
             'code' => 200,

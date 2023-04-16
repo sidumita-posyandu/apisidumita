@@ -66,9 +66,9 @@ class KabupatenController extends Controller
         ], 200);
     }
 
-    public function fetchProvinsi($id)
+    public function fetchProvinsi(Request $request)
     {
-        $kabupatens = Kabupaten::with(['provinsi'])->where('provinsi_id', $id)->get();
+        $kabupatens = Kabupaten::where('provinsi_id', $request->provinsi_id)->get();
         return response()->json([
             'status' => true,
             'code' => 200,

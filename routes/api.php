@@ -39,10 +39,10 @@ Route::middleware(['jwt.verify'])->group(function () {
     Route::apiResource('desa', API\V1\MasterData\DesaController::class);
     Route::apiResource('dusun', API\V1\MasterData\DusunController::class);
 
-    Route::get('fetch-provinsi/{id}', 'API\V1\MasterData\KabupatenController@fetchProvinsi');
-    Route::get('fetch-kabupaten/{id}', 'API\V1\MasterData\KecamatanController@fetchKabupaten');
-    Route::get('fetch-kecamatan/{id}', 'API\V1\MasterData\DesaController@fetchKecamatan');
-    Route::get('fetch-desa/{id}', 'API\V1\MasterData\DusunController@fetchDesa');
+    Route::post('fetch-provinsi', 'API\V1\MasterData\KabupatenController@fetchProvinsi');
+    Route::post('fetch-kabupaten', 'API\V1\MasterData\KecamatanController@fetchKabupaten');
+    Route::post('fetch-kecamatan', 'API\V1\MasterData\DesaController@fetchKecamatan');
+    Route::post('fetch-desa', 'API\V1\MasterData\DusunController@fetchDesa');
 
     Route::apiResource('keluarga', API\V1\KeluargaController::class);
     Route::apiResource('detail-keluarga', API\V1\DetailKeluargaController::class);

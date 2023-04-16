@@ -67,9 +67,9 @@ class DesaController extends Controller
         ], 200);
     }
 
-    public function fetchKecamatan($id)
+    public function fetchKecamatan(Request $request)
     {
-        $desas = Desa::with(['kecamatan'])->where('kecamatan_id', $id)->get();
+        $desas = Desa::where('kecamatan_id', $request->kecamatan_id)->get();
         return response()->json([
             'status' => true,
             'code' => 200,
