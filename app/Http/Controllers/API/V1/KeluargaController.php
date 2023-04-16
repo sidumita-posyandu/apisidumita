@@ -134,34 +134,41 @@ class KeluargaController extends Controller
         ], 200);
     }
 
-    // public function updateMyKeluarga(Request $request, Keluarga $keluarga)
-    // {
-    //     $validasi = Validator::make($request->all(), [
-    //         'no_kartu_keluarga' => 'required',
-    //         'kepala_keluarga' => 'required',
-    //         'alamat' => 'required',
-    //         'dusun_id' => 'required|exists:m_dusun,id',
-    //     ]);
+    public function updateMyKeluarga(Request $request)
+    {
+        $validasi = Validator::make($request->all(), [
+            'no_kartu_keluarga' => 'required',
+            'kepala_keluarga' => 'required',
+            'alamat' => 'required',
+            'dusun_id' => 'required|exists:m_dusun,id',
+        ]);
     
-    //     if($validasi->fails()) {
-    //         return response()->json([
-    //             'status' => false,
-    //             'code' => 400,
-    //             'message' => "Data tidak dapat ditambahkan"
-    //         ], 400);
-    //     }
+        if($validasi->fails()) {
+            return response()->json([
+                'status' => false,
+                'code' => 400,
+                'message' => "Data tidak dapat ditambahkan"
+            ], 400);
+        }
         
-    //     $data = $request->all();
-    //     $data['user_id'] = User::where("id", auth()->user()->id)->first()->id;
-    //     $keluarga->update($data);
+        $data = $request->all();
+        $user = auth()->user();
+        $keluarga = Keluarga::where('user_id',$user->id)->first();
+        // $data['user_id'] = User::where("id", auth()->user()->id)->first()->id;
+        $keluarga->update([
+            'no_kartu_keluarga' => request('no_kartu_keluarga'),
+                'kepala_keluarga' => request('kepala_keluarga'),
+                'alamat' => request('alamat'),
+                'dusun_id' => request('dusun_id'),
+        ]);
 
-    //     return response()->json([
-    //         'status' => true,
-    //         'code' => 200,
-    //         'message' => "Data keluarga berhasil diubah",
-    //         'data' => $keluarga
-    //     ], 200);
-    // }
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'message' => "Data keluarga berhasil diubah",
+            'data' => $keluarga
+        ], 200);
+    }
 
     public function destroy(Keluarga $keluarga)
     {
