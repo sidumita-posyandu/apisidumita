@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\User;
 use App\Keluarga;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
@@ -56,23 +57,46 @@ class AuthController extends Controller
 
     public function register()
     {
-        // $validator = Validator::make(request()->all(),[
-        //     'name'=>'required',
-        //     'email'=>'required|email|unique:users',
-        //     'password'=> 'required',
-        //     'role_id'=> 'required'
-        // ]);
+        // if(Keluarga::where('no_kartu_keluarga', request('no_kartu_keluarga'))->get()->isEmpty())
+        // {
+            // request()->validate([
+            //     'name' => 'required',
+            //     'email' => 'required|unique:users,email',
+            //     'password' => 'required',
+            //     'no_kartu_keluarga' => 'required|unique:tb_keluarga',
+            //     'kepala_keluarga' => 'required',
+            //     'alamat' => 'required',
+            //     'dusun_id' => 'required|exists:m_dusun,id',
+            // ]);
 
-        // if($validator->fails()){
-        //     return response()->json($validator->messages());
-        // }
-        if(Keluarga::where('no_kartu_keluarga', request('no_kk'))->get()->isEmpty())
-        {
+            $validator = Validator::make(request()->all(),[
+                'name'=>'required',
+                'email'=>'required|email|unique:users',
+                'password'=> 'required',
+                'role_id'=> 'required',
+                'no_kartu_keluarga' => 'required|unique:tb_keluarga',
+                'kepala_keluarga' => 'required',
+                'alamat' => 'required',
+                'dusun_id' => 'required|exists:m_dusun,id',
+            ]);
+    
+            if($validator->fails()){
+                return response()->json($validator->messages());
+            }
+            
             $user = User::create([
                 'name'=> request('name'),
                 'email'=> request('email'),
                 'password'=> Hash::make(request('password')),
                 'role_id'=> request('role_id'),
+            ]);
+
+            Keluarga::create([
+                'no_kartu_keluarga' => request('no_kartu_keluarga'),
+                'kepala_keluarga' => request('kepala_keluarga'),
+                'alamat' => request('alamat'),
+                'dusun_id' => request('dusun_id'),
+                'user_id' => $user->id,
             ]);
     
             if($user){
@@ -80,13 +104,13 @@ class AuthController extends Controller
                     'success' => true,
                     'message' => 'Pendaftaran Berhasil']);
                     
-            }
-        }else{
-            return response()->json([
-                'message' => 'Pendaftaran Gagal',
-                'success' => false
-        ]);
-        }
+                }else{
+                    return response()->json([
+                        'message' => 'Pendaftaran Gagal',
+                        'success' => false
+                ]);
+                }
+            // }
     }
 
     /**
