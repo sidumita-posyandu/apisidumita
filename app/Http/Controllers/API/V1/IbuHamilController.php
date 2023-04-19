@@ -5,6 +5,8 @@ namespace App\Http\Controllers\API\V1;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\IbuHamil;
+use App\Keluarga;
+use App\DetailKeluarga;
 use Validator;
 
 class IbuHamilController extends Controller
@@ -55,6 +57,24 @@ class IbuHamilController extends Controller
             'data' => $ibu_hamils
         ]);
 
+    }
+
+    public function showMyIbuHamils() 
+    {
+        $data = Keluarga::where("user_id", auth()->user()->id)->first()->id;
+        $det_keluarga = DetailKeluarga::where('keluarga_id', $data)->get();
+        $id = [];
+        foreach ($det_keluarga as $key => $value) {
+            array_push($id,$value->id);
+        }
+        $ibu_hamils = IbuHamil::with('detail_keluarga')->whereIn('detail_keluarga_id', $id)->get();
+        // dd($balitas);
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'data' => $ibu_hamils
+        ]);
     }
 
     public function update(Request $request, IbuHamil $ibu_hamil)

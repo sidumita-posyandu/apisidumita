@@ -48,6 +48,7 @@ Route::middleware(['jwt.verify'])->group(function () {
     Route::apiResource('detail-keluarga', API\V1\DetailKeluargaController::class);
     Route::get('umur/{id}', 'API\V1\DetailKeluargaController@getUmur');
     Route::get('me/keluarga', 'API\V1\KeluargaController@showMyKeluarga');
+    Route::get('me/detail-keluarga', 'API\V1\DetailKeluargaController@showMyDetailKeluarga');
     Route::get('me/balitas-from-keluarga', 'API\V1\DetailKeluargaController@showMyBalitas');
     Route::get('me/ibuhamils-from-keluarga', 'API\V1\DetailKeluargaController@showMyIbuHamils');
     Route::post('me/create-detail-keluarga', 'API\V1\DetailKeluargaController@storeMyDetKeluarga');
@@ -55,7 +56,9 @@ Route::middleware(['jwt.verify'])->group(function () {
     Route::post('me/update-keluarga', 'API\V1\KeluargaController@updateMyKeluarga');
 
     Route::apiResource('balita', API\V1\BalitaController::class);
+    Route::get('me/balita', 'API\V1\BalitaController@showMyBalitas');
     Route::apiResource('ibu-hamil', API\V1\IbuHamilController::class);
+    Route::get('me/ibu-hamil', 'API\V1\IbuHamilController@showMyIbuHamils');
     Route::apiResource('vitamin', API\V1\VitaminController::class);
     Route::apiResource('vaksin', API\V1\VaksinController::class);
 

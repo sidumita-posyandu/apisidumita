@@ -5,6 +5,8 @@ namespace App\Http\Controllers\API\V1;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Balita;
+use App\Keluarga;
+use App\DetailKeluarga;
 use Validator;
 
 class BalitaController extends Controller
@@ -55,6 +57,24 @@ class BalitaController extends Controller
             'data' => $balitas
         ]);
 
+    }
+
+    public function showMyBalitas() 
+    {
+        $data = Keluarga::where("user_id", auth()->user()->id)->first()->id;
+        $det_keluarga = DetailKeluarga::where('keluarga_id', $data)->get();
+        $id = [];
+        foreach ($det_keluarga as $key => $value) {
+            array_push($id,$value->id);
+        }
+        $balitas = Balita::with('detail_keluarga')->whereIn('detail_keluarga_id', $id)->get();
+        // dd($balitas);
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'data' => $balitas
+        ]);
     }
 
     public function update(Request $request, Balita $balita)

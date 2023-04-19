@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\DetailKeluarga;
 use App\Keluarga;
+use App\Balita;
+use App\IbuHamil;
 use Validator;
 use Carbon\Carbon;
 
@@ -25,6 +27,18 @@ class DetailKeluargaController extends Controller
     public function show($id) 
     {
         $detail_keluargas = DetailKeluarga::with(['keluarga'])->where('id', $id)->get();
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'data' => $detail_keluargas
+        ]);
+    }
+
+    public function showMyDetailKeluarga() 
+    {
+        $data['keluarga_id'] = Keluarga::where("user_id", auth()->user()->id)->first()->id;
+        $detail_keluargas = DetailKeluarga::with(['keluarga'])->where("keluarga_id", $data)->get();
 
         return response()->json([
             'status' => true,
@@ -122,6 +136,16 @@ class DetailKeluargaController extends Controller
         $data = $request->all();
         $data['keluarga_id'] = Keluarga::where("user_id", auth()->user()->id)->first()->id;
         $detail_keluarga = DetailKeluarga::create($data);
+
+        if ($detail_keluarga->status_dalam_keluarga == "Anak"){
+        $balitas = Balita::create([
+            'detail_keluarga_id' => $detail_keluarga->id
+        ]);
+        } else if($detail_keluarga->status_dalam_keluarga == "Istri"){
+            $ibu_hamil = IbuHamil::create([
+                'detail_keluarga_id' => $detail_keluarga->id
+            ]);
+        }
 
         return response()->json([
             'status' => true,

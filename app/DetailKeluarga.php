@@ -23,4 +23,9 @@ class DetailKeluarga extends Model
     {
         return $this->hasMany(Balita::class, 'balita_id');
     }
+
+    public function ibu_hamils()
+    {
+        return $this->hasMany(IbuHamil::class, 'ibu_hamil_id');
+    }
 }
