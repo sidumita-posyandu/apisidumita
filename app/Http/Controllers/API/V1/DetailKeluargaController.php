@@ -192,6 +192,61 @@ class DetailKeluargaController extends Controller
         ], 200);
     }
 
+    public function updateMyDetKeluarga(Request $request)
+    {
+        $validasi = Validator::make($request->all(), [
+            'nama_lengkap' => 'required',
+            'nik' => 'required',
+            'jenis_kelamin' => 'required',
+            'tempat_lahir' => 'required',
+            'tanggal_lahir' => 'required',
+            'agama' => 'required',
+            'pendidikan' => 'required',
+            'no_telp' => 'required',
+            'golongan_darah' => 'required',
+            'jenis_pekerjaan' => 'required',
+            'status_perkawinan' => 'required',
+            'status_dalam_keluarga' => 'required',
+            'kewarganegaraan' => 'required',
+        ]);
+    
+        if($validasi->fails()) {
+            return response()->json([
+                'status' => false,
+                'code' => 400,
+                'message' => "Data tidak dapat ditambahkan"
+            ], 400);
+        }
+
+        $data = $request->all();
+        $data['keluarga_id'] = Keluarga::where("user_id", auth()->user()->id)->first()->id;
+        $detail_keluarga = DetailKeluarga::where('keluarga_id', $data['keluarga_id'])->where('id',request('id'))->first();
+        // dd($detail_keluarga);
+        $detail_keluarga->update([
+            'nama_lengkap' => request('nama_lengkap'),
+            'nik' => request('nik'),
+            'jenis_kelamin' => request('jenis_kelamin'),
+            'tempat_lahir' => request('tempat_lahir'),
+            'tanggal_lahir' => request('tanggal_lahir'),
+            'agama' => request('agama'),
+            'pendidikan' => request('pendidikan'),
+            'no_telp' => request('no_telp'),
+            'golongan_darah' => request('golongan_darah'),
+            'jenis_pekerjaan' => request('jenis_pekerjaan'),
+            'status_perkawinan' => request('status_perkawinan'),
+            'status_dalam_keluarga' => request('status_dalam_keluarga'),
+            'kewarganegaraan' => request('kewarganegaraan'),
+        ]);
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'message' => "Data detail_keluarga berhasil diubah",
+            'data' => $detail_keluarga
+        ], 200);
+    }
+
+
     public function destroy(DetailKeluarga $detail_keluarga)
     {
         $detail_keluarga->delete();

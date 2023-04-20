@@ -52,6 +52,7 @@ Route::middleware(['jwt.verify'])->group(function () {
     Route::get('me/balitas-from-keluarga', 'API\V1\DetailKeluargaController@showMyBalitas');
     Route::get('me/ibuhamils-from-keluarga', 'API\V1\DetailKeluargaController@showMyIbuHamils');
     Route::post('me/create-detail-keluarga', 'API\V1\DetailKeluargaController@storeMyDetKeluarga');
+    Route::post('me/update-detail-keluarga', 'API\V1\DetailKeluargaController@updateMyDetKeluarga');
     Route::post('me/create-keluarga', 'API\V1\KeluargaController@storeMyKeluarga');
     Route::post('me/update-keluarga', 'API\V1\KeluargaController@updateMyKeluarga');
 
