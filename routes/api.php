@@ -78,4 +78,13 @@ Route::middleware(['jwt.verify'])->group(function () {
     Route::apiResource('jadwal-pemeriksaan', API\V1\JadwalPemeriksaanController::class);
 
     Route::apiResource('detail-pemeriksaan-balita', API\V1\DetailPemeriksaanBalitaController::class);
+
+    Route::post('cek-berat-boys', 'API\V1\PemeriksaanBalitaController@checkWeightBoys');
+    Route::post('cek-berat-girls', 'API\V1\PemeriksaanBalitaController@checkWeightGirls');
+    Route::post('cek-tinggi-boys', 'API\V1\PemeriksaanBalitaController@checkHeightBoys');
+    Route::post('cek-tinggi-girls', 'API\V1\PemeriksaanBalitaController@checkHeightGirls');
+    Route::post('cek-kepala-boys', 'API\V1\PemeriksaanBalitaController@checkHeadBoys');
+    Route::post('cek-kepala-girls', 'API\V1\PemeriksaanBalitaController@checkHeadGirls');
+    Route::post('cek-lengan-boys', 'API\V1\PemeriksaanBalitaController@checkArmBoys');
+    Route::post('cek-lengan-girls', 'API\V1\PemeriksaanBalitaController@checkArmGirls');
 });
