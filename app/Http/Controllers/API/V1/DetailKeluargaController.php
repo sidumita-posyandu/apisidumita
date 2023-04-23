@@ -274,6 +274,7 @@ class DetailKeluargaController extends Controller
         $now = Carbon::now();
         $birthday = Carbon::parse($orang->tanggal_lahir);
         $umur = $birthday->diffInYears($now);
+        $umurbulan = $birthday->diffInMonths($now);
 
         if($umur == 0){
             $umur = $birthday->diffInMonths($now);
@@ -285,7 +286,8 @@ class DetailKeluargaController extends Controller
                     'code' => 200,
                     'data' => [
                         'umur' => $umur,
-                        'format' => 'minggu'
+                        'format' => 'minggu',
+                        'usia_bulan' => $umurbulan,
                     ]
                 ]);
             }
@@ -295,7 +297,8 @@ class DetailKeluargaController extends Controller
                 'code' => 200,
                 'data' => [
                     'umur' => $umur,
-                    'format' => 'bulan'
+                    'format' => 'bulan',
+                    'usia_bulan' => $umurbulan,
                 ]
             ]);
         }
@@ -305,7 +308,8 @@ class DetailKeluargaController extends Controller
             'code' => 200,
             'data' => [
                 'umur' => $umur,
-                'format' => 'tahun'
+                'format' => 'tahun',
+                'usia_bulan' => $umurbulan,
             ]
         ]);
     }
