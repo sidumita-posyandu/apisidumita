@@ -186,7 +186,7 @@ class PemeriksaanBalitaController extends Controller
 
         $data_ukur = $request->all();
         $weight = (float) $data_ukur['data_ukur'];
-        $age = (int) $data_ukur['age'];
+        $age = (int) $data_ukur['umur'];
 
         if($weight < $datamin2[$age] && $weight >= $datamin3[$age]){
             $status = "Kurus";
@@ -236,7 +236,7 @@ class PemeriksaanBalitaController extends Controller
 
         $data_ukur = $request->all();
         $weight = (float) $data_ukur['data_ukur'];
-        $age = (int) $data_ukur['age'];
+        $age = (int) $data_ukur['umur'];
 
         if($weight < $datamin2[$age] && $weight >= $datamin3[$age]){
             $status = "Kurus";
@@ -285,7 +285,7 @@ class PemeriksaanBalitaController extends Controller
 
         $data_ukur = $request->all();
         $weight = (float) $data_ukur['data_ukur'];
-        $age = (int) $data_ukur['age'];
+        $age = (int) $data_ukur['umur'];
 
         if($weight < $datamin2[$age] && $weight >= $datamin3[$age]){
             $status = "Pendek";
@@ -334,7 +334,7 @@ class PemeriksaanBalitaController extends Controller
 
         $data_ukur = $request->all();
         $height = (float) $data_ukur['data_ukur'];
-        $age = (int) $data_ukur['age'];
+        $age = (int) $data_ukur['umur'];
 
         if($height < $datamin2[$age] && $height >= $datamin3[$age]){
             $status = "Pendek";
@@ -383,7 +383,7 @@ class PemeriksaanBalitaController extends Controller
 
         $data_ukur = $request->all();
         $size = (float) $data_ukur['data_ukur'];
-        $age = (int) $data_ukur['age'];
+        $age = (int) $data_ukur['umur'];
 
         if($size < $datamin2[$age] && $size >= $datamin3[$age]){
             $status = "Kecil";
@@ -432,7 +432,7 @@ class PemeriksaanBalitaController extends Controller
 
         $data_ukur = $request->all();
         $size = (float) $data_ukur['data_ukur'];
-        $age = (int) $data_ukur['age'];
+        $age = (int) $data_ukur['umur'];
 
         if($size < $datamin2[$age] && $size >= $datamin3[$age]){
             $status = "Kecil";
@@ -481,7 +481,7 @@ class PemeriksaanBalitaController extends Controller
 
         $data_ukur = $request->all();
         $size = (float) $data_ukur['data_ukur'];
-        $age = (int) $data_ukur['age'];
+        $age = (int) $data_ukur['umur'];
 
         if($size < $datamin2[$age] && $size >= $datamin3[$age]){
             $status = "Kecil";
@@ -530,7 +530,7 @@ class PemeriksaanBalitaController extends Controller
 
         $data_ukur = $request->all();
         $size = (float) $data_ukur['data_ukur'];
-        $age = (int) $data_ukur['age'];
+        $age = (int) $data_ukur['umur'];
 
         if($size < $datamin2[$age] && $size >= $datamin3[$age]){
             $status = "Kecil";
