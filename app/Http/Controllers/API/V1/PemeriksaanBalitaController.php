@@ -174,21 +174,21 @@ class PemeriksaanBalitaController extends Controller
 
         $data_ukur = $request->all();
         $weight = (float) $data_ukur['data_ukur'];
-        $age = (int) $data_ukur['age'];
+        $umur = (int) $data_ukur['umur'];
 
-        if($weight < $datamin2[$age] && $weight >= $datamin3[$age]){
+        if($weight < $datamin2[$umur] && $weight >= $datamin3[$umur]){
             $status = "Kurus";
         }
-        elseif($weight > $data2[$age] && $weight <= $data3[$age]){
+        elseif($weight > $data2[$umur] && $weight <= $data3[$umur]){
             $status = "Gemuk";
         }
-        elseif($weight < $datamin3[$age]){
+        elseif($weight < $datamin3[$umur]){
             $status = "Sangat Kurus";
         }
-        elseif($weight > $data3[$age]){
+        elseif($weight > $data3[$umur]){
             $status = "Sangat Gemuk";
         }
-        elseif($weight >= $datamin2[$age] && $weight <= $data2[$age]){
+        elseif($weight >= $datamin2[$umur] && $weight <= $data2[$umur]){
             $status = "Normal";
         }else{
             return "nothing";
@@ -199,7 +199,7 @@ class PemeriksaanBalitaController extends Controller
             'code' => 200,
             'data' => [
                 'status' => $status,
-                'umur' => $age,
+                'umur' => $umur,
                 'data_ukur' => $weight
             ],
         ], 200);
@@ -224,21 +224,21 @@ class PemeriksaanBalitaController extends Controller
 
         $data_ukur = $request->all();
         $weight = (float) $data_ukur['data_ukur'];
-        $age = (int) $data_ukur['age'];
+        $umur = (int) $data_ukur['umur'];
 
-        if($weight < $datamin2[$age] && $weight >= $datamin3[$age]){
+        if($weight < $datamin2[$umur] && $weight >= $datamin3[$umur]){
             $status = "Kurus";
         }
-        elseif($weight > $data2[$age] && $weight <= $data3[$age]){
+        elseif($weight > $data2[$umur] && $weight <= $data3[$umur]){
             $status = "Gemuk";
         }
-        elseif($weight < $datamin3[$age]){
+        elseif($weight < $datamin3[$umur]){
             $status = "Sangat Kurus";
         }
-        elseif($weight > $data3[$age]){
+        elseif($weight > $data3[$umur]){
             $status = "Sangat Gemuk";
         }
-        elseif($weight >= $datamin2[$age] && $weight <= $data2[$age]){
+        elseif($weight >= $datamin2[$umur] && $weight <= $data2[$umur]){
             $status = "Normal";
         }else{
             return "nothing";
@@ -249,7 +249,7 @@ class PemeriksaanBalitaController extends Controller
             'code' => 200,
             'data' => [
                 'status' => $status,
-                'umur' => $age,
+                'umur' => $umur,
                 'data_ukur' => $weight,
             ],
         ], 200);
@@ -273,21 +273,21 @@ class PemeriksaanBalitaController extends Controller
 
         $data_ukur = $request->all();
         $weight = (float) $data_ukur['data_ukur'];
-        $age = (int) $data_ukur['age'];
+        $umur = (int) $data_ukur['umur'];
 
-        if($weight < $datamin2[$age] && $weight >= $datamin3[$age]){
+        if($weight < $datamin2[$umur] && $weight >= $datamin3[$umur]){
             $status = "Pendek";
         }
-        elseif($weight > $data2[$age] && $weight <= $data3[$age]){
+        elseif($weight > $data2[$umur] && $weight <= $data3[$umur]){
             $status = "Tinggi";
         }
-        elseif($weight < $datamin3[$age]){
+        elseif($weight < $datamin3[$umur]){
             $status = "Sangat Pendek";
         }
-        elseif($weight > $data3[$age]){
+        elseif($weight > $data3[$umur]){
             $status = "Sangat Tinggi";
         }
-        elseif($weight >= $datamin2[$age] && $weight <= $data2[$age]){
+        elseif($weight >= $datamin2[$umur] && $weight <= $data2[$umur]){
             $status = "Normal";
         }else{
             return "nothing";
@@ -298,7 +298,7 @@ class PemeriksaanBalitaController extends Controller
             'code' => 200,
             'data' => [
                 'status' => $status,
-                'umur' => $age,
+                'umur' => $umur,
                 'data_ukur' => $weight,
             ],
         ], 200);
@@ -322,21 +322,21 @@ class PemeriksaanBalitaController extends Controller
 
         $data_ukur = $request->all();
         $height = (float) $data_ukur['data_ukur'];
-        $age = (int) $data_ukur['age'];
+        $umur = (int) $data_ukur['umur'];
 
-        if($height < $datamin2[$age] && $height >= $datamin3[$age]){
+        if($height < $datamin2[$umur] && $height >= $datamin3[$umur]){
             $status = "Pendek";
         }
-        elseif($height > $data2[$age] && $height <= $data3[$age]){
+        elseif($height > $data2[$umur] && $height <= $data3[$umur]){
             $status = "Tinggi";
         }
-        elseif($height < $datamin3[$age]){
+        elseif($height < $datamin3[$umur]){
             $status = "Sangat Pendek";
         }
-        elseif($height > $data3[$age]){
+        elseif($height > $data3[$umur]){
             $status = "Sangat Tinggi";
         }
-        elseif($height >= $datamin2[$age] && $height <= $data2[$age]){
+        elseif($height >= $datamin2[$umur] && $height <= $data2[$umur]){
             $status = "Normal";
         }else{
             return "nothing";
@@ -347,7 +347,7 @@ class PemeriksaanBalitaController extends Controller
             'code' => 200,
             'data' => [
                 'status' => $status,
-                'umur' => $age,
+                'umur' => $umur,
                 'data_ukur' => $height,
             ],
         ], 200);
@@ -371,21 +371,21 @@ class PemeriksaanBalitaController extends Controller
 
         $data_ukur = $request->all();
         $size = (float) $data_ukur['data_ukur'];
-        $age = (int) $data_ukur['age'];
+        $umur = (int) $data_ukur['umur'];
 
-        if($size < $datamin2[$age] && $size >= $datamin3[$age]){
+        if($size < $datamin2[$umur] && $size >= $datamin3[$umur]){
             $status = "Kecil";
         }
-        elseif($size > $data2[$age] && $size <= $data3[$age]){
+        elseif($size > $data2[$umur] && $size <= $data3[$umur]){
             $status = "Besar";
         }
-        elseif($size < $datamin3[$age]){
+        elseif($size < $datamin3[$umur]){
             $status = "Sangat Kecil";
         }
-        elseif($size > $data3[$age]){
+        elseif($size > $data3[$umur]){
             $status = "Sangat Besar";
         }
-        elseif($size >= $datamin2[$age] && $size <= $data2[$age]){
+        elseif($size >= $datamin2[$umur] && $size <= $data2[$umur]){
             $status = "Normal";
         }else{
             return "nothing";
@@ -396,7 +396,7 @@ class PemeriksaanBalitaController extends Controller
             'code' => 200,
             'data' => [
                 'status' => $status,
-                'umur' => $age,
+                'umur' => $umur,
                 'data_ukur' => $size,
             ],
         ], 200);
@@ -420,21 +420,21 @@ class PemeriksaanBalitaController extends Controller
 
         $data_ukur = $request->all();
         $size = (float) $data_ukur['data_ukur'];
-        $age = (int) $data_ukur['age'];
+        $umur = (int) $data_ukur['umur'];
 
-        if($size < $datamin2[$age] && $size >= $datamin3[$age]){
+        if($size < $datamin2[$umur] && $size >= $datamin3[$umur]){
             $status = "Kecil";
         }
-        elseif($size > $data2[$age] && $size <= $data3[$age]){
+        elseif($size > $data2[$umur] && $size <= $data3[$umur]){
             $status = "Besar";
         }
-        elseif($size < $datamin3[$age]){
+        elseif($size < $datamin3[$umur]){
             $status = "Sangat Kecil";
         }
-        elseif($size > $data3[$age]){
+        elseif($size > $data3[$umur]){
             $status = "Sangat Besar";
         }
-        elseif($size >= $datamin2[$age] && $size <= $data2[$age]){
+        elseif($size >= $datamin2[$umur] && $size <= $data2[$umur]){
             $status = "Normal";
         }else{
             return "nothing";
@@ -445,7 +445,7 @@ class PemeriksaanBalitaController extends Controller
             'code' => 200,
             'data' => [
                 'status' => $status,
-                'umur' => $age,
+                'umur' => $umur,
                 'data_ukur' => $size,
             ],
         ], 200);
@@ -469,21 +469,21 @@ class PemeriksaanBalitaController extends Controller
 
         $data_ukur = $request->all();
         $size = (float) $data_ukur['data_ukur'];
-        $age = (int) $data_ukur['age'];
+        $umur = (int) $data_ukur['umur'];
 
-        if($size < $datamin2[$age] && $size >= $datamin3[$age]){
+        if($size < $datamin2[$umur] && $size >= $datamin3[$umur]){
             $status = "Kecil";
         }
-        elseif($size > $data2[$age] && $size <= $data3[$age]){
+        elseif($size > $data2[$umur] && $size <= $data3[$umur]){
             $status = "Besar";
         }
-        elseif($size < $datamin3[$age]){
+        elseif($size < $datamin3[$umur]){
             $status = "Sangat Kecil";
         }
-        elseif($size > $data3[$age]){
+        elseif($size > $data3[$umur]){
             $status = "Sangat Besar";
         }
-        elseif($size >= $datamin2[$age] && $size <= $data2[$age]){
+        elseif($size >= $datamin2[$umur] && $size <= $data2[$umur]){
             $status = "Normal";
         }else{
             return "nothing";
@@ -494,7 +494,7 @@ class PemeriksaanBalitaController extends Controller
             'code' => 200,
             'data' => [
                 'status' => $status,
-                'umur' => $age,
+                'umur' => $umur,
                 'data_ukur' => $size,
             ],
         ], 200);
@@ -518,21 +518,21 @@ class PemeriksaanBalitaController extends Controller
 
         $data_ukur = $request->all();
         $size = (float) $data_ukur['data_ukur'];
-        $age = (int) $data_ukur['age'];
+        $umur = (int) $data_ukur['umur'];
 
-        if($size < $datamin2[$age] && $size >= $datamin3[$age]){
+        if($size < $datamin2[$umur] && $size >= $datamin3[$umur]){
             $status = "Kecil";
         }
-        elseif($size > $data2[$age] && $size <= $data3[$age]){
+        elseif($size > $data2[$umur] && $size <= $data3[$umur]){
             $status = "Besar";
         }
-        elseif($size < $datamin3[$age]){
+        elseif($size < $datamin3[$umur]){
             $status = "Sangat Kecil";
         }
-        elseif($size > $data3[$age]){
+        elseif($size > $data3[$umur]){
             $status = "Sangat Besar";
         }
-        elseif($size >= $datamin2[$age] && $size <= $data2[$age]){
+        elseif($size >= $datamin2[$umur] && $size <= $data2[$umur]){
             $status = "Normal";
         }else{
             return "nothing";
@@ -543,7 +543,7 @@ class PemeriksaanBalitaController extends Controller
             'code' => 200,
             'data' => [
                 'status' => $status,
-                'umur' => $age,
+                'umur' => $umur,
                 'data_ukur' => $size,
             ],
         ], 200);
