@@ -281,6 +281,20 @@ class DetailKeluargaController extends Controller
             
             if($umur == 0){
                 $umur = $birthday->diffInWeeks($now);
+                
+                if($umur == 0){
+                    $umur = $birthday->diffInDays($now);
+                    return response()->json([
+                        'status' => true,
+                        'code' => 200,
+                        'data' => [
+                            'umur' => $umur,
+                            'format' => 'hari',
+                            'usia_bulan' => $umurbulan,
+                        ]
+                    ]);
+                }
+                
                 return response()->json([
                     'status' => true,
                     'code' => 200,
