@@ -275,54 +275,26 @@ class DetailKeluargaController extends Controller
         $birthday = Carbon::parse($orang->tanggal_lahir);
         $umur = $birthday->diffInYears($now);
         $umurbulan = $birthday->diffInMonths($now);
+        $status = "tahun";
 
         if($umur == 0){
             $umur = $birthday->diffInMonths($now);
-            
+            $status = "bulan";
             if($umur == 0){
                 $umur = $birthday->diffInWeeks($now);
-                
+                $status = "minggu";
                 if($umur == 0){
                     $umur = $birthday->diffInDays($now);
-                    return response()->json([
-                        'status' => true,
-                        'code' => 200,
-                        'data' => [
-                            'umur' => $umur,
-                            'format' => 'hari',
-                            'usia_bulan' => $umurbulan,
-                        ]
-                    ]);
+                    $status = "hari";
                 }
-                
-                return response()->json([
-                    'status' => true,
-                    'code' => 200,
-                    'data' => [
-                        'umur' => $umur,
-                        'format' => 'minggu',
-                        'usia_bulan' => $umurbulan,
-                    ]
-                ]);
             }
-
-            return response()->json([
-                'status' => true,
-                'code' => 200,
-                'data' => [
-                    'umur' => $umur,
-                    'format' => 'bulan',
-                    'usia_bulan' => $umurbulan,
-                ]
-            ]);
         }
-
         return response()->json([
             'status' => true,
             'code' => 200,
             'data' => [
                 'umur' => $umur,
-                'format' => 'tahun',
+                'format' => $status,
                 'usia_bulan' => $umurbulan,
             ]
         ]);
