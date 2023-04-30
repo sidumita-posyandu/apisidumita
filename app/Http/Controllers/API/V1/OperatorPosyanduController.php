@@ -5,18 +5,35 @@ namespace App\Http\Controllers\API\V1;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\OperatorPosyandu;
+use App\Kecamatan;
 use Validator;
 
 class OperatorPosyanduController extends Controller
 {
     public function index()
     {
-        // $operator_posyandu = OperatorPosyandu::where("user_id", auth()->user()->id);
         $operator_posyandu = auth()->user();
 
         return response()->json([
             'success' => true,
             'data' => $operator_posyandu
+        ]);
+    }
+
+    public function fetchUser()
+    {
+        $operator_posyandu = OperatorPosyandu::where("user_id", auth()->user()->id)->first();
+        $kecamatan = Kecamatan::where("id", $operator_posyandu->kecamatan_id)->first();
+
+        $op = [
+            'users' => auth()->user(),
+            'operator_posyandu' => $operator_posyandu,
+            'kecamatan' => $kecamatan
+        ];
+
+        return response()->json([
+            'success' => true,
+            'data' => $op
         ]);
     }
 

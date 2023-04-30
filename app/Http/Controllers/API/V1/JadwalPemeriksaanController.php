@@ -5,13 +5,49 @@ namespace App\Http\Controllers\API\V1;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\JadwalPemeriksaan;
+use App\OperatorPosyandu;
+use App\Kecamatan;
 use Validator;
+use DB;
 
 class JadwalPemeriksaanController extends Controller
 {
     public function index() 
     {
-        $jadwal_pemeriksaan = JadwalPemeriksaan::with(['operator_posyandu', 'dusun'])->get();
+        // $jadwal_pemeriksaan = JadwalPemeriksaan::with(['operator_posyandu', 'dusun'])->get();
+        $login = auth()->user()->role_id;
+        
+        if($login == 1){
+            $jadwal_pemeriksaan = DB::table('tb_jadwal_pemeriksaan')
+            ->select('*')
+            ->join('tb_operator_posyandu', 'tb_operator_posyandu.id', '=', 'tb_jadwal_pemeriksaan.operator_posyandu_id')
+            ->join('m_dusun', 'm_dusun.id', '=', 'tb_jadwal_pemeriksaan.dusun_id')
+            ->join('m_desa', 'm_desa.id', '=', 'm_dusun.desa_id')
+            ->join('m_kecamatan', 'm_kecamatan.id', '=', 'm_desa.kecamatan_id')
+            ->get();
+
+            return response()->json([
+                'status' => true,
+                'code' => 200,
+                'data' => $jadwal_pemeriksaan
+            ]);
+        }elseif($login == 2){
+            $user = OperatorPosyandu::where("user_id", auth()->user()->id)->first();
+        }elseif($login == 3){
+            $user = PetugasKesehatan::where("user_id", auth()->user()->id)->first();
+        }elseif($login == 4){
+            $user = Keluarga::where("user_id", auth()->user()->id)->first();
+        }
+        
+        $kecamatan = Kecamatan::where("id", $user->kecamatan_id)->first();
+        $jadwal_pemeriksaan = DB::table('tb_jadwal_pemeriksaan')
+        ->select('*')
+        ->join('tb_operator_posyandu', 'tb_operator_posyandu.id', '=', 'tb_jadwal_pemeriksaan.operator_posyandu_id')
+        ->join('m_dusun', 'm_dusun.id', '=', 'tb_jadwal_pemeriksaan.dusun_id')
+        ->join('m_desa', 'm_desa.id', '=', 'm_dusun.desa_id')
+        ->join('m_kecamatan', 'm_kecamatan.id', '=', 'm_desa.kecamatan_id')
+        ->where('m_kecamatan.id', '=', $kecamatan->id)
+        ->get();
 
         return response()->json([
             'status' => true,

@@ -91,4 +91,6 @@ Route::middleware(['jwt.verify'])->group(function () {
     Route::get('me/petugas', 'API\V1\PetugasKesehatanController@showMyPetugas');
 
     Route::apiResource('operator_posyandu', API\V1\OperatorPosyanduController::class);
+    Route::get('fetch-operator-posyandu', 'API\V1\OperatorPosyanduController@fetchUser');
+
 });
