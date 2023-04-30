@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\PetugasKesehatan;
 
 class PetugasKesehatanController extends Controller
 {
@@ -49,4 +50,36 @@ class PetugasKesehatanController extends Controller
                 'message' => 'petugas kesehatan belum ditambahkan'
             ], 500);
     }
+
+    public function showMyPetugas(){
+
+        // $data = PetugasKesehatan::where("user_id", auth()->user()->id)->first()->id;
+        $petugas_kesehatan = PetugasKesehatan::with(['user'])->where("user_id", auth()->user()->id)->get();
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'data' => $petugas_kesehatan
+        ]);
+    }
+
+    // public function updateMyPetugas(){
+    //     $validasi = Validator::make($request->all(), [
+    //         'nama' => 'required', 
+    //         'jenis_kelamin' => 'required', 
+    //         'tempat_lahir' => 'required', 
+    //         'tanggal_lahir' => 'required', 
+    //         'no_telp' => 'required', 
+    //         'email' => 'required', 
+    //         'nik' => 'required',
+    //     ]);
+    
+    //     if($validasi->fails()) {
+    //         return response()->json([
+    //             'status' => false,
+    //             'code' => 400,
+    //             'message' => "Data tidak dapat ditambahkan"
+    //         ], 400);
+    //     }
+    // }
 }

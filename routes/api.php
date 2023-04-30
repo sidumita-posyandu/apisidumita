@@ -28,16 +28,15 @@ Route::group(['middleware' => 'api','prefix' => 'auth'], function ($router) {
 });
 
 
+Route::apiResource('provinsi', API\V1\MasterData\ProvinsiController::class);
+Route::apiResource('kabupaten', API\V1\MasterData\KabupatenController::class);
+Route::apiResource('kecamatan', API\V1\MasterData\KecamatanController::class);
+Route::apiResource('desa', API\V1\MasterData\DesaController::class);
+Route::apiResource('dusun', API\V1\MasterData\DusunController::class);
 
 Route::middleware(['jwt.verify'])->group(function () {
     Route::apiResource('user', API\V1\UserController::class);
     Route::apiResource('role', API\V1\RoleController::class);
-
-    Route::apiResource('provinsi', API\V1\MasterData\ProvinsiController::class);
-    Route::apiResource('kabupaten', API\V1\MasterData\KabupatenController::class);
-    Route::apiResource('kecamatan', API\V1\MasterData\KecamatanController::class);
-    Route::apiResource('desa', API\V1\MasterData\DesaController::class);
-    Route::apiResource('dusun', API\V1\MasterData\DusunController::class);
 
     Route::post('fetch-provinsi', 'API\V1\MasterData\KabupatenController@fetchProvinsi');
     Route::post('fetch-kabupaten', 'API\V1\MasterData\KecamatanController@fetchKabupaten');
@@ -88,4 +87,6 @@ Route::middleware(['jwt.verify'])->group(function () {
     Route::post('cek-kepala-girls', 'API\V1\PemeriksaanBalitaController@checkHeadGirls');
     Route::post('cek-lengan-boys', 'API\V1\PemeriksaanBalitaController@checkArmBoys');
     Route::post('cek-lengan-girls', 'API\V1\PemeriksaanBalitaController@checkArmGirls');
+
+    Route::get('me/petugas', 'API\V1\PetugasKesehatanController@showMyPetugas');
 });
