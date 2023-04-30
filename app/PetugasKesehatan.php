@@ -9,7 +9,7 @@ class PetugasKesehatan extends Model
     protected $table = 'tb_petugas_kesehatan';
 
     protected $fillable = [
-        'nama', 'jenis_kelamin', 'tempat_lahir', 'tanggal_lahir', 'alamat', 'no_telp', 'email', 'nik', 'user_id'
+        'nama', 'jenis_kelamin', 'tempat_lahir', 'tanggal_lahir', 'alamat', 'no_telp', 'email', 'nik', 'user_id', 'dusun_id'
     ];
 
     public $timestamps = true;

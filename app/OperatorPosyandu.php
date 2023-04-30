@@ -9,7 +9,7 @@ class OperatorPosyandu extends Model
     protected $table = 'tb_operator_posyandu';
 
     protected $fillable = [
-        'nama', 'jenis_kelamin', 'tempat_lahir', 'tanggal_lahir', 'alamat', 'no_telp', 'email', 'nik', 'user_id'
+        'nama', 'jenis_kelamin', 'tempat_lahir', 'tanggal_lahir', 'alamat', 'no_telp', 'email', 'nik', 'user_id', 'kecamatan_id'
     ];
 
     public $timestamps = true;

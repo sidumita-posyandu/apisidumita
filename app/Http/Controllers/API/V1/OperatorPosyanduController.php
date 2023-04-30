@@ -11,7 +11,8 @@ class OperatorPosyanduController extends Controller
 {
     public function index()
     {
-        $operator_posyandu = auth()->user()->operator_posyandu;
+        // $operator_posyandu = OperatorPosyandu::where("user_id", auth()->user()->id);
+        $operator_posyandu = auth()->user();
 
         return response()->json([
             'success' => true,

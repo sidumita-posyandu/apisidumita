@@ -89,4 +89,6 @@ Route::middleware(['jwt.verify'])->group(function () {
     Route::post('cek-lengan-girls', 'API\V1\PemeriksaanBalitaController@checkArmGirls');
 
     Route::get('me/petugas', 'API\V1\PetugasKesehatanController@showMyPetugas');
+
+    Route::apiResource('operator_posyandu', API\V1\OperatorPosyanduController::class);
 });

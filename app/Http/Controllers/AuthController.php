@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\User;
 use App\Keluarga;
+use App\OperatorPosyandu;
+use App\PetugasKesehatan;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -28,7 +30,7 @@ class AuthController extends Controller
             'name'=>'required',
             'email'=>'required|email|unique:users',
             'password'=> 'required',
-            'role_id'=> 'required'
+            'role_id'=> 'required',
         ]);
 
         if($validator->fails()){
@@ -41,6 +43,22 @@ class AuthController extends Controller
             'password'=> Hash::make(request('password')),
             'role_id'=> request('role_id'),
         ]);
+
+        if(request('role_id') == 2){
+            $operator_posyandu = OperatorPosyandu::create([
+                'nama' => request('name'),
+                'kecamatan_id' => request('kecamatan_id'),
+                'user_id' => $user->id
+            ]);
+        }
+        
+        if(request('role_id') == 3){
+            $operator_posyandu = PetugasKesehatan::create([
+                'nama' => request('name'),
+                'dusun_id' => request('kecamatan_id'),
+                'user_id' => $user->id
+            ]);
+        }
 
         if($user){
             return response()->json([
