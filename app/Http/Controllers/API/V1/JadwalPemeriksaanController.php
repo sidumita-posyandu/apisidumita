@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\JadwalPemeriksaan;
 use App\OperatorPosyandu;
+use App\PetugasKesehatan;
 use App\Kecamatan;
 use App\Keluarga;
 use App\Dusun;

@@ -95,4 +95,16 @@ class PemeriksaanIbuHamilController extends Controller
         ]);
 
     }
+
+    public function getPemeriksaanByKandungan($id)
+    {
+        $pemeriksaan_ibu_hamils = PemeriksaanIbuHamil::with('ibu_hamil')->where('ibu_hamil_id', $id)->orderBy('umur_pemeriksaan','asc')->get();
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'data' => $pemeriksaan_ibu_hamils
+        ]);
+
+    }
 }

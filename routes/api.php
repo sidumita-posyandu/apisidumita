@@ -77,6 +77,7 @@ Route::middleware(['jwt.verify'])->group(function () {
 
     Route::get('pemeriksaan-ibuhamil/ibuhamil/{id}', 'API\V1\PemeriksaanIbuHamilController@getPemeriksaanByIbuHamil');
     Route::get('pemeriksaan-ibuhamil/latest-ibuhamil/{id}','API\V1\PemeriksaanIbuHamilController@getTwoLastPemeriksaanByIbuHamil');
+    Route::get('pemeriksaan-ibuhamil/kandungan/{id}', 'API\V1\PemeriksaanIbuHamilController@getPemeriksaanByKandungan');
 
     Route::apiResource('jadwal-pemeriksaan', API\V1\JadwalPemeriksaanController::class);
 
