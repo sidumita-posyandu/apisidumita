@@ -57,8 +57,10 @@ Route::middleware(['jwt.verify'])->group(function () {
 
     Route::apiResource('balita', API\V1\BalitaController::class);
     Route::get('me/balita', 'API\V1\BalitaController@showMyBalitas');
+    Route::get('petugas/with-balita', 'API\V1\BalitaController@showBalitaForPetugas');
     Route::apiResource('ibu-hamil', API\V1\IbuHamilController::class);
     Route::get('me/ibu-hamil', 'API\V1\IbuHamilController@showMyIbuHamils');
+    Route::get('petugas/with-ibu-hamil', 'API\V1\IbuHamilController@showIbuHamilForPetugas');
     Route::apiResource('vitamin', API\V1\VitaminController::class);
     Route::apiResource('vaksin', API\V1\VaksinController::class);
 
@@ -69,6 +71,7 @@ Route::middleware(['jwt.verify'])->group(function () {
     Route::get('detailpemeriksaan-balita/{id}','API\V1\PemeriksaanBalitaController@getDetailPemeriksaanByBalita');
     Route::get('pemeriksaan-balita/latest-balita/{id}','API\V1\PemeriksaanBalitaController@getTwoLastPemeriksaanByBalita');
     Route::get('pemeriksaan-balita/umur/{id}', 'API\V1\PemeriksaanBalitaController@getPemeriksaanByUmur');
+    Route::post('pemeriksaan-balita/byPetugas', 'API\V1\PemeriksaanBalitaController@storePemeriksaanbyPegawai');
 
     Route::apiResource('pemeriksaan-ibuhamil', API\V1\PemeriksaanIbuHamilController::class);
 
@@ -89,6 +92,7 @@ Route::middleware(['jwt.verify'])->group(function () {
     Route::post('cek-lengan-girls', 'API\V1\PemeriksaanBalitaController@checkArmGirls');
 
     Route::get('me/petugas', 'API\V1\PetugasKesehatanController@showMyPetugas');
+    Route::post('me/update-petugas', 'API\V1\PetugasKesehatanController@updateMyPetugas');
 
     Route::apiResource('operator_posyandu', API\V1\OperatorPosyanduController::class);
     Route::get('fetch-operator-posyandu', 'API\V1\OperatorPosyanduController@fetchUser');

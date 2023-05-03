@@ -64,4 +64,6 @@ class ProvinsiController extends Controller
             'message' => "Data provinsi berhasil dihapus!",
         ], 200);
     }
+
+    
 }

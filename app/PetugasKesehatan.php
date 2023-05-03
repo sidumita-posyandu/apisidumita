@@ -18,4 +18,11 @@ class PetugasKesehatan extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+ 
+    public function dusun()
+    {
+        return $this->hasOne(Dusun::class, 'id','dusun_id');
+    }
+
+
 }

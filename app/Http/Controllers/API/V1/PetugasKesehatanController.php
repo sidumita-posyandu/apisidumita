@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\PetugasKesehatan;
 use DB;
+use Validator;
 
 class PetugasKesehatanController extends Controller
 {
@@ -76,23 +77,47 @@ class PetugasKesehatanController extends Controller
         ]);
     }
 
-    // public function updateMyPetugas(){
-    //     $validasi = Validator::make($request->all(), [
-    //         'nama' => 'required', 
-    //         'jenis_kelamin' => 'required', 
-    //         'tempat_lahir' => 'required', 
-    //         'tanggal_lahir' => 'required', 
-    //         'no_telp' => 'required', 
-    //         'email' => 'required', 
-    //         'nik' => 'required',
-    //     ]);
+    public function updateMyPetugas(Request $request){
+        $validasi = Validator::make($request->all(), [
+            'nama' => 'required', 
+            'jenis_kelamin' => 'required', 
+            'tempat_lahir' => 'required', 
+            'tanggal_lahir' => 'required', 
+            'no_telp' => 'required', 
+            'nik' => 'required',
+            'alamat' => 'required',
+            'dusun_id' => 'required|exists:m_dusun,id',
+        ]);
     
-    //     if($validasi->fails()) {
-    //         return response()->json([
-    //             'status' => false,
-    //             'code' => 400,
-    //             'message' => "Data tidak dapat ditambahkan"
-    //         ], 400);
-    //     }
-    // }
+        if($validasi->fails()) {
+            return response()->json([
+                'status' => false,
+                'code' => 400,
+                'message' => "Data tidak dapat ditambahkan"
+            ], 400);
+        }
+
+        $user = auth()->user();
+        $petugas_kesehatan = PetugasKesehatan::where('user_id',$user->id)->first();
+        // $data['user_id'] = User::where("id", auth()->user()->id)->first()->id;
+        $petugas_kesehatan->update([
+            'nama' => request('nama'), 
+            'jenis_kelamin' => request('jenis_kelamin'), 
+            'tempat_lahir' => request('tempat_lahir'), 
+            'tanggal_lahir' => request('tanggal_lahir'), 
+            'no_telp' => request('no_telp'), 
+            'nik' => request('nik'),
+            'alamat' => request('alamat'),
+            'dusun_id' => request('dusun_id'),
+            'user_id' => $user->id
+        ]);
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'message' => "Data Petugas berhasil diubah",
+            'data' => $petugas_kesehatan
+        ], 200);
+
+    }
 }

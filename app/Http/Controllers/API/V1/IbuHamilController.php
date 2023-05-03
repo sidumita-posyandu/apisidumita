@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\IbuHamil;
 use App\Keluarga;
 use App\DetailKeluarga;
+use App\PetugasKesehatan;
+use App\DB;
 use Validator;
 
 class IbuHamilController extends Controller
@@ -50,6 +52,26 @@ class IbuHamilController extends Controller
     public function show($id) 
     {
         $ibu_hamils = IbuHamil::findOrFail($id);
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'data' => $ibu_hamils
+        ]);
+
+    }
+
+    public function showIbuHamilForPetugas(){
+        $desa_id =  PetugasKesehatan::where("user_id", auth()->user()->id)->first()->dusun->desa_id;
+        // dd($petugas_kesehatan);
+
+        $ibu_hamils = DB::table('tb_ibu_hamil')
+        ->select('*')
+        ->join('tb_detail_keluarga', 'tb_detail_keluarga.id', '=', 'tb_ibu_hamil.detail_keluarga_id')
+        ->join('tb_keluarga', 'tb_keluarga.id', '=', 'tb_detail_keluarga.keluarga_id')
+        ->join('m_dusun', 'm_dusun.id', '=', 'tb_keluarga.dusun_id')
+        ->where("m_dusun.desa_id",$desa_id)
+        ->get();
 
         return response()->json([
             'status' => true,

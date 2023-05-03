@@ -21,4 +21,9 @@ class Dusun extends Model
     {
         return $this->hasMany(Keluarga::class, 'dusun_id');
     }
+
+    public function petugaskesehatans()
+    {
+        return $this->hasMany(PetugasKesehatan::class, 'dusun_id');
+    }
 }
