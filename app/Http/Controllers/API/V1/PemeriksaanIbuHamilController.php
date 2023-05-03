@@ -98,7 +98,7 @@ class PemeriksaanIbuHamilController extends Controller
 
     public function getPemeriksaanByKandungan($id)
     {
-        $pemeriksaan_ibu_hamils = PemeriksaanIbuHamil::with('ibu_hamil')->where('ibu_hamil_id', $id)->orderBy('umur_pemeriksaan','asc')->get();
+        $pemeriksaan_ibu_hamils = PemeriksaanIbuHamil::with('ibu_hamil')->where('ibu_hamil_id', $id)->orderBy('umur_kandungan','asc')->get();
 
         return response()->json([
             'status' => true,
