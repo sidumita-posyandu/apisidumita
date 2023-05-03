@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\PemeriksaanBalita;
 use App\DetailKeluarga;
 use App\PetugasKesehatan;
+use App\DetailPemeriksaanBalita;
 use Validator;
 use DB;
 
@@ -54,6 +55,16 @@ class PemeriksaanBalitaController extends Controller
 
         $pemeriksaan_balita = PemeriksaanBalita::create($request->all());
 
+        if($request->has('vaksin_id')){
+            foreach ($request->vaksin_id as $key => $value) {
+                $detail_pemeriksaan_balita = DetailPemeriksaanBalita::create([
+                    'pemeriksaan_balita_id' => $pemeriksaan_balita->id,
+                    'balita_id' => $pemeriksaan_balita->balita_id,
+                    'vaksin_id' => $value
+                ]);
+            }
+        }
+        
         return response()->json([
             'status' => true,
             'code' => 200,
