@@ -16,4 +16,9 @@ class Vitamin extends Model
     {
         return $this->hasMany(ImunisasiBalita::class);
     }
+
+    public function pemeriksaan_balitas()
+    {
+        return $this->hasMany(PemeriksaanBalita::class);
+    }
 }

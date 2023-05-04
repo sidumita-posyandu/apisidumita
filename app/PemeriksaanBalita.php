@@ -22,6 +22,11 @@ class PemeriksaanBalita extends Model
     {
         return $this->belongsTo(PetugasKesehatan::class, 'petugas_kesehatan_id');
     }
+
+    public function vitamin()
+    {
+        return $this->belongsTo(Vitamin::class, 'vitamin_id');
+    }
     
     public function dokter()
     {

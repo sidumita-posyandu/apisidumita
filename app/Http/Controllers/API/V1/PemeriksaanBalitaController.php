@@ -73,10 +73,11 @@ class PemeriksaanBalitaController extends Controller
         ], 200);
     }
 
-    public function storePemeriksaanbyPegawai()
+    public function storePemeriksaanbyPegawai(Request $request)
     {
-        $validasi = Validator::make(request()->all(), [
+        $validasi = Validator::make($request->all(), [
             'tanggal_pemeriksaan' => 'required',
+            'umur_balita' => 'required',
             'lingkar_kepala' => 'required',
             'lingkar_lengan' => 'required',
             'tinggi_badan' => 'required',
@@ -87,6 +88,7 @@ class PemeriksaanBalitaController extends Controller
             'keluhan' => 'required',
             'dokter_id' => 'required',
             'vitamin_id' => 'required',
+            // 'vaksin_id' => 'required',
         ]);
     
         if($validasi->fails()) {
@@ -100,6 +102,17 @@ class PemeriksaanBalitaController extends Controller
         $data = $request->all();
         $data['petugas_kesehatan_id'] = PetugasKesehatan::where("user_id", auth()->user()->id)->first()->id;
         $pemeriksaan_balita = PemeriksaanBalita::create($data);
+        // dd($data);
+
+        if($request->has('vaksin_id')){
+            foreach ($request->vaksin_id as $key => $value) {
+                $detail_pemeriksaan_balita = DetailPemeriksaanBalita::create([
+                    'pemeriksaan_balita_id' => $pemeriksaan_balita->id,
+                    'balita_id' => $pemeriksaan_balita->balita_id,
+                    'vaksin_id' => $value
+                ]);
+            }
+        }
 
         return response()->json([
             'status' => true,

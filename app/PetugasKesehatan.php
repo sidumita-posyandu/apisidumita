@@ -24,5 +24,4 @@ class PetugasKesehatan extends Model
         return $this->hasOne(Dusun::class, 'id','dusun_id');
     }
 
-
 }
