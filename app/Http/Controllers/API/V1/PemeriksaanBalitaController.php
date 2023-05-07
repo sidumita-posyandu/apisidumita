@@ -90,6 +90,8 @@ class PemeriksaanBalitaController extends Controller
             'vitamin_id' => 'required',
             // 'vaksin_id' => 'required',
         ]);
+
+    
     
         if($validasi->fails()) {
             return response()->json([
@@ -102,7 +104,7 @@ class PemeriksaanBalitaController extends Controller
         $data = $request->all();
         $data['petugas_kesehatan_id'] = PetugasKesehatan::where("user_id", auth()->user()->id)->first()->id;
         $pemeriksaan_balita = PemeriksaanBalita::create($data);
-        // dd($data);
+        // dd($request);
 
         if($request->has('vaksin_id')){
             foreach ($request->vaksin_id as $key => $value) {
@@ -118,7 +120,7 @@ class PemeriksaanBalitaController extends Controller
             'status' => true,
             'code' => 200,
             'message' => "Data bulan imunisasi berhasil ditambahkan",
-            'data' => $pemeriksaan_balita
+            'data' => PemeriksaanBalita::with('detail_pemeriksaan_balita')->where('id',$pemeriksaan_balita->id)->first()
         ], 200);
     }
 
