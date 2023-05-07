@@ -66,12 +66,12 @@ class IbuHamilController extends Controller
         // dd($petugas_kesehatan);
 
         $ibu_hamils = DB::table('tb_ibu_hamil')
-        ->select('*')
+        ->select('*','tb_balita.id')
         ->join('tb_detail_keluarga', 'tb_detail_keluarga.id', '=', 'tb_ibu_hamil.detail_keluarga_id')
         ->join('tb_keluarga', 'tb_keluarga.id', '=', 'tb_detail_keluarga.keluarga_id')
         ->join('m_dusun', 'm_dusun.id', '=', 'tb_keluarga.dusun_id')
-        ->where("m_dusun.desa_id",$desa_id)
-        ->get();
+        ->where("m_dusun.desa_id",'=', $desa_id)
+        ->groupBy('tb_ibu_hamil.id')->get();
 
         return response()->json([
             'status' => true,
