@@ -9,7 +9,7 @@ class IbuHamil extends Model
     protected $table = 'tb_ibu_hamil';
 
     protected $fillable = [
-        'detail_keluarga_id'
+        'detail_keluarga_id', 'berat_badan_prakehamilan', 'tinggi_badan_prakehamilan'
     ];
 
     public function detail_keluarga()
