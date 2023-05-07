@@ -99,10 +99,11 @@ class IbuHamilController extends Controller
         ]);
     }
 
-    public function update(Request $request, IbuHamil $ibu_hamil)
+    public function update(Request $request, $id)
     {
         $validasi = Validator::make($request->all(), [
-            'detail_keluarga_id'
+            'berat_badan_prakehamilan',
+            'tinggi_badan_prakehamilan',
         ]);
 
         if ($validasi->fails()) {
@@ -112,8 +113,11 @@ class IbuHamilController extends Controller
                 'message' => "Data gagal ditambahkan"
             ]);
         }
-        
+
+        $ibu_hamil = IbuHamil::findOrFail($id);
+
         $ibu_hamil->update($request->all());
+
 
         return response()->json([
             'status' => true,

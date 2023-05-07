@@ -99,5 +99,4 @@ Route::middleware(['jwt.verify'])->group(function () {
     Route::get('fetch-operator-posyandu', 'API\V1\OperatorPosyanduController@fetchUser');
 
     Route::post('cek-berat-ibu-hamil', 'API\V1\PemeriksaanIbuHamilController@cekBeratIbuHamil');
-
 });
