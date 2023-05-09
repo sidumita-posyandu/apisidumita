@@ -8,7 +8,7 @@ use App\IbuHamil;
 use App\Keluarga;
 use App\DetailKeluarga;
 use App\PetugasKesehatan;
-use App\DB;
+use DB;
 use Validator;
 
 class IbuHamilController extends Controller
@@ -66,7 +66,7 @@ class IbuHamilController extends Controller
         // dd($petugas_kesehatan);
 
         $ibu_hamils = DB::table('tb_ibu_hamil')
-        ->select('*','tb_balita.id')
+        ->select('*','tb_ibu_hamil.id')
         ->join('tb_detail_keluarga', 'tb_detail_keluarga.id', '=', 'tb_ibu_hamil.detail_keluarga_id')
         ->join('tb_keluarga', 'tb_keluarga.id', '=', 'tb_detail_keluarga.keluarga_id')
         ->join('m_dusun', 'm_dusun.id', '=', 'tb_keluarga.dusun_id')
