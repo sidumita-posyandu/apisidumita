@@ -75,7 +75,7 @@ class PemeriksaanIbuHamilController extends Controller
 
     public function getPemeriksaanByIbuHamil($id)
     {
-        $pemeriksaan_ibu_hamils = PemeriksaanIbuHamil::where('ibu_hamil_id', $id)->orderBy('tanggal_pemeriksaan','desc')->get();
+        $pemeriksaan_ibu_hamils = PemeriksaanIbuHamil::with('ibu_hamil')->where('ibu_hamil_id', $id)->orderBy('tanggal_pemeriksaan','desc')->get();
 
         return response()->json([
             'status' => true,
@@ -186,12 +186,16 @@ class PemeriksaanIbuHamilController extends Controller
 
         foreach ($pemeriksaan_ibu_hamils as $key => $value) {
             $berat_badan[] = $value->berat_badan - $value->ibu_hamil->berat_badan_prakehamilan;
+            $umur_kandungan[] = $value->umur_kandungan;
         }
 
         return response()->json([
             'status' => true,
             'code' => 200,
-            'data' => $berat_badan
+            'data' => [
+                'umur_kandungan' => $umur_kandungan,
+                'berat_badan' => $berat_badan
+            ]
         ]);
     }
 }
