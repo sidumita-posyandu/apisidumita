@@ -9,7 +9,7 @@ class PemeriksaanIbuHamil extends Model
     protected $table = 'tb_pemeriksaan_ibu_hamil';
 
     protected $fillable =[
-        'tanggal_pemeriksaan','tinggi_badan', 'lingkar_perut', 'berat_badan', 'denyut_nadi',
+        'tanggal_pemeriksaan','tinggi_badan', 'lingkar_perut', 'berat_badan', 'denyut_nadi', 'denyut_jantung_bayi',
         'keluhan', 'penanganan', 'catatan', 'ibu_hamil_id', 'petugas_kesehatan_id', 'umur_kandungan'
     ];
 

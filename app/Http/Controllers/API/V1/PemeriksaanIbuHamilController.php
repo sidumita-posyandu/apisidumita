@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\PemeriksaanIbuHamil;
 use App\IbuHamil;
+use App\PetugasKesehatan;
 use Validator;
 use DB;
 
@@ -59,6 +60,47 @@ class PemeriksaanIbuHamilController extends Controller
             'data' => $pemeriksaan_ibu_hamil
         ], 200);
     }
+
+    public function storePemeriksaanbyPegawai(Request $request)
+    {
+        $validasi = Validator::make($request->all(), [
+            'tanggal_pemeriksaan' => 'required',
+            'umur_kandungan' => 'required',
+            'lingkar_perut' => 'required',
+            'denyut_nadi' => 'required',
+            'denyut_jantung_bayi' => 'required',
+            'tinggi_badan' => 'required',
+            'berat_badan' => 'required',
+            'penanganan' => 'required',
+            'keluhan' => 'required',
+            'catatan' => 'required',
+            'ibu_hamil_id' => 'required|exists:tb_ibu_hamil,id',
+        ]);
+
+    
+    
+        if($validasi->fails()) {
+            return response()->json([
+                'status' => false,
+                'code' => 400,
+                'message' => "Data tidak dapat ditambahkan"
+            ], 400);
+        }
+
+        $data = $request->all();
+        $data['petugas_kesehatan_id'] = PetugasKesehatan::where("user_id", auth()->user()->id)->first()->id;
+        $pemeriksaan_ibu_hamil = PemeriksaanIbuHamil::create($data);
+        // dd($request);
+
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'message' => "Data pemeriksaan ibu hamil berhasil ditambahkan",
+            'data' => $pemeriksaan_ibu_hamil
+        ], 200);
+    }
+
 
     public function show($id) 
     {
@@ -182,20 +224,29 @@ class PemeriksaanIbuHamilController extends Controller
     }
 
     public function getIbuHamilByUsiaKandungan(Request $request, $id){
-        $pemeriksaan_ibu_hamils = PemeriksaanIbuHamil::with('ibu_hamil')->where('ibu_hamil_id', $id)->orderBy('umur_kandungan','asc')->get();
+        // $pemeriksaan_ibu_hamils = PemeriksaanIbuHamil::with('ibu_hamil')->where('ibu_hamil_id', $id)->orderBy('umur_kandungan','asc')->get();
+        // $pemeriksaan_ibu_hamils = PemeriksaanIbuHamil::with('ibu_hamil')->where('ibu_hamil_id', $id)
+        // ->selectRaw('')
+        // ->orderBy('umur_kandungan','asc')->get();
 
-        foreach ($pemeriksaan_ibu_hamils as $key => $value) {
-            $berat_badan[] = $value->berat_badan - $value->ibu_hamil->berat_badan_prakehamilan;
-            $umur_kandungan[] = $value->umur_kandungan;
-        }
+        $pemeriksaan_ibu_hamils = PemeriksaanIbuHamil::
+            where('ibu_hamil_id', $id)
+            ->join('tb_ibu_hamil', 'tb_ibu_hamil.id', '=', 'tb_pemeriksaan_ibu_hamil.ibu_hamil_id')
+            ->selectRaw('berat_badan - tb_ibu_hamil.berat_badan_prakehamilan AS berat_badan, umur_kandungan') 
+            ->orderBy('umur_kandungan','asc')
+            ->get();
+
+        // dd($pemeriksaan_ibu_hamils);
+        // foreach ($pemeriksaan_ibu_hamils as $key => $value) {
+        //     $berat_badan[] = $value->berat_badan - $value->ibu_hamil->berat_badan_prakehamilan;
+        //     $umur_kandungan[] = $value->umur_kandungan;
+        // }
+
 
         return response()->json([
             'status' => true,
             'code' => 200,
-            'data' => [
-                'umur_kandungan' => $umur_kandungan,
-                'berat_badan' => $berat_badan
-            ]
+            'data' => $pemeriksaan_ibu_hamils
         ]);
     }
 }

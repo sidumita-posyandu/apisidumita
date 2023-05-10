@@ -34,14 +34,15 @@ Route::apiResource('kecamatan', API\V1\MasterData\KecamatanController::class);
 Route::apiResource('desa', API\V1\MasterData\DesaController::class);
 Route::apiResource('dusun', API\V1\MasterData\DusunController::class);
 
+Route::post('fetch-provinsi', 'API\V1\MasterData\KabupatenController@fetchProvinsi');
+Route::post('fetch-kabupaten', 'API\V1\MasterData\KecamatanController@fetchKabupaten');
+Route::post('fetch-kecamatan', 'API\V1\MasterData\DesaController@fetchKecamatan');
+Route::post('fetch-desa', 'API\V1\MasterData\DusunController@fetchDesa');
+
 Route::middleware(['jwt.verify'])->group(function () {
     Route::apiResource('user', API\V1\UserController::class);
     Route::apiResource('role', API\V1\RoleController::class);
 
-    Route::post('fetch-provinsi', 'API\V1\MasterData\KabupatenController@fetchProvinsi');
-    Route::post('fetch-kabupaten', 'API\V1\MasterData\KecamatanController@fetchKabupaten');
-    Route::post('fetch-kecamatan', 'API\V1\MasterData\DesaController@fetchKecamatan');
-    Route::post('fetch-desa', 'API\V1\MasterData\DusunController@fetchDesa');
 
     Route::apiResource('keluarga', API\V1\KeluargaController::class);
     Route::apiResource('detail-keluarga', API\V1\DetailKeluargaController::class);
@@ -72,12 +73,14 @@ Route::middleware(['jwt.verify'])->group(function () {
     Route::get('pemeriksaan-balita/latest-balita/{id}','API\V1\PemeriksaanBalitaController@getTwoLastPemeriksaanByBalita');
     Route::get('pemeriksaan-balita/umur/{id}', 'API\V1\PemeriksaanBalitaController@getPemeriksaanByUmur');
     Route::post('pemeriksaan-balita/byPetugas', 'API\V1\PemeriksaanBalitaController@storePemeriksaanbyPegawai');
+   
 
     Route::apiResource('pemeriksaan-ibuhamil', API\V1\PemeriksaanIbuHamilController::class);
 
     Route::get('pemeriksaan-ibuhamil/ibuhamil/{id}', 'API\V1\PemeriksaanIbuHamilController@getPemeriksaanByIbuHamil');
     Route::get('pemeriksaan-ibuhamil/latest-ibuhamil/{id}','API\V1\PemeriksaanIbuHamilController@getTwoLastPemeriksaanByIbuHamil');
     Route::get('pemeriksaan-ibuhamil/kandungan/{id}', 'API\V1\PemeriksaanIbuHamilController@getPemeriksaanByKandungan');
+    Route::post('pemeriksaan-ibu-hamil/byPetugas', 'API\V1\PemeriksaanIbuHamilController@storePemeriksaanbyPegawai');
 
     Route::apiResource('jadwal-pemeriksaan', API\V1\JadwalPemeriksaanController::class);
 
