@@ -192,16 +192,16 @@ class PemeriksaanIbuHamilController extends Controller
         $imt = $this->indeksMasaTubuh($bb_prakehamilan, $tb_prakehamilan);
         
         if($imt<18.5){
-            $status = "underweight";
+            $status = "Underweight";
         }
         elseif ($imt> 10.5 && $imt<24.9) {
-            $status = "normal";
+            $status = "Normal";
         }
         elseif ($imt> 25 && $imt<29.9) {
-            $status = "overweight";
+            $status = "Overweight";
         }
         elseif ($imt>=30) {
-            $status = "obese";
+            $status = "Obese";
         }else{
             $status = "tidak dapat memuat data";
         }
