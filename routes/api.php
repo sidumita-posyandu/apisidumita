@@ -103,4 +103,6 @@ Route::middleware(['jwt.verify'])->group(function () {
 
     Route::post('cek-berat-ibu-hamil', 'API\V1\PemeriksaanIbuHamilController@cekBeratIbuHamil');
     Route::get('data-grafik-ibu-hamil/{id}', 'API\V1\PemeriksaanIbuHamilController@getIbuHamilByUsiaKandungan');
+
+    Route::get('cek-imunisasi-balita/{id}', 'API\V1\PemeriksaanBalitaController@cekVaksinBalita');
 });

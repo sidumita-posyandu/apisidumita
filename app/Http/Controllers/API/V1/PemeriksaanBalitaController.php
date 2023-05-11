@@ -8,6 +8,7 @@ use App\PemeriksaanBalita;
 use App\DetailKeluarga;
 use App\PetugasKesehatan;
 use App\DetailPemeriksaanBalita;
+use App\Vaksin;
 use Validator;
 use DB;
 
@@ -624,5 +625,27 @@ class PemeriksaanBalitaController extends Controller
                 'data_ukur' => $size,
             ],
         ], 200);
+    }
+
+    public function cekVaksinBalita(Request $request, $id){
+        $data_vaksin = Vaksin::select('id', 'nama_vaksin', 'dosis', 'catatan', 'status')->get();
+        $vaksin_balita = DetailPemeriksaanBalita::select('id','pemeriksaan_balita_id', 'balita_id', 'vaksin_id')->where('balita_id', $id)->get();
+        $isVaksin = array();
+        $arrayBalita = $vaksin_balita->pluck('vaksin_id')->toArray();
+
+        foreach ($data_vaksin as $value) {
+            if (in_array($value['id'], $arrayBalita)) {
+                $isVaksin[] = [
+                    'vaksin' => $value['nama_vaksin'],
+                    'status' => "sudah"
+                ];
+            }else{
+                $isVaksin[] = [
+                    'vaksin' => $value['nama_vaksin'],
+                    'status' => "belum"
+                ];
+            }
+        }
+        return $isVaksin;
     }
 }
