@@ -636,16 +636,22 @@ class PemeriksaanBalitaController extends Controller
         foreach ($data_vaksin as $value) {
             if (in_array($value['id'], $arrayBalita)) {
                 $isVaksin[] = [
+                    'vaksin_id' => $value['id'],
                     'vaksin' => $value['nama_vaksin'],
                     'status' => "sudah"
                 ];
             }else{
                 $isVaksin[] = [
+                    'vaksin_id' => $value['id'],
                     'vaksin' => $value['nama_vaksin'],
                     'status' => "belum"
                 ];
             }
         }
-        return $isVaksin;
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'data' => $isVaksin
+        ], 200);
     }
 }
