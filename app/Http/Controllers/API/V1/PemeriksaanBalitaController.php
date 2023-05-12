@@ -638,13 +638,13 @@ class PemeriksaanBalitaController extends Controller
                 $isVaksin[] = [
                     'vaksin_id' => $value['id'],
                     'vaksin' => $value['nama_vaksin'],
-                    'status' => "sudah"
+                    'status' => "Sudah"
                 ];
             }else{
                 $isVaksin[] = [
                     'vaksin_id' => $value['id'],
                     'vaksin' => $value['nama_vaksin'],
-                    'status' => "belum"
+                    'status' => "Belum"
                 ];
             }
         }
