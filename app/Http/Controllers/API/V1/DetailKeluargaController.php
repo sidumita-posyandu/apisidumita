@@ -247,8 +247,9 @@ class DetailKeluargaController extends Controller
     }
 
 
-    public function destroy(DetailKeluarga $detail_keluarga) 
+    public function destroy(DetailKeluarga $detail_keluarga)
     {
+        // dd($detail_keluarga);
         $detail_keluarga->delete();
         //cascade with delete balita and ibu hamil (sekaligus menghapus balita dan ibu hamil pada tabelnya)
 

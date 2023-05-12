@@ -175,6 +175,16 @@ class PemeriksaanBalitaController extends Controller
         ]);
     }
 
+    public function getDetailPemeriksaanBalita($id){
+        $pemeriksaan_balitas = PemeriksaanBalita::with('detail_pemeriksaan_balita')->where('balita_id', $id)->get();
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'data' => $pemeriksaan_balitas
+        ]);
+    }
+
     public function getTwoLastPemeriksaanByBalita($id)
     {
         $pemeriksaan_balitas = PemeriksaanBalita::where('balita_id', $id)->orderBy('tanggal_pemeriksaan','desc')->limit(2)->get();
@@ -224,12 +234,26 @@ class PemeriksaanBalitaController extends Controller
 
     public function destroy(PemeriksaanBalita $pemeriksaan_balita)
     {
+        dd($pemeriksaan_balita);
         $pemeriksaan_balita->delete();
 
         return response()->json([
             'status' => true,
             'code' => 200,
             'message' => "Data bulan imunisasi berhasil dihapus!",
+        ], 200);
+    }
+
+    public function destroyPemeriksaanBalita($id)
+    {
+        // dd($id);
+        $pemeriksaan_balita = PemeriksaanBalita::find($id)->delete();
+        //cascade with delete balita and ibu hamil (sekaligus menghapus balita dan ibu hamil pada tabelnya)
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'message' => "Data pemeriksaan berhasil dihapus!",
         ], 200);
     }
 

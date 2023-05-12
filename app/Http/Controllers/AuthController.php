@@ -131,6 +131,29 @@ class AuthController extends Controller
             // }
     }
 
+    public function changePassword(Request $request)
+    {
+        // $validator = Validator::make(request()->all(),[
+        //     'password'=> 'required'
+        // ]);
+
+        // if($validator->fails()){
+        //     return response()->json($validator->messages());
+        // }
+
+        $data = User::where("id", auth()->user()->id)->first();
+        // dd($request->password);
+        $data->password = Hash::make($request->password);
+
+        $data->save();
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'message' => "Data keluarga berhasil diubah"
+        ], 200);
+    }
+
     /**
      * Get a JWT via given credentials.
      *
