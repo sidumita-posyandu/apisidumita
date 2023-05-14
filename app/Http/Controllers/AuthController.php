@@ -159,16 +159,18 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function login()
+    public function login(Request $request)
     {
+        // dd($request);
         $credentials = request(['email', 'password']);
-
-        if (! $token = auth()->attempt($credentials)) {
+        $token = auth()->attempt($request->only(['email','password']));
+        // dd($auth);
+        if (! $token) {
             return response()->json(['error' => 'Unauthorized',
         'success' => false], 401);
         }
-
-        return $this->respondWithToken($token);
+        
+        return $this->respondWithToken($token,$request->fcm_token);
     }
 
     /**
@@ -212,14 +214,20 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function respondWithToken($token)
+    protected function respondWithToken($token, $fcm_token)
     {
+        if ($fcm_token){
+            // dd(user());
+            User::find(auth()->user()->id)->update(['fcm_token'=>$fcm_token]);
+        }
+
+        // dd(auth()->user());
         return response()->json([
             'success' => true,
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60,
-            'user' => auth()->user()
+            'user' =>  User::find(auth()->user()->id)
         ]);
     }
 }
