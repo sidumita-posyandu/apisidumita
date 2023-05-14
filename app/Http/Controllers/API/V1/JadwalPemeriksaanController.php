@@ -10,8 +10,10 @@ use App\PetugasKesehatan;
 use App\Kecamatan;
 use App\Keluarga;
 use App\Dusun;
+use App\User;
 use Validator;
 use DB;
+use Kutia\Larafirebase\Facades\Larafirebase;
 
 class JadwalPemeriksaanController extends Controller
 {
@@ -92,6 +94,13 @@ class JadwalPemeriksaanController extends Controller
         }
 
         $jadwal_pemeriksaan = JadwalPemeriksaan::create($request->all());
+        // dd($jadwal_pemeriksaan);
+
+        $user = User::all('fcm_token')->pluck('fcm_token')->all();
+      
+        Larafirebase::withTitle($request->jenis_pemeriksaan)
+            ->withBody($request->jenis_pemeriksaan)
+            ->sendNotification($user);
 
         return response()->json([
             'status' => true,

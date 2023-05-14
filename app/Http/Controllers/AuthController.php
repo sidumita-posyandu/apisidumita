@@ -188,8 +188,11 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function logout()
+    public function logout(Request $request)
     {
+        $user = auth()->user();
+        $user->fcm_token = null;
+        $user->save;
         auth()->logout();
 
         return response()->json([
