@@ -10,6 +10,7 @@ use App\Balita;
 use App\IbuHamil;
 use Validator;
 use Carbon\Carbon;
+use DB;
 
 class DetailKeluargaController extends Controller
 {
@@ -97,9 +98,20 @@ class DetailKeluargaController extends Controller
                 'message' => "Data tidak dapat ditambahkan"
             ], 400);
         }
-        
-        $detail_keluarga = DetailKeluarga::create($request->all());
 
+        $data = $request->all();
+        $detail_keluarga = DetailKeluarga::create($data);
+
+        if ($detail_keluarga->status_dalam_keluarga == "Anak"){
+            $balitas = Balita::create([
+                'detail_keluarga_id' => $detail_keluarga->id
+            ]);
+        } else if($detail_keluarga->status_dalam_keluarga == "Istri"){
+            $ibu_hamil = IbuHamil::create([
+                'detail_keluarga_id' => $detail_keluarga->id
+            ]);
+        }
+        
         return response()->json([
             'status' => true,
             'code' => 200,

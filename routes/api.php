@@ -56,10 +56,13 @@ Route::middleware(['jwt.verify'])->group(function () {
     Route::post('me/update-detail-keluarga', 'API\V1\DetailKeluargaController@updateMyDetKeluarga');
     Route::post('me/create-keluarga', 'API\V1\KeluargaController@storeMyKeluarga');
     Route::post('me/update-keluarga', 'API\V1\KeluargaController@updateMyKeluarga');
+    
+    Route::get('petugas/with-keluarga', 'API\V1\KeluargaController@showKeluargaForPetugas');
 
     Route::apiResource('balita', API\V1\BalitaController::class);
     Route::get('me/balita', 'API\V1\BalitaController@showMyBalitas');
     Route::get('petugas/with-balita', 'API\V1\BalitaController@showBalitaForPetugas');
+    
     Route::apiResource('ibu-hamil', API\V1\IbuHamilController::class);
     Route::get('me/ibu-hamil', 'API\V1\IbuHamilController@showMyIbuHamils');
     Route::get('petugas/with-ibu-hamil', 'API\V1\IbuHamilController@showIbuHamilForPetugas');
@@ -108,4 +111,9 @@ Route::middleware(['jwt.verify'])->group(function () {
     Route::get('data-grafik-ibu-hamil/{id}', 'API\V1\PemeriksaanIbuHamilController@getIbuHamilByUsiaKandungan');
 
     Route::get('cek-imunisasi-balita/{id}', 'API\V1\PemeriksaanBalitaController@cekVaksinBalita');
+
+    Route::get('petugas/with-pemeriksaan-balita', 'API\V1\PemeriksaanBalitaController@showPemeriksaanBalitaForPetugas');
+    Route::get('petugas/with-pemeriksaan-ibu-hamil', 'API\V1\PemeriksaanIbuHamilController@showPemeriksaanIbuHamilForPetugas');
+
+    Route::apiResource('dokter', API\V1\DokterController::class);
 });

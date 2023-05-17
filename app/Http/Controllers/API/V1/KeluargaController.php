@@ -8,7 +8,9 @@ use App\Dusun;
 use App\Keluarga;
 use App\User;
 use App\DetailKeluarga;
+use App\PetugasKesehatan;
 use Validator;
+use DB;
 
 class KeluargaController extends Controller
 {
@@ -179,5 +181,23 @@ class KeluargaController extends Controller
             'code' => 200,
             'message' => "Data keluarga berhasil dihapus!",
         ], 200);
+    }
+
+    public function showKeluargaForPetugas(){
+        $desa_id =  PetugasKesehatan::where("user_id", auth()->user()->id)->first()->dusun->desa_id;
+        // dd($desa_id);
+
+        $keluargas = DB::table('tb_keluarga')
+        ->select('*','tb_keluarga.id')
+        ->join('m_dusun', 'm_dusun.id', '=', 'tb_keluarga.dusun_id')
+        ->where("m_dusun.desa_id",'=', $desa_id)
+        ->groupBy('tb_keluarga.id')->get();
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'data' => $keluargas
+        ]);
+
     }
 }

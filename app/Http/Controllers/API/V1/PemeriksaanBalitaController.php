@@ -9,6 +9,9 @@ use App\DetailKeluarga;
 use App\PetugasKesehatan;
 use App\DetailPemeriksaanBalita;
 use App\Vaksin;
+use App\Balita;
+use App\JadwalPemeriksaan;
+use Carbon\Carbon;
 use Validator;
 use DB;
 
@@ -27,6 +30,26 @@ class PemeriksaanBalitaController extends Controller
             'code' => 200,
             'data' => $pemeriksaan_balitas
         ]);
+    }
+
+    public function showPemeriksaanBalitaForPetugas(){
+        $desa_id =  PetugasKesehatan::where("user_id", auth()->user()->id)->first()->dusun->desa_id;
+
+        $pemeriksaan_balitas = DB::table('tb_pemeriksaan_balita')
+        ->select('*','tb_pemeriksaan_balita.id')
+        ->join('tb_balita', 'tb_balita.id', '=', 'tb_pemeriksaan_balita.balita_id')
+        ->join('tb_detail_keluarga', 'tb_detail_keluarga.id', '=', 'tb_balita.detail_keluarga_id')
+        ->join('tb_keluarga', 'tb_keluarga.id', '=', 'tb_detail_keluarga.keluarga_id')
+        ->join('m_dusun', 'm_dusun.id', '=', 'tb_keluarga.dusun_id')
+        ->where("m_dusun.desa_id",'=', $desa_id)
+        ->groupBy('tb_pemeriksaan_balita.id')->get();
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'data' => $pemeriksaan_balitas
+        ]);
+
     }
 
     public function store(Request $request)
@@ -651,25 +674,56 @@ class PemeriksaanBalitaController extends Controller
         ], 200);
     }
 
+    // public funcion getUmurBalita($balita){
+
+    // }
+
     public function cekVaksinBalita(Request $request, $id){
-        $data_vaksin = Vaksin::select('id', 'nama_vaksin', 'dosis', 'catatan', 'status')->get();
-        $vaksin_balita = DetailPemeriksaanBalita::select('id','pemeriksaan_balita_id', 'balita_id', 'vaksin_id')->where('balita_id', $id)->get();
+        $data_vaksin = Vaksin::select('id', 'nama_vaksin', 'umur_min', 'umur_max')->get();
+        $vaksin_balita = DetailPemeriksaanBalita::with(['pemeriksaan_balita'])->select('id','pemeriksaan_balita_id', 'balita_id', 'vaksin_id')->where('balita_id', $id)->get();
         $isVaksin = array();
         $arrayBalita = $vaksin_balita->pluck('vaksin_id')->toArray();
 
+        $balita = Balita::where('id', $id)->first();
+        $jadwal_pemeriksaan = DB::table('tb_jadwal_pemeriksaan')
+        ->select('*')
+        ->join('tb_operator_posyandu', 'tb_operator_posyandu.id', '=', 'tb_jadwal_pemeriksaan.operator_posyandu_id')
+        ->join('m_dusun', 'm_dusun.id', '=', 'tb_jadwal_pemeriksaan.dusun_id')
+        ->where('m_dusun.id', '=', $balita->detail_keluarga->keluarga->dusun->id)
+        ->get();        
+
+        $balita = Balita::with(['detail_keluarga'])->where('id', $id)->first();
+        $now = Carbon::now();
+        $birthday = Carbon::parse($balita['detail_keluarga']['tanggal_lahir']);
+        $umur = $birthday->diffInMonths($now);
+
+        
+
         foreach ($data_vaksin as $value) {
             if (in_array($value['id'], $arrayBalita)) {
+                $detail_pemeriksaan = DetailPemeriksaanBalita::with(['pemeriksaan_balita'])->where('balita_id', $id)->where('vaksin_id', $value['id'])->first();
                 $isVaksin[] = [
                     'vaksin_id' => $value['id'],
                     'vaksin' => $value['nama_vaksin'],
-                    'status' => "Sudah"
+                    'status' => "Sudah",
+                    'tanggal_pemeriksaan' => $detail_pemeriksaan['pemeriksaan_balita']['tanggal_pemeriksaan'],
                 ];
             }else{
-                $isVaksin[] = [
-                    'vaksin_id' => $value['id'],
-                    'vaksin' => $value['nama_vaksin'],
-                    'status' => "Belum"
-                ];
+                if((int)$value['umur_min'] - 1 == $umur || (int)$value['umur_min'] <= $umur){
+                    $jadwal = JadwalPemeriksaan::where('waktu_mulai','>=', $now->toDateTimeString())->orderBy('waktu_mulai', 'asc')->first();
+                    $isVaksin[] = [
+                        'vaksin_id' => $value['id'],
+                        'vaksin' => $value['nama_vaksin'],
+                        'status' => "Akan",
+                        'tanggal_pemeriksaan' => $jadwal['waktu_mulai']
+                    ];
+                }else{
+                    $isVaksin[] = [
+                        'vaksin_id' => $value['id'],
+                        'vaksin' => $value['nama_vaksin'],
+                        'status' => "Belum"
+                    ];
+                }
             }
         }
         return response()->json([

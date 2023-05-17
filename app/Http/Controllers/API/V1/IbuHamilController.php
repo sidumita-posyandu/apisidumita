@@ -51,7 +51,7 @@ class IbuHamilController extends Controller
 
     public function show($id) 
     {
-        $ibu_hamils = IbuHamil::findOrFail($id);
+        $ibu_hamils = IbuHamil::with(['detail_keluarga'])->findOrFail($id);
 
         return response()->json([
             'status' => true,

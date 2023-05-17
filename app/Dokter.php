@@ -9,11 +9,15 @@ class Dokter extends Model
     protected $table = 'tb_dokter';
 
     protected $fillable = [
-        'nidn', 'nama_dokter'
+        'nip', 'nama_dokter', 'no_telp', 'alamat', 'dusun_id'
     ];
 
     public function dokters()
     {
         return $this->hasMany(PemeriksaanBalita::class);
+    }
+
+    public function dusun(){
+        return $this->belongsTo(Dusun::class);
     }
 }
