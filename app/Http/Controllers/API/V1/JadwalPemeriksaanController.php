@@ -98,7 +98,7 @@ class JadwalPemeriksaanController extends Controller
 
         $user = User::all('fcm_token')->pluck('fcm_token')->all();
       
-        Larafirebase::withTitle($request->jenis_pemeriksaan)
+        Larafirebase::withTitle("Jadwal Posyandu")
             ->withBody($request->jenis_pemeriksaan)
             ->sendNotification($user);
 

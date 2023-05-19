@@ -192,7 +192,7 @@ class AuthController extends Controller
     {
         $user = auth()->user();
         $user->fcm_token = null;
-        $user->save;
+        $user->save();
         auth()->logout();
 
         return response()->json([
