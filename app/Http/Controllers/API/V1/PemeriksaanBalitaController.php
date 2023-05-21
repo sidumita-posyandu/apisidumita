@@ -20,9 +20,11 @@ class PemeriksaanBalitaController extends Controller
     public function index() 
     {
         $pemeriksaan_balitas = DB::table('tb_detail_keluarga')
-        ->select('*')
+        ->select('*', 'tb_pemeriksaan_balita.id')
         ->join('tb_balita', 'tb_balita.detail_keluarga_id', '=', 'tb_detail_keluarga.id')
         ->join('tb_pemeriksaan_balita', 'tb_pemeriksaan_balita.balita_id', '=', 'tb_balita.id')
+        ->groupBy('tb_pemeriksaan_balita.id')
+        ->orderBy('tb_pemeriksaan_balita.created_at', 'desc')
         ->get();
         
         return response()->json([
@@ -42,7 +44,9 @@ class PemeriksaanBalitaController extends Controller
         ->join('tb_keluarga', 'tb_keluarga.id', '=', 'tb_detail_keluarga.keluarga_id')
         ->join('m_dusun', 'm_dusun.id', '=', 'tb_keluarga.dusun_id')
         ->where("m_dusun.desa_id",'=', $desa_id)
-        ->groupBy('tb_pemeriksaan_balita.id')->get();
+        ->groupBy('tb_pemeriksaan_balita.id')
+        ->orderBy('tb_pemeriksaan_balita.tanggal_pemeriksaan', 'desc')
+        ->get();
 
         return response()->json([
             'status' => true,
@@ -55,13 +59,58 @@ class PemeriksaanBalitaController extends Controller
     public function store(Request $request)
     {
         $validasi = Validator::make($request->all(), [
+            'balita_id' => 'required|exists:tb_balita,id',
             'tanggal_pemeriksaan' => 'required',
+            'umur_balita' => 'required',
             'lingkar_kepala' => 'required',
             'lingkar_lengan' => 'required',
             'tinggi_badan' => 'required',
             'berat_badan' => 'required',
+            'penanganan' => 'required',
+            'catatan' => 'required',
+            'keluhan' => 'required',
+            'dokter_id' => 'required',
+            'vitamin_id' => 'required',
+        ]);
+    
+        if($validasi->fails()) {
+            return response()->json([
+                'status' => false,
+                'code' => 400,
+                'message' => "Data tidak dapat ditambahkan"
+            ], 400);
+        }
+
+        $pemeriksaan_balita = PemeriksaanBalita::create($request->all());
+
+        if($request->has('vaksin_id')){
+            foreach ($request->vaksin_id as $key => $value) {
+                $detail_pemeriksaan_balita = DetailPemeriksaanBalita::create([
+                    'pemeriksaan_balita_id' => $pemeriksaan_balita->id,
+                    'balita_id' => $pemeriksaan_balita->balita_id,
+                    'vaksin_id' => $value
+                ]);
+            }
+        }
+        
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'message' => "Data bulan imunisasi berhasil ditambahkan",
+            'data' => $pemeriksaan_balita
+        ], 200);
+    }
+
+    public function storeAdmin(Request $request)
+    {
+        $validasi = Validator::make($request->all(), [
             'balita_id' => 'required|exists:tb_balita,id',
-            'petugas_kesehatan_id' => 'required|exists:tb_petugas_kesehatan,id',
+            'tanggal_pemeriksaan' => 'required',
+            'umur_balita' => 'required',
+            'lingkar_kepala' => 'required',
+            'lingkar_lengan' => 'required',
+            'tinggi_badan' => 'required',
+            'berat_badan' => 'required',
             'penanganan' => 'required',
             'catatan' => 'required',
             'keluhan' => 'required',
@@ -709,7 +758,7 @@ class PemeriksaanBalitaController extends Controller
                     'tanggal_pemeriksaan' => $detail_pemeriksaan['pemeriksaan_balita']['tanggal_pemeriksaan'],
                 ];
             }else{
-                if((int)$value['umur_min'] - 1 == $umur || (int)$value['umur_min'] <= $umur){
+                if($umur + 1 == (int)$value['umur_min'] || $umur >= (int)$value['umur_min'] && $umur <= (int)$value['umur_max']){
                     $jadwal = JadwalPemeriksaan::where('waktu_mulai','>=', $now->toDateTimeString())->orderBy('waktu_mulai', 'asc')->first();
                     $isVaksin[] = [
                         'vaksin_id' => $value['id'],

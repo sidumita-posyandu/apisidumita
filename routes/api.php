@@ -73,6 +73,9 @@ Route::middleware(['jwt.verify'])->group(function () {
 
     Route::apiResource('pemeriksaan-balita', API\V1\PemeriksaanBalitaController::class);
     Route::apiResource('detailpemeriksaan-balita', API\V1\DetailPemeriksaanBalitaController::class);
+    
+    Route::post('pemeriksaan-balita-admin', 'API\V1\PemeriksaanBalitaController@storeAdmin');
+
 
     Route::get('pemeriksaan-balita/balita/{id}', 'API\V1\PemeriksaanBalitaController@getPemeriksaanByBalita');
     Route::get('detailpemeriksaan-balita/{id}','API\V1\PemeriksaanBalitaController@getDetailPemeriksaanByBalita');
