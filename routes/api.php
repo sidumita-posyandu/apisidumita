@@ -41,6 +41,7 @@ Route::post('fetch-kecamatan', 'API\V1\MasterData\DesaController@fetchKecamatan'
 Route::post('fetch-desa', 'API\V1\MasterData\DusunController@fetchDesa');
 
 Route::apiResource('konten', API\V1\KontenController::class);
+Route::post('update/konten/{id}', 'API\V1\KontenController@updateKonten');
 
 Route::middleware(['jwt.verify'])->group(function () {
     Route::apiResource('user', API\V1\UserController::class);

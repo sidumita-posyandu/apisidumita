@@ -94,13 +94,37 @@ class JadwalPemeriksaanController extends Controller
         }
 
         $jadwal_pemeriksaan = JadwalPemeriksaan::create($request->all());
-        // dd($jadwal_pemeriksaan);
 
-        $user = User::all('fcm_token')->pluck('fcm_token')->all();
+        //get user fcm token by desa for notificatation
+        $user_petugas = DB::table('tb_petugas_kesehatan')
+        ->select('*')
+        ->join('users', 'users.id', '=', 'tb_petugas_kesehatan.user_id')
+        ->join('m_dusun', 'm_dusun.id', '=', 'tb_petugas_kesehatan.dusun_id')
+        ->join('m_desa', 'm_desa.id', '=', 'm_dusun.desa_id')
+        ->where('m_desa.id', '=', $jadwal_pemeriksaan->dusun->desa_id)
+        ->pluck('fcm_token')
+        ->all();
+        $user_peserta = DB::table('tb_keluarga')
+        ->select('*')
+        ->join('users', 'users.id', '=', 'tb_keluarga.user_id')
+        ->join('m_dusun', 'm_dusun.id', '=', 'tb_keluarga.dusun_id')
+        ->join('m_desa', 'm_desa.id', '=', 'm_dusun.desa_id')
+        ->where('m_desa.id', '=', $jadwal_pemeriksaan->dusun->desa_id)
+        ->pluck('fcm_token')
+        ->all();
+        // return $user_peserta;
+        // dd($petugas_kesehatan);
+
+        // $user = User::all('fcm_token')->pluck('fcm_token')->all();
       
         Larafirebase::withTitle("Jadwal Posyandu")
             ->withBody($request->jenis_pemeriksaan)
-            ->sendNotification($user);
+            ->sendNotification($user_petugas);
+
+        Larafirebase::withTitle("Jadwal Posyandu")
+            ->withBody($request->jenis_pemeriksaan)
+            ->sendNotification($user_peserta);
+    
 
         return response()->json([
             'status' => true,
