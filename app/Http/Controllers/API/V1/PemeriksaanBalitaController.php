@@ -728,25 +728,27 @@ class PemeriksaanBalitaController extends Controller
     // }
 
     public function cekVaksinBalita(Request $request, $id){
-        $data_vaksin = Vaksin::select('id', 'nama_vaksin', 'umur_min', 'umur_max')->get();
+        $data_vaksin = Vaksin::select('id', 'nama_vaksin', 'umur_min', 'umur_max', 'umur_susulan_min', 'umur_susulan_max', 'umur_rek_min', 'umur_rek_max')->get();
         $vaksin_balita = DetailPemeriksaanBalita::with(['pemeriksaan_balita'])->select('id','pemeriksaan_balita_id', 'balita_id', 'vaksin_id')->where('balita_id', $id)->get();
         $isVaksin = array();
         $arrayBalita = $vaksin_balita->pluck('vaksin_id')->toArray();
 
         $balita = Balita::where('id', $id)->first();
-        $jadwal_pemeriksaan = DB::table('tb_jadwal_pemeriksaan')
-        ->select('*')
-        ->join('tb_operator_posyandu', 'tb_operator_posyandu.id', '=', 'tb_jadwal_pemeriksaan.operator_posyandu_id')
-        ->join('m_dusun', 'm_dusun.id', '=', 'tb_jadwal_pemeriksaan.dusun_id')
-        ->where('m_dusun.id', '=', $balita->detail_keluarga->keluarga->dusun->id)
-        ->get();        
+        
 
         $balita = Balita::with(['detail_keluarga'])->where('id', $id)->first();
         $now = Carbon::now();
         $birthday = Carbon::parse($balita['detail_keluarga']['tanggal_lahir']);
         $umur = $birthday->diffInMonths($now);
 
-        
+        $jadwal = DB::table('tb_jadwal_pemeriksaan')
+        ->select('*')
+        ->join('m_dusun', 'm_dusun.id', '=', 'tb_jadwal_pemeriksaan.dusun_id')
+        ->join('m_desa', 'm_desa.id', '=', 'm_dusun.desa_id')
+        ->where('m_desa.id', '=', $balita->detail_keluarga->keluarga->dusun->desa->id)
+        ->where('waktu_mulai','>=', $now->toDateTimeString())
+        ->orderBy('waktu_mulai', 'asc')
+        ->get();
 
         foreach ($data_vaksin as $value) {
             if (in_array($value['id'], $arrayBalita)) {
@@ -758,21 +760,69 @@ class PemeriksaanBalitaController extends Controller
                     'tanggal_pemeriksaan' => $detail_pemeriksaan['pemeriksaan_balita']['tanggal_pemeriksaan'],
                 ];
             }else{
-                if($umur + 1 == (int)$value['umur_min'] || $umur >= (int)$value['umur_min'] && $umur <= (int)$value['umur_max']){
-                    $jadwal = JadwalPemeriksaan::where('waktu_mulai','>=', $now->toDateTimeString())->orderBy('waktu_mulai', 'asc')->first();
-                    $isVaksin[] = [
-                        'vaksin_id' => $value['id'],
-                        'vaksin' => $value['nama_vaksin'],
-                        'status' => "Akan",
-                        'tanggal_pemeriksaan' => $jadwal['waktu_mulai']
-                    ];
-                }else{
+                if($umur + 1 == (int)$value['umur_rek_min'] || $umur >= (int)$value['umur_rek_min'] && $umur <= (int)$value['umur_rek_max']){
+                    if (isset($jadwal[0]->waktu_mulai)) {
+                        $isVaksin[] = [
+                            'vaksin_id' => $value['id'],
+                            'vaksin' => $value['nama_vaksin'],
+                            'status' => "Akan",
+                            'tanggal_pemeriksaan' => $jadwal[0]->waktu_mulai
+                        ];
+                    }
+                    else{
+                        $isVaksin[] = [
+                            'vaksin_id' => $value['id'],
+                            'vaksin' => $value['nama_vaksin'],
+                            'status' => "Akan",
+                            'tanggal_pemeriksaan' => 'Pada pemeriksaan selanjutnya'
+                        ];
+                    }
+                }
+                elseif ($umur >= (int)$value['umur_min'] && $umur <= (int)$value['umur_max']) {
+                    if (isset($jadwal[0]->waktu_mulai)) {
+                        $isVaksin[] = [
+                            'vaksin_id' => $value['id'],
+                            'vaksin' => $value['nama_vaksin'],
+                            'status' => "Kejar",
+                            'tanggal_pemeriksaan' => $jadwal[0]->waktu_mulai
+                        ];
+                    }
+                    else{
+                        $isVaksin[] = [
+                            'vaksin_id' => $value['id'],
+                            'vaksin' => $value['nama_vaksin'],
+                            'status' => "Kejar",
+                            'tanggal_pemeriksaan' => 'Pada pemeriksaan selanjutnya'
+                        ];
+                    }
+                    
+                }
+                elseif($umur >= (int)$value['umur_susulan_min'] && $umur <= (int)$value['umur_susulan_max']){
+                    if (isset($jadwal[0]->waktu_mulai)) {
+                        $isVaksin[] = [
+                            'vaksin_id' => $value['id'],
+                            'vaksin' => $value['nama_vaksin'],
+                            'status' => "Susulan",
+                            'tanggal_pemeriksaan' => $jadwal[0]->waktu_mulai
+                        ];
+                    }
+                    else{
+                        $isVaksin[] = [
+                            'vaksin_id' => $value['id'],
+                            'vaksin' => $value['nama_vaksin'],
+                            'status' => "Susulan",
+                            'tanggal_pemeriksaan' => 'Pada pemeriksaan selanjutnya'
+                        ];
+                    }
+                }
+                else{
                     $isVaksin[] = [
                         'vaksin_id' => $value['id'],
                         'vaksin' => $value['nama_vaksin'],
                         'status' => "Belum"
                     ];
                 }
+
             }
         }
         return response()->json([
