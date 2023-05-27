@@ -774,7 +774,7 @@ class PemeriksaanBalitaController extends Controller
                             'vaksin_id' => $value['id'],
                             'vaksin' => $value['nama_vaksin'],
                             'status' => "Akan",
-                            'tanggal_pemeriksaan' => 'Pada pemeriksaan selanjutnya'
+                            'tanggal_pemeriksaan' => $now->addMonths()->format('M Y')
                         ];
                     }
                 }
@@ -784,7 +784,7 @@ class PemeriksaanBalitaController extends Controller
                             'vaksin_id' => $value['id'],
                             'vaksin' => $value['nama_vaksin'],
                             'status' => "Kejar",
-                            'tanggal_pemeriksaan' => $jadwal[0]->waktu_mulai
+                            'tanggal_pemeriksaan' => $now->addMonths()->format('M Y')
                         ];
                     }
                     else{
