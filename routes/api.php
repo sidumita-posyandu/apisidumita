@@ -93,6 +93,7 @@ Route::middleware(['jwt.verify'])->group(function () {
     Route::get('pemeriksaan-ibuhamil/latest-ibuhamil/{id}','API\V1\PemeriksaanIbuHamilController@getTwoLastPemeriksaanByIbuHamil');
     Route::get('pemeriksaan-ibuhamil/kandungan/{id}', 'API\V1\PemeriksaanIbuHamilController@getPemeriksaanByKandungan');
     Route::post('pemeriksaan-ibu-hamil/byPetugas', 'API\V1\PemeriksaanIbuHamilController@storePemeriksaanbyPegawai');
+    Route::post('destroy/pemeriksaan-ibuhamil/{id}','API\V1\PemeriksaanIbuHamilController@destroyPemeriksaanIbuHamil');
 
     Route::apiResource('jadwal-pemeriksaan', API\V1\JadwalPemeriksaanController::class);
 

@@ -268,4 +268,17 @@ class PemeriksaanIbuHamilController extends Controller
             'data' => $pemeriksaan_ibu_hamils
         ]);
     }
+
+    public function destroyPemeriksaanIbuHamil($id)
+    {
+        // dd($id);
+        $pemeriksaan_ibu_hamil = PemeriksaanIbuHamil::find($id)->delete();
+        //cascade with delete balita and ibu hamil (sekaligus menghapus balita dan ibu hamil pada tabelnya)
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'message' => "Data pemeriksaan berhasil dihapus!",
+        ], 200);
+    }
 }
