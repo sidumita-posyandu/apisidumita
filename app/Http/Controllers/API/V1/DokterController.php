@@ -4,7 +4,7 @@ namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\DOkter;
+use App\Dokter;
 use Validator;
 
 class DokterController extends Controller
