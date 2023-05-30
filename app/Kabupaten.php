@@ -21,4 +21,8 @@ class Kabupaten extends Model
     {
         return $this->hasMany(Kecamatan::class, 'kabupaten_id');
     }
+
+    protected $casts = [
+        'provinsi_id' => 'integer',
+    ];
 }

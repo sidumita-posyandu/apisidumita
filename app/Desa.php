@@ -21,4 +21,8 @@ class Desa extends Model
     {
         return $this->hasMany(Dusun::class, 'desa_id');
     }
+
+    protected $casts = [
+        'kecamatan_id' => 'integer',
+    ];
 }

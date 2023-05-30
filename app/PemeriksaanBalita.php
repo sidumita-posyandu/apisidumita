@@ -47,4 +47,11 @@ class PemeriksaanBalita extends Model
     {
         return $this->belongsToMany(Vaksin::class, 'tb_detail_pemeriksaan_balita');
     }
+
+    protected $casts = [
+        'balita_id' => 'integer',
+        'petugas_kesehatan_id' => 'integer',
+        'dokter_id' => 'integer',
+        'vitamin_id' => 'integer'
+    ];
 }

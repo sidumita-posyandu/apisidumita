@@ -20,4 +20,8 @@ class Dokter extends Model
     public function dusun(){
         return $this->belongsTo(Dusun::class);
     }
+
+    protected $casts = [
+        'dusun_id' => 'integer',
+    ];
 }

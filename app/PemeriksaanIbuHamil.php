@@ -22,4 +22,9 @@ class PemeriksaanIbuHamil extends Model
     {
         return $this->belongsTo(PetugasKesehatan::class, 'petugas_kesehatan_id');
     }
+
+    protected $casts = [
+        'ibu_hamil_id' => 'integer',
+        'petugas_kesehatan_id' => 'integer'
+    ];
 }

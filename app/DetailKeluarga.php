@@ -28,4 +28,8 @@ class DetailKeluarga extends Model
     {
         return $this->hasMany(IbuHamil::class, 'ibu_hamil_id');
     }
+
+    protected $casts = [
+        'keluarga_id' => 'integer',
+    ];
 }

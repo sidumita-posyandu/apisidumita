@@ -23,4 +23,10 @@ class OperatorPosyandu extends Model
     {
         return $this->hasMany(JadwalPemeriksaan::class);
     }
+
+    protected $casts = [
+        'user_id' => 'integer',
+        'kecamatan_id' => 'integer',
+        
+    ];
 }

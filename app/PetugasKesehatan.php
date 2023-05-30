@@ -23,5 +23,9 @@ class PetugasKesehatan extends Model
     {
         return $this->hasOne(Dusun::class, 'id','dusun_id');
     }
+    protected $casts = [
+        'dusun_id' => 'integer',
+        'user_id' => 'integer'
+    ];
 
 }

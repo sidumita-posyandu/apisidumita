@@ -37,4 +37,9 @@ class Keluarga extends Model
     {
         return $this->detail_keluargas()->count();
     }
+
+    protected $casts = [
+        'dusun_id' => 'integer',
+        'user_id' => 'integer'
+    ];
 }

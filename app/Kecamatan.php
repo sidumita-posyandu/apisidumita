@@ -21,4 +21,8 @@ class Kecamatan extends Model
     {
         return $this->hasMany(Desa::class, 'kecamatan_id');
     }
+
+    protected $casts = [
+        'kabupaten_id' => 'integer',
+    ];
 }

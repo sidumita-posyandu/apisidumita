@@ -21,4 +21,8 @@ class IbuHamil extends Model
     {
         return $this->hasMany(PemeriksaanIbuHamil::class);
     }
+
+    protected $casts = [
+        'detail_keluarga_id' => 'integer',
+    ];
 }

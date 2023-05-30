@@ -31,4 +31,11 @@ class DetailPemeriksaanBalita extends Model
     {
         return $this->hasManyThrough(DetailKeluarga::class, Balita::class, 'detail_keluarga_id', 'id','balita_id','id');
     }
+
+    protected $casts = [
+        'balita_id' => 'integer',
+        'pemeriksaan_balita_id' => 'integer',
+        'vaksin_id' => 'integer'
+       
+    ];
 }

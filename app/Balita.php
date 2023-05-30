@@ -21,4 +21,8 @@ class Balita extends Model
     {
         return $this->hasMany(PemeriksaanBalita::class);
     }
+
+    protected $casts = [
+        'detail_keluarga_id' => 'integer',
+    ];
 }

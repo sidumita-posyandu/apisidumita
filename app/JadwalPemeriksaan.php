@@ -22,4 +22,9 @@ class JadwalPemeriksaan extends Model
     {
         return $this->belongsTo(Dusun::class, 'dusun_id');
     }
+
+    protected $casts = [
+        'dusun_id' => 'integer',
+        'operator_posyandu_id' => 'integer',
+    ];
 }
