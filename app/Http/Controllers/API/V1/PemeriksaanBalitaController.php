@@ -783,7 +783,7 @@ class PemeriksaanBalitaController extends Controller
                         $isVaksin[] = [
                             'vaksin_id' => $value['id'],
                             'vaksin' => $value['nama_vaksin'],
-                            'status' => "Kejar",
+                            'status' => "Akan",
                             'tanggal_pemeriksaan' => $jadwal[0]->waktu_mulai
                         ];
                     }
@@ -802,7 +802,7 @@ class PemeriksaanBalitaController extends Controller
                         $isVaksin[] = [
                             'vaksin_id' => $value['id'],
                             'vaksin' => $value['nama_vaksin'],
-                            'status' => "Susulan",
+                            'status' => "Akan",
                             'tanggal_pemeriksaan' => $jadwal[0]->waktu_mulai
                         ];
                     }
