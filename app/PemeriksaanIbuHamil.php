@@ -25,6 +25,11 @@ class PemeriksaanIbuHamil extends Model
 
     protected $casts = [
         'ibu_hamil_id' => 'integer',
-        'petugas_kesehatan_id' => 'integer'
+        'petugas_kesehatan_id' => 'integer',
+        'lingkar_perut' => 'double',
+        'denyut_nadi' => 'double',
+        'denyut_jantung_bayi' => 'double',
+        'tinggi_badan' => 'double',
+        'berat_badan' => 'double',
     ];
 }

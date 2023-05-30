@@ -52,6 +52,10 @@ class PemeriksaanBalita extends Model
         'balita_id' => 'integer',
         'petugas_kesehatan_id' => 'integer',
         'dokter_id' => 'integer',
-        'vitamin_id' => 'integer'
+        'vitamin_id' => 'integer',
+        'lingkar_kepala' => 'double',
+        'lingkar_lengan' => 'double',
+        'tinggi_badan' => 'double',
+        'berat_badan' => 'double',
     ];
 }

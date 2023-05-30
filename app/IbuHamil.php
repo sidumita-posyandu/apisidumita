@@ -24,5 +24,7 @@ class IbuHamil extends Model
 
     protected $casts = [
         'detail_keluarga_id' => 'integer',
+        'berat_badan_prakehamilan' => 'double',
+        'tinggi_badan_prakehamilan' => 'double',
     ];
 }
