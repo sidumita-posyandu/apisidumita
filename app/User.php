@@ -52,6 +52,7 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(Keluarga::class);
     }
 
+    // add cast
     protected $casts = [
         'email_verified_at' => 'datetime',
         'role_id' => 'integer'
