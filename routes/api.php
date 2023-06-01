@@ -26,6 +26,8 @@ Route::group(['middleware' => 'api','prefix' => 'auth'], function ($router) {
     Route::post('refresh', 'AuthController@refresh');
     Route::post('change-password', 'AuthController@changePassword');
     Route::get('me', 'AuthController@me');
+    Route::post('sendPasswordResetLink', 'PasswordResetRequestController@sendEmail');
+    Route::post('resetPassword', 'ChangePasswordController@passwordResetProcess');
 });
 
 
