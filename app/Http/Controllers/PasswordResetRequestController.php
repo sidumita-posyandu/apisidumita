@@ -62,8 +62,8 @@ class PasswordResetRequestController extends Controller
     public function failedResponse()
     {
         return response()->json([
-            'status' => true,
-            'code' => 200,
+            'status' => false,
+            'code' => 404,
             'message' => 'Email does\'t found on our database'
         ], Response::HTTP_NOT_FOUND);
     }

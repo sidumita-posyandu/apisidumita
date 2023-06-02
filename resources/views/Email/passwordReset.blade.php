@@ -3,7 +3,7 @@
 
 A request has been received to change the password for your Sidumita Account
 
-@component('mail::button', ['url' => 'http://127.0.0.1:8000/resetPassword?token='.$token.'&'.'email='.$email])
+@component('mail::button', ['url' => env('BASE_URL_LINK').'resetPassword?token='.$token.'&'.'email='.$email])
 Reset Password
 @endcomponent
 
