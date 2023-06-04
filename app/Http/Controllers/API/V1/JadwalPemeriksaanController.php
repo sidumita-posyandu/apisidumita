@@ -10,7 +10,6 @@ use App\PetugasKesehatan;
 use App\Kecamatan;
 use App\Keluarga;
 use App\Dusun;
-use App\User;
 use Validator;
 use DB;
 use Kutia\Larafirebase\Facades\Larafirebase;
@@ -90,6 +89,18 @@ class JadwalPemeriksaanController extends Controller
                 'status' => false,
                 'code' => 400,
                 'message' => "Data tidak dapat ditambahkan"
+            ], 400);
+        }
+
+        $cek_jadwal = JadwalPemeriksaan::whereBetween('waktu_mulai', [$request->waktu_mulai, $request->waktu_berakhir])
+        ->orWhereBetween('waktu_berakhir', [$request->waktu_mulai, $request->waktu_berakhir])
+        ->get();
+
+        if(!$cek_jadwal->isEmpty()){
+            return response()->json([
+                'status' => false,
+                'code' => 400,
+                'message' => "Data jadwal sudah ada"
             ], 400);
         }
 
