@@ -32,7 +32,7 @@ class PasswordResetRequestController extends Controller
 
     public function requestOtp(Request $request)
     {
-           $otp = rand(000000,999999);
+           $otp = rand(100000,999999);
            $email = $request->email;
         //    Log::info("otp = ".$otp);
            $user = DB::table('password_resets')->where('email','=',$request->email)->update(['token' => $otp]);
@@ -49,7 +49,7 @@ class PasswordResetRequestController extends Controller
             return response(["status" => 200, "message" => "OTP sent successfully", "email" => $request->email]);
            }
            else{
-               return response(["status" => 401, 'message' => 'Invalid']);
+               return response(["status" => 401, 'message' => 'Invalid'],400);
            }
     }
 
@@ -64,7 +64,7 @@ class PasswordResetRequestController extends Controller
             return response(["status" => 200, "message" => "Success"]);
         }
         else{
-            return response(["status" => 401, 'message' => 'Invalid']);
+            return response(["status" => 401, 'message' => 'Invalid'],400);
         }
     }
 
