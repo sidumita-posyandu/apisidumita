@@ -34,12 +34,19 @@ class PasswordResetRequestController extends Controller
     {
            $otp = rand(100000,999999);
            $email = $request->email;
+           $pass_reset = DB::table('password_resets')->where('email','=',$email);
         //    Log::info("otp = ".$otp);
-           $user = DB::table('password_resets')->
-           insert([
-            'email' => $request->email,
-            'token' => $otp
-        ]);
+        // dd($pass_reset);
+        if($pass_reset){
+            $user = DB::table('password_resets')->where('email','=',$request->email)->update(['token' => $otp]);
+        }else{
+
+            $user = DB::table('password_resets')->
+               insert([
+                'email' => $request->email,
+                'token' => $otp
+            ]);
+        }
    
            if($user){
    
