@@ -30,9 +30,8 @@ Route::group(['middleware' => 'api','prefix' => 'auth'], function ($router) {
     Route::post('resetPassword', 'ChangePasswordController@passwordResetProcess');
     Route::post('request_otp', 'PasswordResetRequestController@requestOtp');    
     Route::post('verify_otp', 'PasswordResetRequestController@verifyOtp');
-    Route::post('resetPassword_otp', 'AuthController@resetPassword');
+    Route::post('forgot_password', 'AuthController@forgotPassword');
 });
-
 
 Route::apiResource('provinsi', API\V1\MasterData\ProvinsiController::class);
 Route::apiResource('kabupaten', API\V1\MasterData\KabupatenController::class);

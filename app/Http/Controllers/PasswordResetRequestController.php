@@ -40,7 +40,6 @@ class PasswordResetRequestController extends Controller
         if($pass_reset){
             $user = DB::table('password_resets')->where('email','=',$request->email)->update(['token' => $otp]);
         }else{
-
             $user = DB::table('password_resets')->
                insert([
                 'email' => $request->email,

@@ -21,7 +21,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login','register','logout']]);
+        $this->middleware('auth:api', ['except' => ['login','register','logout','forgotPassword']]);
     }
 
     public function registerAdmin()
@@ -154,7 +154,7 @@ class AuthController extends Controller
         ], 200);
     }
 
-    public function resetPassword($request) {
+    public function forgotPassword(Request $request) {
         // find email
         $userData = User::where('email', $request->email)->first();
         // update password
@@ -162,13 +162,12 @@ class AuthController extends Controller
 
         $userData->save();
 
-        // remove verification data from db
-        $this->updatePasswordRow($request)->delete();
 
-        // reset password response
         return response()->json([
-          'data'=>'Password has been updated.'
-        ],Response::HTTP_CREATED);
+            'status' => true,
+            'code' => 200,
+            'message' => "Password Berhasil diubah"
+        ], 200);
     } 
 
     /**
