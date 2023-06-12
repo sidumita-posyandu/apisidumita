@@ -154,6 +154,23 @@ class AuthController extends Controller
         ], 200);
     }
 
+    public function resetPassword($request) {
+        // find email
+        $userData = User::where('email', $request->email)->first();
+        // update password
+        $userData->password = Hash::make($request->password);
+
+        $userData->save();
+
+        // remove verification data from db
+        $this->updatePasswordRow($request)->delete();
+
+        // reset password response
+        return response()->json([
+          'data'=>'Password has been updated.'
+        ],Response::HTTP_CREATED);
+    } 
+
     /**
      * Get a JWT via given credentials.
      *

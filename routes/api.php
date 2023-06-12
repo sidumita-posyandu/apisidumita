@@ -28,6 +28,9 @@ Route::group(['middleware' => 'api','prefix' => 'auth'], function ($router) {
     Route::get('me', 'AuthController@me');
     Route::post('sendPasswordResetLink', 'PasswordResetRequestController@sendEmail');
     Route::post('resetPassword', 'ChangePasswordController@passwordResetProcess');
+    Route::post('request_otp', 'PasswordResetRequestController@requestOtp');    
+    Route::post('verify_otp', 'PasswordResetRequestController@verifyOtp');
+    Route::post('resetPassword_otp', 'AuthController@resetPassword');
 });
 
 
@@ -44,6 +47,7 @@ Route::post('fetch-desa', 'API\V1\MasterData\DusunController@fetchDesa');
 
 Route::apiResource('konten', API\V1\KontenController::class);
 Route::post('update/konten/{id}', 'API\V1\KontenController@updateKonten');
+
 
 //must login
 Route::middleware(['jwt.verify'])->group(function () {

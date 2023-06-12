@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\User;
 use App\Mail\SendMailreset;
+use App\Mail\SendOTPreset;
 use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -27,6 +28,44 @@ class PasswordResetRequestController extends Controller
     {
         $token = $this->createToken($email);
         Mail::to($email)->send(new SendMailreset($token, $email));  // token is important in send mail 
+    }
+
+    public function requestOtp(Request $request)
+    {
+           $otp = rand(000000,999999);
+           $email = $request->email;
+        //    Log::info("otp = ".$otp);
+           $user = DB::table('password_resets')->where('email','=',$request->email)->update(['token' => $otp]);
+   
+           if($user){
+   
+        //    $mail_details = [
+        //        'subject' => 'Testing Application OTP',
+        //        'body' => 'Your OTP is : '. $otp
+        //    ];
+          
+            Mail::to($email)->send(new SendOTPreset($otp, $email));
+          
+            return response(["status" => 200, "message" => "OTP sent successfully", "email" => $request->email]);
+           }
+           else{
+               return response(["status" => 401, 'message' => 'Invalid']);
+           }
+    }
+
+       public function verifyOtp(Request $request){
+    
+        $user  = DB::table('password_resets')->where([['email','=',$request->email],['token','=',$request->otp]])->first();
+        if($user){
+            // auth()->login($user, true);
+            DB::table('password_resets')->where('email','=',$request->email)->update(['token' => null]);
+            // $accessToken = auth()->user()->createToken('authToken')->accessToken;
+
+            return response(["status" => 200, "message" => "Success"]);
+        }
+        else{
+            return response(["status" => 401, 'message' => 'Invalid']);
+        }
     }
 
     public function createToken($email)  // this is a function to get your request email that there are or not to send mail
