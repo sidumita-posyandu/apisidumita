@@ -227,8 +227,8 @@ class PemeriksaanIbuHamilController extends Controller
         
         $rekomendasi = $this->hitungBeratRekomendasi($umur_kandungan, $status);
 
-        $berat_minimal = $berat_badan + round($rekomendasi[0]);
-        $berat_maksimal = $berat_badan + round($rekomendasi[1]);
+        $berat_minimal = $bb_prakehamilan + round($rekomendasi[0]);
+        $berat_maksimal = $bb_prakehamilan + round($rekomendasi[1]);
 
         return response()->json([
             'status' => true,
