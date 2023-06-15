@@ -55,6 +55,21 @@ class JadwalPemeriksaanController extends Controller
             ]);
         }elseif($login == 3){
             $user = PetugasKesehatan::where("user_id", auth()->user()->id)->first();
+
+            $dusun = Dusun::where("id", $user->dusun_id)->first();
+            $jadwal_pemeriksaan = DB::table('tb_jadwal_pemeriksaan')
+            ->select('*')
+            ->join('tb_operator_posyandu', 'tb_operator_posyandu.id', '=', 'tb_jadwal_pemeriksaan.operator_posyandu_id')
+            ->join('m_dusun', 'm_dusun.id', '=', 'tb_jadwal_pemeriksaan.dusun_id')
+            ->join('m_desa', 'm_desa.id', '=', 'm_dusun.desa_id')
+            ->where('m_desa.id', '=', $dusun->desa->id)
+            ->get();
+
+            return response()->json([
+                'status' => true,
+                'code' => 200,
+                'data' => $jadwal_pemeriksaan
+            ]);
         }elseif($login == 4){
             $user = Keluarga::where("user_id", auth()->user()->id)->first();
         }

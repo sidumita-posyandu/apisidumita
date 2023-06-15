@@ -3,9 +3,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class DetailKeluarga extends Model
 {
+    use SoftDeletes;
+
     protected $table = 'tb_detail_keluarga';
 
     protected $fillable = [
