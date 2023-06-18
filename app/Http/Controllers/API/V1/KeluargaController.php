@@ -203,9 +203,10 @@ class KeluargaController extends Controller
         $kecamatan_id =  OperatorPosyandu::where("user_id", auth()->user()->id)->first()->kecamatan_id;
 
         $keluargas = DB::table('tb_keluarga')
-        ->select('*','tb_keluarga.id')
+        ->select('tb_keluarga.*','users.email','users.isValid', 'm_dusun.nama_dusun','tb_keluarga.id')
         ->join('m_dusun', 'm_dusun.id', '=', 'tb_keluarga.dusun_id')
         ->join('m_desa', 'm_desa.id', '=', 'm_dusun.desa_id')
+        ->join('users', 'tb_keluarga.user_id', '=', 'users.id')
         ->where("m_desa.kecamatan_id",'=', $kecamatan_id)
         ->groupBy('tb_keluarga.id')->get();
 
