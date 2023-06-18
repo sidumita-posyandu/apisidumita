@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\API\V1;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\PemeriksaanIbuHamil;
-use App\IbuHamil;
-use App\PetugasKesehatan;
-use Validator;
 use DB;
+use Validator;
+use App\IbuHamil;
+use App\OperatorPosyandu;
+use App\PetugasKesehatan;
+use App\PemeriksaanIbuHamil;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class PemeriksaanIbuHamilController extends Controller
 {
@@ -27,6 +28,29 @@ class PemeriksaanIbuHamilController extends Controller
         ]);
 
     }
+
+    public function showPemeriksaanIbuHamilForOperator(){
+        $kecamatan_id =  OperatorPosyandu::where("user_id", auth()->user()->id)->first()->kecamatan_id;
+
+        $pemeriksaan_ibu_hamils = DB::table('tb_pemeriksaan_ibu_hamil')
+        ->select('*','tb_pemeriksaan_ibu_hamil.id')
+        ->join('tb_ibu_hamil', 'tb_ibu_hamil.id', '=', 'tb_pemeriksaan_ibu_hamil.ibu_hamil_id')
+        ->join('tb_detail_keluarga', 'tb_detail_keluarga.id', '=', 'tb_ibu_hamil.detail_keluarga_id')
+        ->join('tb_keluarga', 'tb_keluarga.id', '=', 'tb_detail_keluarga.keluarga_id')
+        ->join('m_dusun', 'm_dusun.id', '=', 'tb_keluarga.dusun_id')
+        ->join('m_desa', 'm_desa.id', '=', 'm_dusun.desa_id')
+        ->where("m_desa.kecamatan_id",'=', $kecamatan_id)
+        ->groupBy('tb_pemeriksaan_ibu_hamil.id')->get();
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'data' => $pemeriksaan_ibu_hamils
+        ]);
+
+    }
+
+
     public function showPemeriksaanIbuHamilForPetugas(){
         $desa_id =  PetugasKesehatan::where("user_id", auth()->user()->id)->first()->dusun->desa_id;
 

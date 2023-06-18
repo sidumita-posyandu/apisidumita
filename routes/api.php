@@ -130,5 +130,13 @@ Route::middleware(['jwt.verify'])->group(function () {
 
     Route::apiResource('dokter', API\V1\DokterController::class);
 
- 
+    Route::get('operator/keluarga', 'API\V1\KeluargaController@showKeluargaForOperator');
+    Route::get('operator/balita', 'API\V1\BalitaController@showBalitaForOperator');
+    Route::get('operator/ibu-hamil', 'API\V1\IbuHamilController@showIbuHamilForOperator');
+    Route::get('operator/pemeriksaan-balita', 'API\V1\PemeriksaanBalitaController@showPemeriksaanBalitaForOperator');
+    Route::get('operator/pemeriksaan-ibu-hamil', 'API\V1\PemeriksaanIbuHamilController@showPemeriksaanIbuHamilForOperator');
+    // Route::get('peserta', 'API\V1\UserController@peserta');
+    // Route::get('peserta-kecamatan', 'API\V1\UserController@pesertaKecamatan');
+    Route::patch('validasi-user/{id}', 'API\V1\UserController@validasi');
+    Route::patch('unvalidasi-user/{id}', 'API\V1\UserController@unvalidasi');
 });

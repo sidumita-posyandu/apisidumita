@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers\API\V1;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\PemeriksaanBalita;
-use App\DetailKeluarga;
-use App\PetugasKesehatan;
-use App\DetailPemeriksaanBalita;
-use App\Vaksin;
-use App\Balita;
-use App\JadwalPemeriksaan;
-use Carbon\Carbon;
-use Validator;
 use DB;
+use Validator;
+use App\Balita;
+use App\Vaksin;
+use Carbon\Carbon;
+use App\DetailKeluarga;
+use App\OperatorPosyandu;
+use App\PetugasKesehatan;
+use App\JadwalPemeriksaan;
+use App\PemeriksaanBalita;
+use Illuminate\Http\Request;
+use App\DetailPemeriksaanBalita;
+use App\Http\Controllers\Controller;
 
 class PemeriksaanBalitaController extends Controller
 {
@@ -32,6 +33,29 @@ class PemeriksaanBalitaController extends Controller
             'code' => 200,
             'data' => $pemeriksaan_balitas
         ]);
+    }
+
+    public function showPemeriksaanBalitaForOperator(){
+        $kecamatan_id =  OperatorPosyandu::where("user_id", auth()->user()->id)->first()->kecamatan_id;
+
+        $pemeriksaan_balitas = DB::table('tb_pemeriksaan_balita')
+        ->select('*','tb_pemeriksaan_balita.id')
+        ->join('tb_balita', 'tb_balita.id', '=', 'tb_pemeriksaan_balita.balita_id')
+        ->join('tb_detail_keluarga', 'tb_detail_keluarga.id', '=', 'tb_balita.detail_keluarga_id')
+        ->join('tb_keluarga', 'tb_keluarga.id', '=', 'tb_detail_keluarga.keluarga_id')
+        ->join('m_dusun', 'm_dusun.id', '=', 'tb_keluarga.dusun_id')
+        ->join('m_desa', 'm_desa.id', '=', 'm_dusun.desa_id')
+        ->where("m_desa.kecamatan_id",'=', $kecamatan_id)
+        ->groupBy('tb_pemeriksaan_balita.id')
+        ->orderBy('tb_pemeriksaan_balita.tanggal_pemeriksaan', 'desc')
+        ->get();
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'data' => $pemeriksaan_balitas
+        ]);
+
     }
 
     public function showPemeriksaanBalitaForPetugas(){

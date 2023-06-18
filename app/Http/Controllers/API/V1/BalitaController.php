@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Balita;
 use App\Keluarga;
 use App\DetailKeluarga;
+use App\OperatorPosyandu;
 use App\PetugasKesehatan;
 use Validator;
 use DB;
@@ -71,6 +72,27 @@ class BalitaController extends Controller
         ->join('tb_keluarga', 'tb_keluarga.id', '=', 'tb_detail_keluarga.keluarga_id')
         ->join('m_dusun', 'm_dusun.id', '=', 'tb_keluarga.dusun_id')
         ->where("m_dusun.desa_id",'=', $desa_id)
+        ->groupBy('tb_balita.id')->get();
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'data' => $balitas
+        ]);
+
+    }
+
+    public function showBalitaForOperator(){
+        $kecamatan_id =  OperatorPosyandu::where("user_id", auth()->user()->id)->first()->kecamatan_id;
+        // dd($desa_id);
+
+        $balitas = DB::table('tb_balita')
+        ->select('*','tb_balita.id')
+        ->join('tb_detail_keluarga', 'tb_detail_keluarga.id', '=', 'tb_balita.detail_keluarga_id')
+        ->join('tb_keluarga', 'tb_keluarga.id', '=', 'tb_detail_keluarga.keluarga_id')
+        ->join('m_dusun', 'm_dusun.id', '=', 'tb_keluarga.dusun_id')
+        ->join('m_desa', 'm_desa.id', '=', 'm_dusun.desa_id')
+        ->where("m_desa.kecamatan_id",'=', $kecamatan_id)
         ->groupBy('tb_balita.id')->get();
 
         return response()->json([

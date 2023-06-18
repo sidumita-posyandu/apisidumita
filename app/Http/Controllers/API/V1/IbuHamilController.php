@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\API\V1;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use DB;
+use Validator;
 use App\IbuHamil;
 use App\Keluarga;
 use App\DetailKeluarga;
+use App\OperatorPosyandu;
 use App\PetugasKesehatan;
-use DB;
-use Validator;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class IbuHamilController extends Controller
 {
@@ -52,6 +53,27 @@ class IbuHamilController extends Controller
     public function show($id) 
     {
         $ibu_hamils = IbuHamil::with(['detail_keluarga'])->findOrFail($id);
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'data' => $ibu_hamils
+        ]);
+
+    }
+
+    public function showIbuHamilForOperator(){
+        $kecamatan_id =  OperatorPosyandu::where("user_id", auth()->user()->id)->first()->kecamatan_id;
+        // dd($petugas_kesehatan);
+
+        $ibu_hamils = DB::table('tb_ibu_hamil')
+        ->select('*','tb_ibu_hamil.id')
+        ->join('tb_detail_keluarga', 'tb_detail_keluarga.id', '=', 'tb_ibu_hamil.detail_keluarga_id')
+        ->join('tb_keluarga', 'tb_keluarga.id', '=', 'tb_detail_keluarga.keluarga_id')
+        ->join('m_dusun', 'm_dusun.id', '=', 'tb_keluarga.dusun_id')
+        ->join('m_desa', 'm_desa.id', '=', 'm_dusun.desa_id')
+        ->where("m_desa.kecamatan_id",'=', $kecamatan_id)
+        ->groupBy('tb_ibu_hamil.id')->get();
 
         return response()->json([
             'status' => true,

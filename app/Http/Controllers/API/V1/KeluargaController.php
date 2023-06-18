@@ -8,6 +8,7 @@ use App\Dusun;
 use App\Keluarga;
 use App\User;
 use App\DetailKeluarga;
+use App\OperatorPosyandu;
 use App\PetugasKesehatan;
 use Validator;
 use DB;
@@ -46,8 +47,6 @@ class KeluargaController extends Controller
             'data' => $keluarga
         ]);
     }
-
-   
 
     public function store(Request $request)
     {
@@ -198,6 +197,22 @@ class KeluargaController extends Controller
             'code' => 200,
             'data' => $keluargas
         ]);
+    }
 
+    public function showKeluargaForOperator(){
+        $kecamatan_id =  OperatorPosyandu::where("user_id", auth()->user()->id)->first()->kecamatan_id;
+
+        $keluargas = DB::table('tb_keluarga')
+        ->select('*','tb_keluarga.id')
+        ->join('m_dusun', 'm_dusun.id', '=', 'tb_keluarga.dusun_id')
+        ->join('m_desa', 'm_desa.id', '=', 'm_dusun.desa_id')
+        ->where("m_desa.kecamatan_id",'=', $kecamatan_id)
+        ->groupBy('tb_keluarga.id')->get();
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'data' => $keluargas
+        ]);
     }
 }
