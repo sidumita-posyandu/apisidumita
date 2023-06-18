@@ -31,7 +31,7 @@ class SendOTPreset extends Mailable
      */
     public function build()
     {
-        return $this->markdown('Email.passwordotp')->with([
+        return $this->subject("OTP Reset")->markdown('Email.passwordotp')->with([
             'otp' => $this->otp,
             'email' => $this->email
         ]);

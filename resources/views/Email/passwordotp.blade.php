@@ -3,8 +3,8 @@
 
 A request has been received to change the password for your Sidumita Account
 
-{{$otp}}
-Reset Password
+Reset Password<br>
+OTP: {{$otp}}
 
 Thanks,<br>
 Sidumita
