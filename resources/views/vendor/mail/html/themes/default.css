@@ -105,6 +105,8 @@ img {
 .header a {
     color: #3d4852;
     font-size: 19px;
+    width: 30%;
+    display: inline-block;
     font-weight: bold;
     text-decoration: none;
 }
@@ -112,8 +114,7 @@ img {
 /* Logo */
 
 .logo {
-    
-    width: 500px;
+    width: 100%;
 }
 
 /* Body */
