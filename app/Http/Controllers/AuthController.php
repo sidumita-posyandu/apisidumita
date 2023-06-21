@@ -91,7 +91,7 @@ class AuthController extends Controller
             $validator = Validator::make(request()->all(),[
                 'name'=>'required',
                 'email'=>'required|email|unique:users',
-                'password'=> 'required',
+                'password' => 'required|string|regex:/[a-z]/|regex:/[A-Z]/|regex:/[0-9]/',
                 'role_id'=> 'required',
                 'no_kartu_keluarga' => 'required|unique:tb_keluarga',
                 'kepala_keluarga' => 'required',
