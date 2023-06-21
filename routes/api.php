@@ -67,6 +67,7 @@ Route::middleware(['jwt.verify'])->group(function () {
     Route::post('me/update-keluarga', 'API\V1\KeluargaController@updateMyKeluarga');
     
     Route::get('petugas/with-keluarga', 'API\V1\KeluargaController@showKeluargaForPetugas');
+    Route::get('petugas/with-detail-keluarga', 'API\V1\DetailKeluargaController@DetailKeluargaByPetugas');
 
     Route::apiResource('balita', API\V1\BalitaController::class);
     Route::get('me/balita', 'API\V1\BalitaController@showMyBalitas');
@@ -131,6 +132,7 @@ Route::middleware(['jwt.verify'])->group(function () {
     Route::apiResource('dokter', API\V1\DokterController::class);
 
     Route::get('operator/keluarga', 'API\V1\KeluargaController@showKeluargaForOperator');
+    Route::get('operator/detail-keluarga', 'API\V1\DetailKeluargaController@DetailKeluargaByOperator');
     Route::get('operator/balita', 'API\V1\BalitaController@showBalitaForOperator');
     Route::get('operator/ibu-hamil', 'API\V1\IbuHamilController@showIbuHamilForOperator');
     Route::get('operator/pemeriksaan-balita', 'API\V1\PemeriksaanBalitaController@showPemeriksaanBalitaForOperator');

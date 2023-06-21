@@ -42,6 +42,7 @@ class AuthController extends Controller
             'email'=> request('email'),
             'password'=> Hash::make(request('password')),
             'role_id'=> request('role_id'),
+            'isValid'=> 1
         ]);
 
         if(request('role_id') == 2){
@@ -55,7 +56,7 @@ class AuthController extends Controller
         if(request('role_id') == 3){
             $operator_posyandu = PetugasKesehatan::create([
                 'nama' => request('name'),
-                'dusun_id' => request('kecamatan_id'),
+                'dusun_id' => request('dusun_id'),
                 'user_id' => $user->id
             ]);
         }

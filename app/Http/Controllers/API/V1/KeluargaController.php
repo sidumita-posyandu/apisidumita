@@ -158,9 +158,9 @@ class KeluargaController extends Controller
         // $data['user_id'] = User::where("id", auth()->user()->id)->first()->id;
         $keluarga->update([
             'no_kartu_keluarga' => request('no_kartu_keluarga'),
-                'kepala_keluarga' => request('kepala_keluarga'),
-                'alamat' => request('alamat'),
-                'dusun_id' => request('dusun_id'),
+            'kepala_keluarga' => request('kepala_keluarga'),
+            'alamat' => request('alamat'),
+            'dusun_id' => request('dusun_id'),
         ]);
 
         return response()->json([

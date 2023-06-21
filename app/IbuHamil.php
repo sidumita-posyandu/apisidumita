@@ -3,9 +3,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class IbuHamil extends Model
 {
+    use SoftDeletes;
+    
     protected $table = 'tb_ibu_hamil';
 
     protected $fillable = [

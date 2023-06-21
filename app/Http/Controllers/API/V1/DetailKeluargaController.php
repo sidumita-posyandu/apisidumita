@@ -8,6 +8,8 @@ use App\DetailKeluarga;
 use App\Keluarga;
 use App\Balita;
 use App\IbuHamil;
+use App\OperatorPosyandu;
+use App\PetugasKesehatan;
 use Validator;
 use Carbon\Carbon;
 use DB;
@@ -69,6 +71,42 @@ class DetailKeluargaController extends Controller
             'status' => true,
             'code' => 200,
             'data' => $detail_keluargas
+        ]);
+    }
+
+    public function DetailKeluargaByOperator(){
+
+        $kecamatan_id =  OperatorPosyandu::where("user_id", auth()->user()->id)->first()->kecamatan_id;
+
+        $keluargas = DB::table('tb_detail_keluarga')
+        ->select('tb_detail_keluarga.*')
+        ->join('tb_keluarga', 'tb_keluarga.id', '=', 'tb_detail_keluarga.keluarga_id')
+        ->join('m_dusun', 'm_dusun.id', '=', 'tb_keluarga.dusun_id')
+        ->join('m_desa', 'm_desa.id', '=', 'm_dusun.desa_id')
+        ->where("m_desa.kecamatan_id",'=', $kecamatan_id)
+        ->groupBy('tb_keluarga.id')->get();
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'data' => $keluargas
+        ]);
+    }
+
+    public function DetailKeluargaByPetugas(){
+        $desa_id =  PetugasKesehatan::where("user_id", auth()->user()->id)->first()->dusun->desa_id;
+
+        $keluargas = DB::table('tb_detail_keluarga')
+        ->select('tb_detail_keluarga.*')
+        ->join('tb_keluarga', 'tb_keluarga.id', '=', 'tb_detail_keluarga.keluarga_id')
+        ->join('m_dusun', 'm_dusun.id', '=', 'tb_keluarga.dusun_id')
+        ->join('m_desa', 'm_desa.id', '=', 'm_dusun.desa_id')
+        ->where("m_dusun.desa_id",'=', $desa_id)->get();
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'data' => $keluargas
         ]);
     }
 

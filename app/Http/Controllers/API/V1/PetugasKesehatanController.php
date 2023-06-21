@@ -59,6 +59,8 @@ class PetugasKesehatanController extends Controller
         // $petugas_kesehatan = PetugasKesehatan::with(['user','dusun','desa'])
         // ->where("user_id", auth()->user()->id)->get();
 
+        // $petugas_kesehatan = PetugasKesehatan::where('user_id', auth()->user()->id)->first();
+
         $petugas_kesehatan = DB::table('tb_petugas_kesehatan')
         ->select('*')
         // ->join('tb_petugas_kesehatan', 'tb_petugas_kesehatan.dusun_id', '=', 'm_dusun.id')
@@ -67,7 +69,7 @@ class PetugasKesehatanController extends Controller
         ->join('m_kecamatan', 'm_kecamatan.id', '=', 'm_desa.kecamatan_id')
         ->join('m_kabupaten', 'm_kabupaten.id', '=', 'm_kecamatan.kabupaten_id')
         ->join('m_provinsi', 'm_provinsi.id', '=', 'm_kabupaten.provinsi_id')
-        // ->join('users', 'users.id', '=', 'tb_petugas_kesehatan.user_id')
+        ->join('users', 'users.id', '=', 'tb_petugas_kesehatan.user_id')
         ->where("user_id", auth()->user()->id)->first();
 
         return response()->json([
