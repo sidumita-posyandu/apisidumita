@@ -184,7 +184,7 @@ class PemeriksaanBalitaController extends Controller
             'catatan' => 'required',
             'keluhan' => 'required',
             'dokter_id' => 'required',
-            'vitamin_id' => 'required',
+            // 'vitamin_id' => 'required',
             // 'vaksin_id' => 'required',
         ]);
 
