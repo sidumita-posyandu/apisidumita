@@ -762,6 +762,7 @@ class PemeriksaanBalitaController extends Controller
 
         $balita = Balita::with(['detail_keluarga'])->where('id', $id)->first();
         $now = Carbon::now();
+        $estimasi = $now->addMonth()->format('M Y');
         $birthday = Carbon::parse($balita['detail_keluarga']['tanggal_lahir']);
         $umur = $birthday->diffInMonths($now);
 
@@ -798,7 +799,7 @@ class PemeriksaanBalitaController extends Controller
                             'vaksin_id' => $value['id'],
                             'vaksin' => $value['nama_vaksin'],
                             'status' => "Akan",
-                            'tanggal_pemeriksaan' => $now->addMonths()->format('M-Y')
+                            'tanggal_pemeriksaan' => $estimasi
                         ];
                     }
                 }
@@ -816,7 +817,7 @@ class PemeriksaanBalitaController extends Controller
                             'vaksin_id' => $value['id'],
                             'vaksin' => $value['nama_vaksin'],
                             'status' => "Kejar",
-                            'tanggal_pemeriksaan' => $now->addMonths()->format('M-Y')
+                            'tanggal_pemeriksaan' => $estimasi
                         ];
                     }
                     
