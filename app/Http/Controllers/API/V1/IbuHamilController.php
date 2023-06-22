@@ -73,6 +73,8 @@ class IbuHamilController extends Controller
         ->join('m_dusun', 'm_dusun.id', '=', 'tb_keluarga.dusun_id')
         ->join('m_desa', 'm_desa.id', '=', 'm_dusun.desa_id')
         ->where("m_desa.kecamatan_id",'=', $kecamatan_id)
+        ->where('tb_ibu_hamil.deleted_at', '=', null)
+        ->where('tb_detail_keluarga.deleted_at', '=', null)
         ->groupBy('tb_ibu_hamil.id')->get();
 
         return response()->json([
@@ -93,6 +95,8 @@ class IbuHamilController extends Controller
         ->join('tb_keluarga', 'tb_keluarga.id', '=', 'tb_detail_keluarga.keluarga_id')
         ->join('m_dusun', 'm_dusun.id', '=', 'tb_keluarga.dusun_id')
         ->where("m_dusun.desa_id",'=', $desa_id)
+        ->where('tb_ibu_hamil.deleted_at', '=', null)
+        ->where('tb_detail_keluarga.deleted_at', '=', null)
         ->groupBy('tb_ibu_hamil.id')->get();
 
         return response()->json([
