@@ -5,6 +5,8 @@ namespace App\Http\Controllers\API\V1;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\User;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\SendMailValidasi;
 
 class UserController extends Controller
 {
@@ -43,6 +45,8 @@ class UserController extends Controller
     public function validasi($id)
     {
         $user = User::with(['role'])->find($id);
+        $email = $user->email;
+        // dd($email);
 
         if($user == null)
         {
@@ -55,6 +59,13 @@ class UserController extends Controller
         }else{
             $user->isValid = 1;
             $user->save();
+
+            $data_user = [
+                'name' => $user->name,
+                'body' => 'Akun Tervalidasi, Silahkan Login pada Aplikasi'
+            ];
+
+            Mail::to($email)->send(new SendMailValidasi($data_user));
 
             return response()->json([
                 'status' => true,
