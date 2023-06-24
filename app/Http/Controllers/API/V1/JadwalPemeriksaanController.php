@@ -23,7 +23,7 @@ class JadwalPemeriksaanController extends Controller
         
         if($login == 1){
             $jadwal_pemeriksaan = DB::table('tb_jadwal_pemeriksaan')
-            ->select('*')
+            ->select('*', 'tb_jadwal_pemeriksaan.id')
             ->join('tb_operator_posyandu', 'tb_operator_posyandu.id', '=', 'tb_jadwal_pemeriksaan.operator_posyandu_id')
             ->join('m_dusun', 'm_dusun.id', '=', 'tb_jadwal_pemeriksaan.dusun_id')
             ->join('m_desa', 'm_desa.id', '=', 'm_dusun.desa_id')
@@ -40,7 +40,7 @@ class JadwalPemeriksaanController extends Controller
 
             $kecamatan = Kecamatan::where("id", $user->kecamatan_id)->first();
             $jadwal_pemeriksaan = DB::table('tb_jadwal_pemeriksaan')
-            ->select('*')
+            ->select('*', 'tb_jadwal_pemeriksaan.id')
             ->join('tb_operator_posyandu', 'tb_operator_posyandu.id', '=', 'tb_jadwal_pemeriksaan.operator_posyandu_id')
             ->join('m_dusun', 'm_dusun.id', '=', 'tb_jadwal_pemeriksaan.dusun_id')
             ->join('m_desa', 'm_desa.id', '=', 'm_dusun.desa_id')
@@ -58,7 +58,7 @@ class JadwalPemeriksaanController extends Controller
 
             $dusun = Dusun::where("id", $user->dusun_id)->first();
             $jadwal_pemeriksaan = DB::table('tb_jadwal_pemeriksaan')
-            ->select('*')
+            ->select('*', 'tb_jadwal_pemeriksaan.id')
             ->join('tb_operator_posyandu', 'tb_operator_posyandu.id', '=', 'tb_jadwal_pemeriksaan.operator_posyandu_id')
             ->join('m_dusun', 'm_dusun.id', '=', 'tb_jadwal_pemeriksaan.dusun_id')
             ->join('m_desa', 'm_desa.id', '=', 'm_dusun.desa_id')
@@ -75,7 +75,7 @@ class JadwalPemeriksaanController extends Controller
         }
         $dusun = Dusun::where("id", $user->dusun_id)->first();
         $jadwal_pemeriksaan = DB::table('tb_jadwal_pemeriksaan')
-        ->select('*')
+        ->select('*', 'tb_jadwal_pemeriksaan.id')
         ->join('tb_operator_posyandu', 'tb_operator_posyandu.id', '=', 'tb_jadwal_pemeriksaan.operator_posyandu_id')
         ->join('m_dusun', 'm_dusun.id', '=', 'tb_jadwal_pemeriksaan.dusun_id')
         ->where('m_dusun.id', '=', $dusun->id)
@@ -107,7 +107,8 @@ class JadwalPemeriksaanController extends Controller
             ], 400);
         }
 
-        $cek_jadwal = JadwalPemeriksaan::whereBetween('waktu_mulai', [$request->waktu_mulai, $request->waktu_berakhir])
+        $cek_jadwal = JadwalPemeriksaan::where('dusun_id', $request->dusun_id)
+        ->whereBetween('waktu_mulai', [$request->waktu_mulai, $request->waktu_berakhir])
         ->orWhereBetween('waktu_berakhir', [$request->waktu_mulai, $request->waktu_berakhir])
         ->get();
 
@@ -162,13 +163,29 @@ class JadwalPemeriksaanController extends Controller
 
     public function show($id) 
     {
-        $jadwal_pemeriksaan = JadwalPemeriksaan::findOrFail($id)->with(['operator_posyandu', 'dusun'])->first();
+        $jadwal_pemeriksaan = JadwalPemeriksaan::findOrFail($id);
 
-        return response()->json([
-            'status' => true,
-            'code' => 200,
-            'data' => $jadwal_pemeriksaan
-        ]);
+        $dusun = $jadwal_pemeriksaan->dusun;
+        $desa = $dusun->desa;
+        $kecamatan = $desa->kecamatan;
+        $kabupaten = $kecamatan->kabupaten;
+        $provinsi = $kabupaten->provinsi;
+
+        if($jadwal_pemeriksaan){
+            return response()->json([
+                'status' => true,
+                'code' => 200,
+                'data' => $jadwal_pemeriksaan
+            ]);
+        }
+        else{
+            return response()->json([
+                'status' => false,
+                'code' => 404,
+                'data' => 'data tidak ditemukan'
+            ]);
+        }
+        
 
     }
 
