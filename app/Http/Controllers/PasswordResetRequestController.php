@@ -63,10 +63,10 @@ class PasswordResetRequestController extends Controller
           
             Mail::to($email)->send(new SendOTPreset($otp, $email));
           
-            return response(["status" => 200, "message" => "OTP sent successfully", "email" => $request->email]);
+            return response(["success" => true, "message" => "OTP sent successfully", "email" => $request->email]);
            }
            else{
-               return response(["status" => 401, 'message' => 'Invalid'],400);
+               return response(["success" => false, 'message' => 'Invalid'],400);
            }
     }
 
