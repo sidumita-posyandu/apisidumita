@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Validator;
 
 class PasswordResetRequestController extends Controller
 {
@@ -32,11 +33,22 @@ class PasswordResetRequestController extends Controller
 
     public function requestOtp(Request $request)
     {
-           $otp = rand(100000,999999);
-           $email = $request->email;
+        
+        $validator = Validator::make(request()->all(),[
+            'email'=>'required|exists:users,email',
+        ]);
+
+        if($validator->fails()){
+            return response()->json([
+                "success" => false,
+                "message" => $validator->messages()->all()
+            ]);
+        }
+
+        $otp = rand(100000,999999);
+        $email = $request->email;
            $pass_reset = DB::table('password_resets')->where('email','=',$email)->get();
-        //    Log::info("otp = ".$otp);
-        // dd($pass_reset);
+      
         if(count($pass_reset)>0){
             $user = DB::table('password_resets')->where('email','=',$request->email)->update(['token' => $otp]);
         }else{
@@ -48,11 +60,6 @@ class PasswordResetRequestController extends Controller
         }
    
            if($user){
-   
-        //    $mail_details = [
-        //        'subject' => 'Testing Application OTP',
-        //        'body' => 'Your OTP is : '. $otp
-        //    ];
           
             Mail::to($email)->send(new SendOTPreset($otp, $email));
           
