@@ -78,7 +78,8 @@ class JadwalPemeriksaanController extends Controller
         ->select('*', 'tb_jadwal_pemeriksaan.id')
         ->join('tb_operator_posyandu', 'tb_operator_posyandu.id', '=', 'tb_jadwal_pemeriksaan.operator_posyandu_id')
         ->join('m_dusun', 'm_dusun.id', '=', 'tb_jadwal_pemeriksaan.dusun_id')
-        ->where('m_dusun.id', '=', $dusun->id)
+        ->join('m_desa', 'm_desa.id', '=', 'm_dusun.desa_id')
+        ->where('m_desa.id', '=', $dusun->desa->id)
         ->get();
 
         return response()->json([
