@@ -87,11 +87,7 @@ class PemeriksaanIbuHamilController extends Controller
         ]);
     
         if($validasi->fails()) {
-            return response()->json([
-                'status' => false,
-                'code' => 400,
-                'message' => "Data tidak dapat ditambahkan"
-            ], 400);
+            return response()->errors()->all();
         }
         
         $pemeriksaan_ibu_hamil = PemeriksaanIbuHamil::create($request->all());

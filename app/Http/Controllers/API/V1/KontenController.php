@@ -75,16 +75,16 @@ class KontenController extends Controller
 
     public function updateKonten(Request $request, $id)
     {
-        $validator = Validator::make($request->all(), 
-        [ 
-            'judul' => 'required',
-            'konten' => 'required',
-            'gambar' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
-        ]);   
+        // $validator = Validator::make($request->all(), 
+        // [ 
+        //     'judul' => 'required',
+        //     'konten' => 'required',
+        //     'gambar' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+        // ]);   
  
-        if ($validator->fails()) {          
-            return response()->json(['error'=>$validator->errors()], 400);                        
-        }  
+        // if ($validator->fails()) {          
+        //     return response()->json(['error'=>$validator->errors()], 400);                        
+        // }  
  
 
         if ($images = $request->file('gambar')) {
@@ -107,7 +107,12 @@ class KontenController extends Controller
                 "message" => "File successfully uploaded",
                 "file" => $konten
             ]);
-  
+        }
+        else{
+            $konten = Konten::where("id",$id)->first();
+            $konten->judul = $request->judul;
+            $konten->konten = $request->konten;
+            $konten->save();
         }
     }
 
