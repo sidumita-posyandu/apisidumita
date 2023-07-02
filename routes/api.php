@@ -68,6 +68,8 @@ Route::middleware(['jwt.verify'])->group(function () {
     
     Route::get('petugas/with-keluarga', 'API\V1\KeluargaController@showKeluargaForPetugas');
     Route::get('petugas/with-detail-keluarga', 'API\V1\DetailKeluargaController@DetailKeluargaByPetugas');
+    Route::get('petugas/detail-keluarga/{id}', 'API\V1\DetailKeluargaController@ShowDetailKeluargabyIdKeluarga');
+
 
     Route::apiResource('balita', API\V1\BalitaController::class);
     Route::get('me/balita', 'API\V1\BalitaController@showMyBalitas');

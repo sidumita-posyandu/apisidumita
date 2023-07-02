@@ -109,6 +109,16 @@ class DetailKeluargaController extends Controller
         ]);
     }
 
+    public function ShowDetailKeluargabyIdKeluarga($id){
+        $detail_keluargas = DetailKeluarga::with(['keluarga'])->where("keluarga_id",$id)->get();
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'data' => $detail_keluargas
+        ]);
+    }
+
     public function store(Request $request)
     {
         $validasi = Validator::make($request->all(), [
