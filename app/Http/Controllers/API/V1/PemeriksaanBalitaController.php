@@ -93,7 +93,7 @@ class PemeriksaanBalitaController extends Controller
             'penanganan' => 'required',
             'catatan' => 'required',
             'keluhan' => 'required',
-            'dokter_id' => 'required',
+            // 'dokter_id' => 'required',
             'vitamin_id' => 'required',
         ]);
     
@@ -138,7 +138,7 @@ class PemeriksaanBalitaController extends Controller
             'penanganan' => 'required',
             'catatan' => 'required',
             'keluhan' => 'required',
-            'dokter_id' => 'required',
+            // 'dokter_id' => 'required',
             'vitamin_id' => 'required',
         ]);
     
@@ -183,7 +183,7 @@ class PemeriksaanBalitaController extends Controller
             'penanganan' => 'required',
             'catatan' => 'required',
             'keluhan' => 'required',
-            'dokter_id' => 'required',
+            // 'dokter_id' => 'required',
             // 'vitamin_id' => 'required',
             // 'vaksin_id' => 'required',
         ]);
