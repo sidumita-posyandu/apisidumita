@@ -233,7 +233,7 @@ class PemeriksaanIbuHamilController extends Controller
         if($imt<18.5){
             $status = "Underweight";
         }
-        elseif ($imt> 10.5 && $imt<24.9) {
+        elseif ($imt> 18.5 && $imt<24.9) {
             $status = "Normal";
         }
         elseif ($imt> 25 && $imt<29.9) {
