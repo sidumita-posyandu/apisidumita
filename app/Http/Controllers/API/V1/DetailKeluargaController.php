@@ -65,7 +65,7 @@ class DetailKeluargaController extends Controller
     public function showMyIbuHamils()
     {
         $data['keluarga_id'] = Keluarga::where("user_id", auth()->user()->id)->first()->id;
-        $detail_keluargas = DetailKeluarga::with(['keluarga'])->where("status_dalam_keluarga","Ibu")->where("keluarga_id", $data)->get();
+        $detail_keluargas = DetailKeluarga::with(['keluarga'])->where("status_dalam_keluarga","Istri")->where("keluarga_id", $data)->get();
 
         return response()->json([
             'status' => true,
