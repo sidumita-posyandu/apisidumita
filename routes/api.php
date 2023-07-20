@@ -53,6 +53,10 @@ Route::middleware(['jwt.verify'])->group(function () {
     Route::apiResource('user', API\V1\UserController::class);
     Route::apiResource('role', API\V1\RoleController::class);
 
+    Route::get('detail-keluarga/ibu-hamil', 'API\V1\DetailKeluargaController@IbuHamilByAdmin');
+    Route::get('detail-keluarga/petugas/ibu-hamil', 'API\V1\DetailKeluargaController@IbuHamilByPetugas');
+    Route::get('detail-keluarga/operator/ibu-hamil', 'API\V1\DetailKeluargaController@IbuHamilByOperator');
+    Route::get('detail-keluarga/ibu-hamil/{id}', 'API\V1\DetailKeluargaController@ShowIbuHamil');
 
     Route::apiResource('keluarga', API\V1\KeluargaController::class);
     Route::apiResource('detail-keluarga', API\V1\DetailKeluargaController::class);
@@ -101,6 +105,7 @@ Route::middleware(['jwt.verify'])->group(function () {
     Route::get('pemeriksaan-ibuhamil/ibuhamil/{id}', 'API\V1\PemeriksaanIbuHamilController@getPemeriksaanByIbuHamil');
     Route::get('pemeriksaan-ibuhamil/latest-ibuhamil/{id}','API\V1\PemeriksaanIbuHamilController@getTwoLastPemeriksaanByIbuHamil');
     Route::get('pemeriksaan-ibuhamil/kandungan/{id}', 'API\V1\PemeriksaanIbuHamilController@getPemeriksaanByKandungan');
+    Route::get('pemeriksaan-ibuhamil/kehamilan/{id}', 'API\V1\PemeriksaanIbuHamilController@getPemeriksaanIbuHamilByJumlahKehamilan');
     Route::post('pemeriksaan-ibu-hamil/byPetugas', 'API\V1\PemeriksaanIbuHamilController@storePemeriksaanbyPegawai');
     Route::post('destroy/pemeriksaan-ibuhamil/{id}','API\V1\PemeriksaanIbuHamilController@destroyPemeriksaanIbuHamil');
 

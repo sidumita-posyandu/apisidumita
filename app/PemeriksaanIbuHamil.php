@@ -10,7 +10,7 @@ class PemeriksaanIbuHamil extends Model
 
     protected $fillable =[
         'tanggal_pemeriksaan','tinggi_badan', 'lingkar_perut', 'berat_badan', 'denyut_nadi', 'denyut_jantung_bayi',
-        'keluhan', 'penanganan', 'catatan', 'ibu_hamil_id', 'petugas_kesehatan_id', 'umur_kandungan'
+        'keluhan', 'penanganan', 'catatan', 'ibu_hamil_id', 'petugas_kesehatan_id', 'umur_kandungan', 'kehamilan_ke'
     ];
 
     public function ibu_hamil()

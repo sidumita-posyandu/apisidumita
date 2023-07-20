@@ -360,4 +360,79 @@ class DetailKeluargaController extends Controller
             ]
         ]);
     }
+
+    //revisi (menampilkan ibu hamil darid detail keluarga dengan status istri)
+
+    public function IbuHamilByAdmin() 
+    {
+        $ibu_hamil = DB::table('tb_detail_keluarga')
+        ->select('tb_detail_keluarga.*')
+        ->join('tb_keluarga', 'tb_keluarga.id', '=', 'tb_detail_keluarga.keluarga_id')
+        ->join('m_dusun', 'm_dusun.id', '=', 'tb_keluarga.dusun_id')
+        ->join('m_desa', 'm_desa.id', '=', 'm_dusun.desa_id')
+        ->where("tb_detail_keluarga.status_dalam_keluarga",'=', 'istri')
+        ->where("tb_detail_keluarga.deleted_at",'=', null)
+        ->orderBy('tb_detail_keluarga.created_at', 'desc')
+        ->get();
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'data' => $ibu_hamil
+        ]);
+    }
+
+    public function IbuHamilByOperator(){
+
+        $kecamatan_id =  OperatorPosyandu::where("user_id", auth()->user()->id)->first()->kecamatan_id;
+
+        $keluargas = DB::table('tb_detail_keluarga')
+        ->select('tb_detail_keluarga.*')
+        ->join('tb_keluarga', 'tb_keluarga.id', '=', 'tb_detail_keluarga.keluarga_id')
+        ->join('m_dusun', 'm_dusun.id', '=', 'tb_keluarga.dusun_id')
+        ->join('m_desa', 'm_desa.id', '=', 'm_dusun.desa_id')
+        ->where("tb_detail_keluarga.status_dalam_keluarga",'=', 'istri')
+        ->where("tb_detail_keluarga.deleted_at",'=', null)
+        ->where("m_desa.kecamatan_id",'=', $kecamatan_id)
+        ->orderBy('tb_detail_keluarga.created_at', 'desc')
+        ->get();
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'data' => $keluargas
+        ]);
+    }
+
+    public function IbuHamilByPetugas(){
+        $desa_id =  PetugasKesehatan::where("user_id", auth()->user()->id)->first()->dusun->desa_id;
+
+        $keluargas = DB::table('tb_detail_keluarga')
+        ->select('tb_detail_keluarga.*')
+        ->join('tb_keluarga', 'tb_keluarga.id', '=', 'tb_detail_keluarga.keluarga_id')
+        ->join('m_dusun', 'm_dusun.id', '=', 'tb_keluarga.dusun_id')
+        ->join('m_desa', 'm_desa.id', '=', 'm_dusun.desa_id')
+        ->where("tb_detail_keluarga.status_dalam_keluarga",'=', 'istri')
+        ->where("tb_detail_keluarga.deleted_at",'=', null)
+        ->where("m_dusun.desa_id",'=', $desa_id)
+        ->orderBy('tb_detail_keluarga.created_at', 'desc')
+        ->get();
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'data' => $keluargas
+        ]);
+    }
+
+    public function ShowIbuHamil($id)
+    {
+        $ibu_hamil = DetailKeluarga::with('ibu_hamils')->findOrFail($id);
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'data' => $ibu_hamil
+        ]);
+    }
 }

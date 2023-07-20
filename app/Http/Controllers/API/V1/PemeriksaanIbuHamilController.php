@@ -75,6 +75,7 @@ class PemeriksaanIbuHamilController extends Controller
     {
         $validasi = Validator::make($request->all(), [
             'tanggal_pemeriksaan' => 'required',
+            'umur_kandungan' => 'required',
             'lingkar_perut' => 'required',
             'denyut_nadi' => 'required',
             'tinggi_badan' => 'required',
@@ -87,7 +88,11 @@ class PemeriksaanIbuHamilController extends Controller
         ]);
     
         if($validasi->fails()) {
-            return response()->errors()->all();
+            return response()->json([
+                'status' => false,
+                'code' => 500,
+                'message' => "Validasi tidak sesuai",
+            ], 500);
         }
         
         $pemeriksaan_ibu_hamil = PemeriksaanIbuHamil::create($request->all());
@@ -270,6 +275,34 @@ class PemeriksaanIbuHamilController extends Controller
 
         $pemeriksaan_ibu_hamils = PemeriksaanIbuHamil::
             where('ibu_hamil_id', $id)
+            ->join('tb_ibu_hamil', 'tb_ibu_hamil.id', '=', 'tb_pemeriksaan_ibu_hamil.ibu_hamil_id')
+            ->selectRaw('berat_badan - tb_ibu_hamil.berat_badan_prakehamilan AS berat_badan, umur_kandungan') 
+            ->orderBy('umur_kandungan','asc')
+            ->get();
+
+        // dd($pemeriksaan_ibu_hamils);
+        // foreach ($pemeriksaan_ibu_hamils as $key => $value) {
+        //     $berat_badan[] = $value->berat_badan - $value->ibu_hamil->berat_badan_prakehamilan;
+        //     $umur_kandungan[] = $value->umur_kandungan;
+        // }
+
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'data' => $pemeriksaan_ibu_hamils
+        ]);
+    }
+
+    public function getPemeriksaanIbuHamilByJumlahKehamilan(Request $request, $id){
+        // $pemeriksaan_ibu_hamils = PemeriksaanIbuHamil::with('ibu_hamil')->where('ibu_hamil_id', $id)->orderBy('umur_kandungan','asc')->get();
+        // $pemeriksaan_ibu_hamils = PemeriksaanIbuHamil::with('ibu_hamil')->where('ibu_hamil_id', $id)
+        // ->selectRaw('')
+        // ->orderBy('umur_kandungan','asc')->get();
+
+        $pemeriksaan_ibu_hamils = PemeriksaanIbuHamil::
+            where('ibu_hamil_id', $id)
+            ->where('kehamilan_ke', $request->kehamilan_ke)
             ->join('tb_ibu_hamil', 'tb_ibu_hamil.id', '=', 'tb_pemeriksaan_ibu_hamil.ibu_hamil_id')
             ->selectRaw('berat_badan - tb_ibu_hamil.berat_badan_prakehamilan AS berat_badan, umur_kandungan') 
             ->orderBy('umur_kandungan','asc')

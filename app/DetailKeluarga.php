@@ -29,7 +29,7 @@ class DetailKeluarga extends Model
 
     public function ibu_hamils()
     {
-        return $this->hasMany(IbuHamil::class, 'ibu_hamil_id');
+        return $this->hasMany(IbuHamil::class, 'detail_keluarga_id', 'id');
     }
 
     protected $casts = [

@@ -130,6 +130,8 @@ class IbuHamilController extends Controller
         $validasi = Validator::make($request->all(), [
             'berat_badan_prakehamilan',
             'tinggi_badan_prakehamilan',
+            'tanggal_prakehamilan',
+            'kehamilan_ke'
         ]);
 
         if ($validasi->fails()) {
@@ -143,7 +145,6 @@ class IbuHamilController extends Controller
         $ibu_hamil = IbuHamil::findOrFail($id);
 
         $ibu_hamil->update($request->all());
-
 
         return response()->json([
             'status' => true,
