@@ -10,7 +10,7 @@ class PemeriksaanBalita extends Model
 
     protected $fillable = [
         'tanggal_pemeriksaan','lingkar_kepala', 'lingkar_lengan', 'umur_balita', 'tinggi_badan','berat_badan',
-        'penanganan', 'keluhan', 'catatan', 'balita_id', 'petugas_kesehatan_id','dokter_id','vitamin_id'
+        'penanganan', 'keluhan', 'catatan', 'balita_id', 'petugas_kesehatan_id','vitamin_id'
     ];
 
     public function balita()

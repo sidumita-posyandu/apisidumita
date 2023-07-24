@@ -330,7 +330,6 @@ class PemeriksaanBalitaController extends Controller
 
     public function destroy(PemeriksaanBalita $pemeriksaan_balita)
     {
-        dd($pemeriksaan_balita);
         $pemeriksaan_balita->delete();
 
         return response()->json([
