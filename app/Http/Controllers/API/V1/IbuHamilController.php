@@ -62,6 +62,17 @@ class IbuHamilController extends Controller
 
     }
 
+    public function showIbuHamilMobile($id) 
+    {
+        $ibu_hamils = IbuHamil::with(['detail_keluarga'])->where("detail_keluarga_id",$id)->get();
+
+        return response()->json([
+            'status' => true,
+            'code' => 200,
+            'data' => $ibu_hamils
+        ]);
+    }
+
     public function showIbuHamilForOperator(){
         $kecamatan_id =  OperatorPosyandu::where("user_id", auth()->user()->id)->first()->kecamatan_id;
         // dd($petugas_kesehatan);
